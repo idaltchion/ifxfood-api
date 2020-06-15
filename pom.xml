@@ -46,6 +46,13 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
+		
+		<!-- add para suportar o Access application/xml na resposta da requisicao -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId> 
+			<artifactId>jackson-dataformat-xml</artifactId>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
