@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.idaltchion.ifxfood.api.domain.exception.EntidadeEmUsoException;
 import com.idaltchion.ifxfood.api.domain.exception.EntidadeNaoEncontradaException;
 import com.idaltchion.ifxfood.api.domain.model.Estado;
 import com.idaltchion.ifxfood.api.domain.repository.EstadoRepository;
@@ -57,13 +58,16 @@ public class EstadoController {
 	}
 	
 	@DeleteMapping("/{codigo}")
-	public ResponseEntity<Estado> remover(@PathVariable Long codigo) {
+	public ResponseEntity<?> remover(@PathVariable Long codigo) {
 		try {
 			cadastroEstadoService.remover(codigo);
 			return ResponseEntity.noContent().build();
 		}
 		catch(EntidadeNaoEncontradaException e) {
 			return ResponseEntity.notFound().build();
+		}
+		catch(EntidadeEmUsoException e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
 		}
 	}
 	
