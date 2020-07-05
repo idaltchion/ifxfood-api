@@ -18,7 +18,7 @@ public class CadastroRestauranteService {
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
 	
-	public Restaurante adicionar(Restaurante restaurante) {
+	public Restaurante salvar(Restaurante restaurante) {
 		Long cozinhaId = restaurante.getCozinha().getId();
 		Cozinha cozinha = cozinhaRepository.buscar(cozinhaId); 
 		if (cozinha == null) {
