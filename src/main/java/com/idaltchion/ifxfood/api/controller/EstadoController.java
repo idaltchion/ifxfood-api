@@ -1,6 +1,7 @@
 package com.idaltchion.ifxfood.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +33,16 @@ public class EstadoController {
 	
 	@GetMapping
 	public List<Estado> listar() {
-		return estadoRepository.listar();
+		return estadoRepository.findAll();
 	}
 	
 	@GetMapping("/{codigo}")
-	public Estado buscar(@PathVariable Long codigo) {
-		return estadoRepository.buscar(codigo);
+	public ResponseEntity<Estado> buscar(@PathVariable Long codigo) {
+		Optional<Estado> estado = estadoRepository.findById(codigo); 
+		if (estado.isPresent()) {
+			return ResponseEntity.ok(estado.get());
+		}
+		return ResponseEntity.notFound().build();
 	}
 	
 	@PutMapping
@@ -48,7 +53,8 @@ public class EstadoController {
 	
 	@PutMapping("/{codigo}")
 	public ResponseEntity<Estado> atualizar(@PathVariable Long codigo, @RequestBody Estado estado) {
-		Estado estadoAtual = estadoRepository.buscar(codigo);
+		//TODO: manter os metodos atualizar padranizados. vide Cidade
+		Estado estadoAtual = estadoRepository.findById(codigo).orElse(null);
 		if (estadoAtual != null) {
 			BeanUtils.copyProperties(estado, estadoAtual, "id");
 			estadoAtual = cadastroEstadoService.salvar(estadoAtual);

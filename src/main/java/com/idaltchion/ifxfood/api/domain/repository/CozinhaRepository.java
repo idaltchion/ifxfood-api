@@ -1,14 +1,11 @@
 package com.idaltchion.ifxfood.api.domain.repository;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.idaltchion.ifxfood.api.domain.model.Cozinha;
 
-public interface CozinhaRepository {
+@Repository
+public interface CozinhaRepository extends JpaRepository<Cozinha, Long> {
 
-	public List<Cozinha> listar();
-	public Cozinha buscar(Long id);
-	public Cozinha salvar(Cozinha cozinha);
-	public void remover(Long id);
-	
 }

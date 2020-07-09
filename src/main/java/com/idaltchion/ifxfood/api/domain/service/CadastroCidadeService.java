@@ -21,7 +21,7 @@ public class CadastroCidadeService {
 	
 	public void remover(Long id) {
 		try {
-			cidadeRepository.remover(id);			
+			cidadeRepository.deleteById(id);			
 		}
 		catch(EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(
@@ -31,13 +31,11 @@ public class CadastroCidadeService {
 	
 	public Cidade salvar(Cidade cidade) {
 		Long estadoId = cidade.getEstado().getId();
-		Estado estado = estadoRepository.buscar(estadoId);
-		if (estado == null) {
-			throw new EntidadeNaoEncontradaException(
-					String.format("Nao existe Estado cadastrado com o codigo %d", estadoId));
-		}
+		Estado estado = estadoRepository.findById(estadoId)
+				.orElseThrow(() -> new EntidadeNaoEncontradaException(
+						String.format("Nao existe Estado cadastrado com o codigo %d", estadoId)));
 		cidade.setEstado(estado);
-		return cidadeRepository.salvar(cidade);
+		return cidadeRepository.save(cidade);
 	}
 	
 }

@@ -1,14 +1,11 @@
 package com.idaltchion.ifxfood.api.domain.repository;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.idaltchion.ifxfood.api.domain.model.Estado;
 
-public interface EstadoRepository {
-
-	public List<Estado> listar();
-	public Estado buscar(Long id);
-	public Estado salvar(Estado estado);
-	public void remover(Long id);
+@Repository
+public interface EstadoRepository extends JpaRepository<Estado, Long> {
 	
 }

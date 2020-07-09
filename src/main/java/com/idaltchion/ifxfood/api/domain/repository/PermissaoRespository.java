@@ -1,14 +1,11 @@
 package com.idaltchion.ifxfood.api.domain.repository;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.idaltchion.ifxfood.api.domain.model.Permissao;
 
-public interface PermissaoRespository {
-
-	public List<Permissao> listar();
-	public Permissao buscar(Long id);
-	public Permissao salvar(Permissao permissao);
-	public void remover(Permissao permissao);
+@Repository
+public interface PermissaoRespository extends JpaRepository<Permissao, Long> {
 	
 }

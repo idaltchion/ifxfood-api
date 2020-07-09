@@ -1,6 +1,7 @@
 package com.idaltchion.ifxfood.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +32,16 @@ public class CidadeController {
 	
 	@GetMapping
 	public List<Cidade> listar() {
-		return cidadeRepository.listar();
+		return cidadeRepository.findAll();
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Cidade> buscar(@PathVariable Long id) {
-		Cidade cidade = cidadeRepository.buscar(id);
-		if (cidade == null) {
+		Optional<Cidade> cidade = cidadeRepository.findById(id);
+		if (cidade.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
-		return ResponseEntity.ok(cidade);
+		return ResponseEntity.ok(cidade.get());
 	}
 	
 	@DeleteMapping("/{id}")
@@ -68,10 +69,13 @@ public class CidadeController {
 	@PutMapping("/{id}")
 	public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Cidade cidade) {
 		try {
-			Cidade cidadeAtual = cidadeRepository.buscar(id);
-			BeanUtils.copyProperties(cidade, cidadeAtual, "id");
-			cidade = cadastroCidadeService.salvar(cidadeAtual);
-			return ResponseEntity.ok(cidade);
+			Cidade cidadeAtual = cidadeRepository.findById(id).orElse(null);
+			if (cidadeAtual != null) {
+				BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+				cidade = cadastroCidadeService.salvar(cidadeAtual);
+				return ResponseEntity.ok(cidade);				
+			}
+			return ResponseEntity.notFound().build();
 		}
 		catch(EntidadeNaoEncontradaException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
