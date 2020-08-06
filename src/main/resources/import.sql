@@ -17,3 +17,9 @@ insert into cidade (nome, estado_id) values ('Barueri', 2);
 insert into cidade (nome, estado_id) values ('Niteroi', 3);
 insert into cidade (nome, estado_id) values ('Minas Gerais', 4);
 insert into cidade (nome, estado_id) values ('Betim', 4);
+
+insert into forma_pagamento (id, descricao) values (1, 'Dinheiro')
+insert into forma_pagamento (id, descricao) values (2, 'Cartao de Credito')
+insert into forma_pagamento (id, descricao) values (3, 'Cartao de Debito')
+
+insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 1), (3, 3)

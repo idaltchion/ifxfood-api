@@ -1,6 +1,8 @@
 package com.idaltchion.ifxfood.api.domain.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,7 +10,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,8 +39,15 @@ public class Restaurante {
 	
 	@ManyToOne
 	@JoinColumn(name = "cozinha_id", nullable = false)
-//	caso deseja explicitar o nome da coluna que sera referenciada na FK. O padrao e <object>_id, portanto, cozinha_id
-//	se for quere utilizar o nome padrao, essa anotacao pode ser removida. Nesse caso esta sendo usada comente devido ao nullable
+//	caso desejar explicitar o nome da coluna que sera referenciada na FK. O padrao e <object>_id, portanto, cozinha_id
+//	se for querer utilizar o nome padrao, essa anotacao pode ser removida. Nesse caso esta sendo usada somente devido ao nullable
 	private Cozinha cozinha;
 
+	//para nao mostrar no payload da lista de restaurantes
+	@JsonIgnore
+	@ManyToMany
+	@JoinTable(name = "restaurante_forma_pagamento",
+			joinColumns = @JoinColumn(name = "restaurante_id"), 
+			inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
+	private List<FormaPagamento> formasPagamento = new ArrayList<>();
 }
