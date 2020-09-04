@@ -3,7 +3,6 @@ package com.idaltchion.ifxfood.api.domain.repository;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,7 +12,7 @@ import com.idaltchion.ifxfood.api.domain.model.Restaurante;
 
 @Repository
 public interface RestauranteRepository extends 
-	JpaRepository<Restaurante, Long>, 
+	CustomJpaRepository<Restaurante, Long>, 
 	RestauranteRepositoryCustomQueries,
 	JpaSpecificationExecutor<Restaurante> {
 	

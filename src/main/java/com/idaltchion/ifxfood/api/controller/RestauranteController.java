@@ -1,8 +1,5 @@
 package com.idaltchion.ifxfood.api.controller;
 
-import static com.idaltchion.ifxfood.api.infrastructure.repository.spec.RestauranteSpecs.comFreteGratis;
-import static com.idaltchion.ifxfood.api.infrastructure.repository.spec.RestauranteSpecs.comNomeSemelhante;
-
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -111,4 +108,10 @@ public class RestauranteController {
 	public List<Restaurante> restauranteComFreteGratis(String nome) {
 		return restauranteRepository.findComFreteGratis(nome);
 	}
+	
+	@GetMapping("/buscar-primeiro")
+	public Optional<Restaurante> buscarPrimeiro() {
+		return restauranteRepository.buscarPrimeiroRegistro();
+	}
+	
 }

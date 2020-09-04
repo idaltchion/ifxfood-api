@@ -90,4 +90,9 @@ public class CozinhaController {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();			
 		}
 	}
+	
+	@GetMapping("/buscar-primeira")
+	public Optional<Cozinha> buscarPrimeira() {
+		return cozinhaRepository.buscarPrimeiroRegistro();
+	}
 }
