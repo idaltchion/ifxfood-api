@@ -1,5 +1,8 @@
 package com.idaltchion.ifxfood.api.infrastructure.repository;
 
+import static com.idaltchion.ifxfood.api.infrastructure.repository.spec.RestauranteSpecs.comFreteGratis;
+import static com.idaltchion.ifxfood.api.infrastructure.repository.spec.RestauranteSpecs.comNomeSemelhante;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,11 +16,15 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import com.idaltchion.ifxfood.api.domain.model.Restaurante;
+import com.idaltchion.ifxfood.api.domain.repository.RestauranteRepository;
 import com.idaltchion.ifxfood.api.domain.repository.RestauranteRepositoryCustomQueries;
+import com.idaltchion.ifxfood.api.infrastructure.repository.spec.RestauranteSpecs;
 
 /*
  * Classe criada para possibilitar consultas SQL mais dinamicas
@@ -28,6 +35,10 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryCustomQue
 	
 	@PersistenceContext
 	private EntityManager manager;
+	
+	/* A anotacao Lazy, nesse caso, resolve o problema de referencia circular */
+	@Autowired @Lazy
+	private RestauranteRepository restauranteRepository;
 	
 	@Override
 	public List<Restaurante> procurarRestaurante(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
@@ -86,6 +97,11 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryCustomQue
 		TypedQuery<Restaurante> query = manager.createQuery(criteriaQuery);
 		
 		return query.getResultList();
+	}
+
+	@Override
+	public List<Restaurante> findComFreteGratis(String nome) {
+		return restauranteRepository.findAll(comFreteGratis().and(comNomeSemelhante(nome)));
 	}
 	
 

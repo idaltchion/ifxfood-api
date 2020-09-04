@@ -12,8 +12,9 @@ import org.springframework.stereotype.Repository;
 import com.idaltchion.ifxfood.api.domain.model.Restaurante;
 
 @Repository
-public interface RestauranteRepository 
-	extends JpaRepository<Restaurante, Long>, RestauranteRepositoryCustomQueries,
+public interface RestauranteRepository extends 
+	JpaRepository<Restaurante, Long>, 
+	RestauranteRepositoryCustomQueries,
 	JpaSpecificationExecutor<Restaurante> {
 	
 	/* Utilizando a keyword "Between" do JPA para criar pesquisas de >= e <= */ 
