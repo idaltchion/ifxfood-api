@@ -13,6 +13,9 @@ import com.idaltchion.ifxfood.api.domain.repository.CozinhaRepository;
 @Service
 public class CadastroCozinhaService {
 
+	private static final String MSG_COZINHA_EM_USO = "Cozinha com id %d nao pode ser removida pois esta em uso";
+	private static final String MSG_COZINHA_NAO_ENCONTRADA = "Cozinha com id %d nao encontrada";
+	
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
 	
@@ -26,11 +29,17 @@ public class CadastroCozinhaService {
 		}
 		catch(EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException (
-				String.format("Cozinha com id %d nao encontrada", id));
+				String.format(MSG_COZINHA_NAO_ENCONTRADA, id));
 		}
 		catch(DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
-				String.format("Cozinha com id %d nao pode ser removida pois esta em uso", id));
+				String.format(MSG_COZINHA_EM_USO, id));
 		}
 	}
+	
+	public Cozinha buscarOuFalhar(Long id) {
+		return cozinhaRepository.findById(id).orElseThrow(
+				() -> new EntidadeNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, id)));
+	}
+	
 }
