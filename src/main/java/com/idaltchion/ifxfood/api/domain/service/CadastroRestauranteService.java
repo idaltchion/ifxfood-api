@@ -6,24 +6,28 @@ import org.springframework.stereotype.Service;
 import com.idaltchion.ifxfood.api.domain.exception.EntidadeNaoEncontradaException;
 import com.idaltchion.ifxfood.api.domain.model.Cozinha;
 import com.idaltchion.ifxfood.api.domain.model.Restaurante;
-import com.idaltchion.ifxfood.api.domain.repository.CozinhaRepository;
 import com.idaltchion.ifxfood.api.domain.repository.RestauranteRepository;
 
 @Service
 public class CadastroRestauranteService {
 
+	private static final String MSG_RESTAURANTE_NAO_ENCONTRADO = "Nao existe cadastro de Restaurante com codigo %d";
+
 	@Autowired
 	private RestauranteRepository restauranteRepository;
 	
 	@Autowired
-	private CozinhaRepository cozinhaRepository;
+	private CadastroCozinhaService cadastroCozinhaService;
 	
 	public Restaurante salvar(Restaurante restaurante) {
 		Long cozinhaId = restaurante.getCozinha().getId();
-		Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
-				.orElseThrow(() -> new EntidadeNaoEncontradaException(
-						String.format("Nao existe cadastro de cozinha com codigo %d", cozinhaId)));
+		Cozinha cozinha = cadastroCozinhaService.buscarOuFalhar(cozinhaId);
 		restaurante.setCozinha(cozinha);
 		return restauranteRepository.save(restaurante);
+	}
+	
+	public Restaurante buscar(Long id) {
+		return restauranteRepository.findById(id).orElseThrow(
+				() -> new EntidadeNaoEncontradaException(String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, id)));
 	}
 }

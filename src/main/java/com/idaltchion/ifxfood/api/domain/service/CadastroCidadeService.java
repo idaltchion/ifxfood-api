@@ -8,16 +8,17 @@ import com.idaltchion.ifxfood.api.domain.exception.EntidadeNaoEncontradaExceptio
 import com.idaltchion.ifxfood.api.domain.model.Cidade;
 import com.idaltchion.ifxfood.api.domain.model.Estado;
 import com.idaltchion.ifxfood.api.domain.repository.CidadeRepository;
-import com.idaltchion.ifxfood.api.domain.repository.EstadoRepository;
 
 @Service
 public class CadastroCidadeService {
+
+	private static final String MSG_CIDADE_NAO_CADASTRADA = "Nao existe Cidade cadastrada com codigo %d";
 
 	@Autowired
 	private CidadeRepository cidadeRepository;
 	
 	@Autowired
-	private EstadoRepository estadoRepository;
+	private CadastroEstadoService cadastroEstadoService;
 	
 	public void remover(Long id) {
 		try {
@@ -25,17 +26,20 @@ public class CadastroCidadeService {
 		}
 		catch(EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(
-					String.format("Nao existe cidade cadastrada com codigo %d", id));
+					String.format(MSG_CIDADE_NAO_CADASTRADA, id));
 		}
 	}
 	
 	public Cidade salvar(Cidade cidade) {
 		Long estadoId = cidade.getEstado().getId();
-		Estado estado = estadoRepository.findById(estadoId)
-				.orElseThrow(() -> new EntidadeNaoEncontradaException(
-						String.format("Nao existe Estado cadastrado com o codigo %d", estadoId)));
+		Estado estado = cadastroEstadoService.buscar(estadoId);
 		cidade.setEstado(estado);
 		return cidadeRepository.save(cidade);
+	}
+	
+	public Cidade buscar(Long id) {
+		return cidadeRepository.findById(id).orElseThrow(
+				() -> new EntidadeNaoEncontradaException(String.format(MSG_CIDADE_NAO_CADASTRADA, id)));
 	}
 	
 }

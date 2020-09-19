@@ -13,6 +13,9 @@ import com.idaltchion.ifxfood.api.domain.repository.EstadoRepository;
 @Service
 public class CadastroEstadoService {
 
+	private static final String MSG_ESTADO_EM_USO = "Estado com codigo %d nao pode ser removido pois esta em uso";
+	private static final String MSG_ESTADO_NAO_ENCONTRADO = "Nao existe Estado cadastrado com codigo %d";
+	
 	@Autowired
 	private EstadoRepository estadoRepository;
 	
@@ -26,12 +29,17 @@ public class CadastroEstadoService {
 		}
 		catch(EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException (
-					String.format("Nao existe estado cadastrado com codigo %d", codigo));			
+					String.format(MSG_ESTADO_NAO_ENCONTRADO, codigo));			
 		}
 		catch(DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
-					String.format("Estado com codigo %d nao pode ser removido pois esta em uso", codigo));
+					String.format(MSG_ESTADO_EM_USO, codigo));
 		}
+	}
+	
+	public Estado buscar(Long id) {
+		return estadoRepository.findById(id).orElseThrow(
+			() -> new EntidadeNaoEncontradaException(String.format(MSG_ESTADO_NAO_ENCONTRADO, id)));
 	}
 	
 }
