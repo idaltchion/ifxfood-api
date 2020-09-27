@@ -39,7 +39,7 @@ public class CadastroCidadeService {
 	
 	public Cidade buscar(Long id) {
 		return cidadeRepository.findById(id).orElseThrow(
-				() -> new EntidadeNaoEncontradaException(String.format(MSG_CIDADE_NAO_CADASTRADA, id)));
+			() -> new EntidadeNaoEncontradaException(String.format(MSG_CIDADE_NAO_CADASTRADA, id)));
 	}
 	
 }
