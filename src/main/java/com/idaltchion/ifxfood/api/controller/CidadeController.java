@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.idaltchion.ifxfood.api.domain.exception.EntidadeNaoEncontradaException;
+import com.idaltchion.ifxfood.api.domain.exception.EstadoNaoEncontradoException;
 import com.idaltchion.ifxfood.api.domain.exception.NegocioException;
 import com.idaltchion.ifxfood.api.domain.model.Cidade;
 import com.idaltchion.ifxfood.api.domain.repository.CidadeRepository;
@@ -53,7 +53,7 @@ public class CidadeController {
 		try {
 			return cadastroCidadeService.salvar(cidade);			
 		}
-		catch(EntidadeNaoEncontradaException e) {
+		catch(EstadoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage());
 		}
 	}
@@ -61,13 +61,13 @@ public class CidadeController {
 	@PutMapping("/{id}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public Cidade atualizar(@PathVariable Long id, @RequestBody Cidade cidade) {
-		Cidade cidadeAtual = cadastroCidadeService.buscar(id);
-		BeanUtils.copyProperties(cidade, cidadeAtual, "id");
 		try {
+			Cidade cidadeAtual = cadastroCidadeService.buscar(id);
+			BeanUtils.copyProperties(cidade, cidadeAtual, "id");
 			return cadastroCidadeService.salvar(cidadeAtual);
 		}
-		catch(EntidadeNaoEncontradaException e) {
-			throw new NegocioException(e.getMessage());
+		catch(EstadoNaoEncontradoException e) {
+			throw new NegocioException(e.getMessage(), e.getCause());
 		}
 	}
 

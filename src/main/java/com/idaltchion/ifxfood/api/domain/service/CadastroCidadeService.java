@@ -4,15 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.idaltchion.ifxfood.api.domain.exception.EntidadeNaoEncontradaException;
+import com.idaltchion.ifxfood.api.domain.exception.CidadeNaoEncontradaException;
 import com.idaltchion.ifxfood.api.domain.model.Cidade;
 import com.idaltchion.ifxfood.api.domain.model.Estado;
 import com.idaltchion.ifxfood.api.domain.repository.CidadeRepository;
 
 @Service
 public class CadastroCidadeService {
-
-	private static final String MSG_CIDADE_NAO_CADASTRADA = "Nao existe Cidade cadastrada com codigo %d";
 
 	@Autowired
 	private CidadeRepository cidadeRepository;
@@ -25,8 +23,7 @@ public class CadastroCidadeService {
 			cidadeRepository.deleteById(id);			
 		}
 		catch(EmptyResultDataAccessException e) {
-			throw new EntidadeNaoEncontradaException(
-					String.format(MSG_CIDADE_NAO_CADASTRADA, id));
+			throw new CidadeNaoEncontradaException(id);
 		}
 	}
 	
@@ -39,7 +36,7 @@ public class CadastroCidadeService {
 	
 	public Cidade buscar(Long id) {
 		return cidadeRepository.findById(id).orElseThrow(
-			() -> new EntidadeNaoEncontradaException(String.format(MSG_CIDADE_NAO_CADASTRADA, id)));
+			() -> new CidadeNaoEncontradaException(id));
 	}
 	
 }

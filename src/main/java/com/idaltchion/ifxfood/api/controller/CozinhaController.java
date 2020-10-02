@@ -53,7 +53,6 @@ public class CozinhaController {
 
 	@PutMapping("/{id}")
 	public Cozinha atualizar(@PathVariable Long id, @RequestBody Cozinha cozinha) {
-		// TODO: refatorar os metodos atualizar para deixar padronizado, vide Cidade
 		Cozinha cozinhaAtual = cadastroCozinhaService.buscarOuFalhar(id);
 		BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
 		return cadastroCozinhaService.salvar(cozinhaAtual);
