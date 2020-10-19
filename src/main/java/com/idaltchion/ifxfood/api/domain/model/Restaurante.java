@@ -17,6 +17,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -39,6 +40,7 @@ public class Restaurante {
 	
 //	o nullable se aplica somente ao BANCO DE DADOS no momento da criacao da tabela de forma automatica
 //	a anotacao @NotNull se aplica somente na validacao pela APLICACAO
+	@NotNull
 	@Column(nullable = false)
 	private String nome;
 	
