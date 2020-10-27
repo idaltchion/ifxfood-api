@@ -4,6 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import com.idaltchion.ifxfood.api.Groups;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,8 +20,10 @@ public class Cozinha {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
+	@NotNull(groups = Groups.CozinhaId.class)
 	private Long id;
 
+	@NotBlank
 	private String nome;
 
 }

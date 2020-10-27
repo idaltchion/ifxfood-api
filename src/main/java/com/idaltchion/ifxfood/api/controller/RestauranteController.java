@@ -65,12 +65,12 @@ public class RestauranteController {
 	}
 
 	@PutMapping("/{id}")
-	public Restaurante atualizar(@PathVariable Long id, @RequestBody Restaurante restaurante) {
+	public Restaurante atualizar(@PathVariable Long id, @RequestBody @Valid Restaurante restaurante) {
 		try {
 			Restaurante restauranteAtual = cadastroRestauranteService.buscar(id);
 			BeanUtils.copyProperties(restaurante, restauranteAtual, 
 					"id", "formasPagmento", "endereco", "dataCadastro", "produtos");
-			return cadastroRestauranteService.salvar(restauranteAtual);			
+			return cadastroRestauranteService.salvar(restauranteAtual);
 		}
 		catch(CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());

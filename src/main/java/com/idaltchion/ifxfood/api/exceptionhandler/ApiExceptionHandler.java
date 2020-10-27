@@ -108,7 +108,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		String path = joinPath(ex.getPath());
 				
 		ProblemType problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
-		String detail = String.format("A propriedade '%s' recebeu o valor '%s' que está com o tipo inválido. Informe um valor com o tipo %s.", 
+		String detail = String.format("A propriedade '%s' recebeu o valor '%s' que está com o tipo inválido. "
+				+ "Informe um valor com o tipo '%s'.", 
 				path, ex.getValue(), ex.getTargetType().getSimpleName());
 		
 		Problem problem = createProblemBuilder(status, problemType, detail)
@@ -194,10 +195,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		BindingResult bindingResult = ex.getBindingResult();
 		List<Problem.Field> problemFields = bindingResult.getFieldErrors().stream()
-				.map(fieldError -> Problem.Field.builder()
-						.name(fieldError.getField())
-						.userMessage(fieldError.getDefaultMessage())
-						.build())
+				.map(fieldError -> {
+					return Problem.Field.builder()
+					.name(fieldError.getField())
+					.userMessage(fieldError.getDefaultMessage())
+					.build();
+				})
 				.collect(Collectors.toList());
 		
 		Problem problem = createProblemBuilder(status, problemType, detail)

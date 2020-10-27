@@ -2,6 +2,8 @@ package com.idaltchion.ifxfood.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,12 +42,12 @@ public class EstadoController {
 	
 	@PutMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public Estado adicionar(@RequestBody Estado estado) {
+	public Estado adicionar(@RequestBody @Valid Estado estado) {
 		return cadastroEstadoService.salvar(estado);
 	}
 	
 	@PutMapping("/{codigo}")
-	public Estado atualizar(@PathVariable Long codigo, @RequestBody Estado estado) {
+	public Estado atualizar(@PathVariable Long codigo, @RequestBody @Valid Estado estado) {
 		Estado estadoAtual = cadastroEstadoService.buscar(codigo);
 		BeanUtils.copyProperties(estado, estadoAtual, "id");
 		return cadastroEstadoService.salvar(estadoAtual);

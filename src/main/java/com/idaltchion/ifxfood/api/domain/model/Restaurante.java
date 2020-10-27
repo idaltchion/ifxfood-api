@@ -17,13 +17,19 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.idaltchion.ifxfood.api.Groups;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -40,10 +46,12 @@ public class Restaurante {
 	
 //	o nullable se aplica somente ao BANCO DE DADOS no momento da criacao da tabela de forma automatica
 //	a anotacao @NotNull se aplica somente na validacao pela APLICACAO
-	@NotNull
+	@NotBlank
 	@Column(nullable = false)
 	private String nome;
 	
+	@PositiveOrZero
+	@NotNull
 	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
 
@@ -53,6 +61,9 @@ public class Restaurante {
 	@JoinColumn(name = "cozinha_id", nullable = false)
 //	caso desejar explicitar o nome da coluna que sera referenciada na FK. O padrao e <object>_id, portanto, cozinha_id
 //	se for querer utilizar o nome padrao, essa anotacao pode ser removida. Nesse caso esta sendo usada somente devido ao nullable
+	@Valid
+	@NotNull
+	@ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
 	private Cozinha cozinha;
 
 	//para nao mostrar no payload da lista de restaurantes
