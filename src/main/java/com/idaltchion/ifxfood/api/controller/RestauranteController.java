@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,11 +29,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.idaltchion.ifxfood.api.domain.exception.CozinhaNaoEncontradaException;
-import com.idaltchion.ifxfood.api.domain.exception.NegocioException;
-import com.idaltchion.ifxfood.api.domain.model.Restaurante;
-import com.idaltchion.ifxfood.api.domain.repository.RestauranteRepository;
-import com.idaltchion.ifxfood.api.domain.service.CadastroRestauranteService;
+import com.idaltchion.ifxfood.core.validation.ValidacaoException;
+import com.idaltchion.ifxfood.domain.exception.CozinhaNaoEncontradaException;
+import com.idaltchion.ifxfood.domain.exception.NegocioException;
+import com.idaltchion.ifxfood.domain.model.Restaurante;
+import com.idaltchion.ifxfood.domain.repository.RestauranteRepository;
+import com.idaltchion.ifxfood.domain.service.CadastroRestauranteService;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -42,6 +45,9 @@ public class RestauranteController {
 	
 	@Autowired
 	private CadastroRestauranteService cadastroRestauranteService;
+	
+	@Autowired
+	private SmartValidator validator;
 	
 	@GetMapping
 	public List<Restaurante> listar() {
@@ -82,7 +88,16 @@ public class RestauranteController {
 			HttpServletRequest request) {
 		Restaurante restauranteAtual = cadastroRestauranteService.buscar(id);		
 		merge(campos, restauranteAtual, request);
+		validate(restauranteAtual, "restaurante");
 		return atualizar(id, restauranteAtual);
+	}
+
+	private void validate(Restaurante restaurante, String objectName) {
+		BeanPropertyBindingResult bindingresult = new BeanPropertyBindingResult(restaurante, objectName);
+		validator.validate(restaurante, bindingresult);
+		if (bindingresult.hasErrors()) {
+			throw new ValidacaoException(bindingresult);
+		}
 	}
 
 	/* Reflections - maneira de inspecionar objetos para que possamos fazer alguma manipulacao no mesmo em tempo de execucao */

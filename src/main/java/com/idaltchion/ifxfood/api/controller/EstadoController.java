@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.idaltchion.ifxfood.api.domain.model.Estado;
-import com.idaltchion.ifxfood.api.domain.repository.EstadoRepository;
-import com.idaltchion.ifxfood.api.domain.service.CadastroEstadoService;
+import com.idaltchion.ifxfood.domain.model.Estado;
+import com.idaltchion.ifxfood.domain.repository.EstadoRepository;
+import com.idaltchion.ifxfood.domain.service.CadastroEstadoService;
 
 @RestController
 @RequestMapping("/estados")

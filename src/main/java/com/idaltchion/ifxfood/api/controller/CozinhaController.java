@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.idaltchion.ifxfood.api.domain.model.Cozinha;
-import com.idaltchion.ifxfood.api.domain.repository.CozinhaRepository;
-import com.idaltchion.ifxfood.api.domain.service.CadastroCozinhaService;
+import com.idaltchion.ifxfood.domain.model.Cozinha;
+import com.idaltchion.ifxfood.domain.repository.CozinhaRepository;
+import com.idaltchion.ifxfood.domain.service.CadastroCozinhaService;
 
 /*
  * produces: suporta no Accept (header) tanto application/json quanto application/xml, o default, mesmo sem especificar, é JSON

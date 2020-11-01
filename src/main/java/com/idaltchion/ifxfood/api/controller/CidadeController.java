@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.idaltchion.ifxfood.api.domain.exception.EstadoNaoEncontradoException;
-import com.idaltchion.ifxfood.api.domain.exception.NegocioException;
-import com.idaltchion.ifxfood.api.domain.model.Cidade;
-import com.idaltchion.ifxfood.api.domain.repository.CidadeRepository;
-import com.idaltchion.ifxfood.api.domain.service.CadastroCidadeService;
+import com.idaltchion.ifxfood.domain.exception.EstadoNaoEncontradoException;
+import com.idaltchion.ifxfood.domain.exception.NegocioException;
+import com.idaltchion.ifxfood.domain.model.Cidade;
+import com.idaltchion.ifxfood.domain.repository.CidadeRepository;
+import com.idaltchion.ifxfood.domain.service.CadastroCidadeService;
 
 @RestController
 @RequestMapping("/cidades")

@@ -25,9 +25,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
-import com.idaltchion.ifxfood.api.domain.exception.EntidadeEmUsoException;
-import com.idaltchion.ifxfood.api.domain.exception.EntidadeNaoEncontradaException;
-import com.idaltchion.ifxfood.api.domain.exception.NegocioException;
+import com.idaltchion.ifxfood.core.validation.ValidacaoException;
+import com.idaltchion.ifxfood.domain.exception.EntidadeEmUsoException;
+import com.idaltchion.ifxfood.domain.exception.EntidadeNaoEncontradaException;
+import com.idaltchion.ifxfood.domain.exception.NegocioException;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
@@ -85,6 +86,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 				.build();
 		ex.printStackTrace();
 		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+	}
+	
+	@ExceptionHandler(ValidacaoException.class)
+	public ResponseEntity<Object> handleValidacaoException(ValidacaoException ex, WebRequest request) {
+		return handleValidationInternal(ex, ex.getBindingResult(), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
 	
 	@Override
@@ -196,10 +202,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		return handleValidationInternal(ex, ex.getBindingResult(), headers, status, request);
+	}
+
+	private ResponseEntity<Object> handleValidationInternal(Exception ex, BindingResult bindingResult, HttpHeaders headers,
+			HttpStatus status, WebRequest request) {
 		ProblemType problemType = ProblemType.DADOS_INVALIDOS;
 		String detail = "Um ou mais campos estão inválidos. Preencha corretamente e tente novamente.";
 		
-		BindingResult bindingResult = ex.getBindingResult();
 		List<Problem.Field> problemFields = bindingResult.getFieldErrors().stream()
 				.map(fieldError -> {
 					String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
