@@ -19,7 +19,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.idaltchion.ifxfood.domain.exception.CozinhaNaoEncontradaException;
 import com.idaltchion.ifxfood.domain.exception.EntidadeEmUsoException;
 import com.idaltchion.ifxfood.domain.model.Cozinha;
+import com.idaltchion.ifxfood.domain.repository.CozinhaRepository;
 import com.idaltchion.ifxfood.domain.service.CadastroCozinhaService;
+import com.idaltchion.ifxfood.util.DatabaseCleaner;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -29,17 +31,37 @@ import io.restassured.http.ContentType;
 @TestPropertySource(value = "/application-test.properties")
 public class CadastroCozinhaIT {
 
+	@LocalServerPort
+	private int port;
+	
 	@Autowired
 	private CadastroCozinhaService cozinhaService;
 	
-	@LocalServerPort
-	private int port;
+	@Autowired
+	private DatabaseCleaner databaseCleaner;
+	
+	@Autowired
+	private CozinhaRepository cozinhaRepository;
 	
 	@Before
 	public void setUpBeforeTests() {
 		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 		RestAssured.port = port;
 		RestAssured.basePath = "/cozinhas";
+		
+		databaseCleaner.clearTables();
+		prepararDados();
+		
+	}
+	
+	private void prepararDados() {
+		Cozinha cozinha1 = new Cozinha();
+		cozinha1.setNome("Brasileira");
+		cozinhaRepository.save(cozinha1);
+		
+		Cozinha cozinha2 = new Cozinha();
+		cozinha2.setNome("Americana");
+		cozinhaRepository.save(cozinha2);
 	}
 	
 	@Test
