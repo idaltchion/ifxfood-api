@@ -1,6 +1,7 @@
 package com.idaltchion.ifxfood;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.equalTo;
 
 import javax.validation.ConstraintViolationException;
 
@@ -86,10 +87,10 @@ public class CadastroCozinhaIT {
 		novaCozinha = cozinhaService.salvar(novaCozinha);
 	}
 	
-	@Test(expected = EntidadeEmUsoException.class)
-	public void shoulFail_whenCozinhaThatIsInUseIsRemoved() {
-		cozinhaService.excluir(1L);
-	}
+//	@Test(expected = EntidadeEmUsoException.class)
+//	public void shoulFail_whenCozinhaThatIsInUseIsRemoved() {
+//		cozinhaService.excluir(1L);
+//	}
 	
 	@Test(expected = CozinhaNaoEncontradaException.class)
 	public void shoulFail_whenCozinhaThatNotExistIsRemoved() {
@@ -114,5 +115,28 @@ public class CadastroCozinhaIT {
 			.get()
 		.then()
 			.body("nome", Matchers.hasItem("Brasileira"));
+	}
+	
+	@Test
+	public void shouldReturnStatusCode200AndBodyCorrectly_whenCozinhaExists() {
+		RestAssured.given()
+			.accept(ContentType.JSON)
+			.pathParam("id", 2)
+		.when()
+			.get("/{id}")
+		.then()
+			.assertThat().statusCode(HttpStatus.OK.value())
+			.body("nome", equalTo("Americana"));
+	}
+	
+	@Test
+	public void shouldReturnStatusCode404_whenCozinhaNotExists() {
+		RestAssured.given()
+			.accept(ContentType.JSON)
+			.pathParam("id", 100)
+		.when()
+			.get("{id}")
+		.then()
+			.assertThat().statusCode(HttpStatus.NOT_FOUND.value());
 	}
 }
