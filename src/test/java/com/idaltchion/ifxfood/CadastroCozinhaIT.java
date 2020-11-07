@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.validation.ConstraintViolationException;
 
+import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.idaltchion.ifxfood.domain.exception.CozinhaNaoEncontradaException;
@@ -23,6 +26,7 @@ import io.restassured.http.ContentType;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@TestPropertySource(value = "/application-test.properties")
 public class CadastroCozinhaIT {
 
 	@Autowired
@@ -30,6 +34,13 @@ public class CadastroCozinhaIT {
 	
 	@LocalServerPort
 	private int port;
+	
+	@Before
+	public void setUpBeforeTests() {
+		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+		RestAssured.port = port;
+		RestAssured.basePath = "/cozinhas";
+	}
 	
 	@Test
 	public void shoulPass_whenCozinhaAndIdIsNotNull() {
@@ -64,12 +75,8 @@ public class CadastroCozinhaIT {
 	}
 	
 	@Test
-	public void shouldReturnHttpStatus200_whenGetCozinhas() {
-		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-		
+	public void shouldReturnHttpStatus200_whenGetCozinhas() {		
 		RestAssured.given() 			//1.cenario
-			.basePath("/cozinhas")
-			.port(port)
 			.accept(ContentType.JSON)
 		.when()							// 2.acao
 			.get()
@@ -77,4 +84,13 @@ public class CadastroCozinhaIT {
 			.statusCode(HttpStatus.OK.value());
 	}
 	
+	@Test
+	public void shouldFail_whenCozinhaBrasileiraNotFound() {		
+		RestAssured.given()
+			.accept(ContentType.JSON)
+		.when()
+			.get()
+		.then()
+			.body("nome", Matchers.hasItem("Brasileira"));
+	}
 }
