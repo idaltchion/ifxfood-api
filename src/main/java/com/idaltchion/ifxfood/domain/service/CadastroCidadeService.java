@@ -3,6 +3,7 @@ package com.idaltchion.ifxfood.domain.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.idaltchion.ifxfood.domain.exception.CidadeNaoEncontradaException;
 import com.idaltchion.ifxfood.domain.model.Cidade;
@@ -18,6 +19,7 @@ public class CadastroCidadeService {
 	@Autowired
 	private CadastroEstadoService cadastroEstadoService;
 	
+	@Transactional
 	public void remover(Long id) {
 		try {
 			cidadeRepository.deleteById(id);			
@@ -27,6 +29,7 @@ public class CadastroCidadeService {
 		}
 	}
 	
+	@Transactional
 	public Cidade salvar(Cidade cidade) {
 		Long estadoId = cidade.getEstado().getId();
 		Estado estado = cadastroEstadoService.buscar(estadoId);

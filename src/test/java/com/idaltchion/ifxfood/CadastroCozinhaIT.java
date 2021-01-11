@@ -18,11 +18,11 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.idaltchion.ifxfood.domain.exception.CozinhaNaoEncontradaException;
-import com.idaltchion.ifxfood.domain.exception.EntidadeEmUsoException;
 import com.idaltchion.ifxfood.domain.model.Cozinha;
 import com.idaltchion.ifxfood.domain.repository.CozinhaRepository;
 import com.idaltchion.ifxfood.domain.service.CadastroCozinhaService;
 import com.idaltchion.ifxfood.util.DatabaseCleaner;
+import com.idaltchion.ifxfood.util.ResourceUtils;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -32,6 +32,12 @@ import io.restassured.http.ContentType;
 @TestPropertySource(value = "/application-test.properties")
 public class CadastroCozinhaIT {
 
+	private static final int COZINHA_ID_NOT_EXIST = 999;
+	
+	private Cozinha cozinhaAmericana;
+	
+	private String jsonCozinhaArgentina;
+	
 	@LocalServerPort
 	private int port;
 	
@@ -46,6 +52,7 @@ public class CadastroCozinhaIT {
 	
 	@Before
 	public void setUpBeforeTests() {
+		jsonCozinhaArgentina = ResourceUtils.getContentFromResource("/json/cozinha-argentina.json");
 		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 		RestAssured.port = port;
 		RestAssured.basePath = "/cozinhas";
@@ -63,10 +70,11 @@ public class CadastroCozinhaIT {
 		Cozinha cozinha2 = new Cozinha();
 		cozinha2.setNome("Americana");
 		cozinhaRepository.save(cozinha2);
+		cozinhaAmericana = cozinha2;
 	}
 	
 	@Test
-	public void shoulPass_whenCozinhaAndIdIsNotNull() {
+	public void shouldPass_whenCozinhaAndIdIsNotNull() {
 		// 1.cenario
 		Cozinha novaCozinha = new Cozinha();
 		novaCozinha.setNome("Chinesa");
@@ -93,8 +101,8 @@ public class CadastroCozinhaIT {
 //	}
 	
 	@Test(expected = CozinhaNaoEncontradaException.class)
-	public void shoulFail_whenCozinhaThatNotExistIsRemoved() {
-		cozinhaService.excluir(99999L);
+	public void shouldFail_whenCozinhaThatNotExistIsRemoved() {
+		cozinhaService.excluir(Long.valueOf(COZINHA_ID_NOT_EXIST));
 	}
 	
 	@Test
@@ -121,22 +129,38 @@ public class CadastroCozinhaIT {
 	public void shouldReturnStatusCode200AndBodyCorrectly_whenCozinhaExists() {
 		RestAssured.given()
 			.accept(ContentType.JSON)
-			.pathParam("id", 2)
+			.pathParam("id", cozinhaAmericana.getId())
 		.when()
 			.get("/{id}")
 		.then()
 			.assertThat().statusCode(HttpStatus.OK.value())
-			.body("nome", equalTo("Americana"));
+			.body("nome", equalTo(cozinhaAmericana.getNome()));
 	}
 	
 	@Test
 	public void shouldReturnStatusCode404_whenCozinhaNotExists() {
 		RestAssured.given()
 			.accept(ContentType.JSON)
-			.pathParam("id", 100)
+			.pathParam("id", COZINHA_ID_NOT_EXIST)
 		.when()
 			.get("{id}")
 		.then()
 			.assertThat().statusCode(HttpStatus.NOT_FOUND.value());
 	}
+	
+	@Test
+	public void shouldReturnStatusCode201_whenNewCozinhaIsAdd() {
+		System.out.println(jsonCozinhaArgentina);
+		RestAssured.given()
+			.accept(ContentType.JSON)
+			.contentType(ContentType.JSON)
+			.body(jsonCozinhaArgentina)
+		.when()
+			.post()
+		.then()
+			.statusCode(HttpStatus.CREATED.value());
+	}
+	
+	
+	
 }
