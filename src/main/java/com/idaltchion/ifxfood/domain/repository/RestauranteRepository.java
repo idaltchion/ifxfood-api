@@ -16,6 +16,9 @@ public interface RestauranteRepository extends
 	RestauranteRepositoryCustomQueries,
 	JpaSpecificationExecutor<Restaurante> {
 	
+	@Query("from Restaurante r join r.cozinha left join fetch r.formasPagamento")
+	List<Restaurante> findAll();
+	
 	/* Utilizando a keyword "Between" do JPA para criar pesquisas de >= e <= */ 
 	List<Restaurante> findByTaxaFreteBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);
 	
