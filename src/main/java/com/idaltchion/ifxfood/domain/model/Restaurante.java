@@ -1,7 +1,6 @@
 package com.idaltchion.ifxfood.domain.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,16 +17,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
-import javax.validation.groups.ConvertGroup;
-import javax.validation.groups.Default;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import com.idaltchion.ifxfood.core.validation.Groups;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -42,14 +34,15 @@ public class Restaurante {
 	@EqualsAndHashCode.Include
 	private Long id;
 	
-//	o nullable se aplica somente ao BANCO DE DADOS no momento da criacao da tabela de forma automatica
-//	a anotacao @NotNull se aplica somente na validacao pela APLICACAO
-	@NotBlank
+	/*
+	 * o nullable se aplica somente ao BANCO DE DADOS no momento da criacao da tabela de forma automatica
+	 * a anotacao @NotNull se aplica somente na validacao pela APLICACAO
+	 * @NotBlank: e outras validacaoes das classes de dominio foram movidas para a classe de DTO de Entrada, que agora faz as validacoes
+	 * 
+	 */
 	@Column(nullable = false)
 	private String nome;
 	
-	@PositiveOrZero
-	@NotNull
 	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
 
@@ -61,8 +54,6 @@ public class Restaurante {
 	@JoinColumn(name = "cozinha_id", nullable = false)
 	@ManyToOne
 	@Valid
-	@NotNull
-	@ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
 	private Cozinha cozinha;
 
 	@ManyToMany

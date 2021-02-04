@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -29,9 +30,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.idaltchion.ifxfood.api.model.CozinhaDTO;
+import com.idaltchion.ifxfood.api.model.RestauranteDTO;
+import com.idaltchion.ifxfood.api.model.input.RestauranteDTOInput;
 import com.idaltchion.ifxfood.core.validation.ValidacaoException;
 import com.idaltchion.ifxfood.domain.exception.CozinhaNaoEncontradaException;
 import com.idaltchion.ifxfood.domain.exception.NegocioException;
+import com.idaltchion.ifxfood.domain.model.Cozinha;
 import com.idaltchion.ifxfood.domain.model.Restaurante;
 import com.idaltchion.ifxfood.domain.repository.RestauranteRepository;
 import com.idaltchion.ifxfood.domain.service.CadastroRestauranteService;
@@ -50,20 +55,22 @@ public class RestauranteController {
 	private SmartValidator validator;
 	
 	@GetMapping
-	public List<Restaurante> listar() {
-		return restauranteRepository.findAll();
+	public List<RestauranteDTO> listar() {
+		return toCollectionDTO(restauranteRepository.findAll());
 	}
-	
+
 	@GetMapping("/{id}")
-	public Restaurante buscar(@PathVariable Long id) {
-		return cadastroRestauranteService.buscar(id);
+	public RestauranteDTO buscar(@PathVariable Long id) {
+		Restaurante restaurante =  cadastroRestauranteService.buscar(id);
+		return toDTO(restaurante);
 	}
 	
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public Restaurante adicionar(@RequestBody @Valid Restaurante restaurante) {
+	public RestauranteDTO adicionar(@RequestBody @Valid RestauranteDTOInput restauranteInput) {
 		try {
-			return cadastroRestauranteService.salvar(restaurante);
+			Restaurante restaurante = toDomain(restauranteInput);
+			return toDTO(cadastroRestauranteService.salvar(restaurante));
 		}
 		catch(CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
@@ -71,12 +78,13 @@ public class RestauranteController {
 	}
 
 	@PutMapping("/{id}")
-	public Restaurante atualizar(@PathVariable Long id, @RequestBody @Valid Restaurante restaurante) {
+	public RestauranteDTO atualizar(@PathVariable Long id, @RequestBody @Valid RestauranteDTOInput restauranteInput) {
 		try {
+			Restaurante restaurante = toDomain(restauranteInput);
 			Restaurante restauranteAtual = cadastroRestauranteService.buscar(id);
 			BeanUtils.copyProperties(restaurante, restauranteAtual, 
 					"id", "formasPagmento", "endereco", "dataCadastro", "produtos");
-			return cadastroRestauranteService.salvar(restauranteAtual);
+			return toDTO(cadastroRestauranteService.salvar(restauranteAtual));
 		}
 		catch(CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
@@ -84,12 +92,14 @@ public class RestauranteController {
 	}
 	
 	@PatchMapping("/{id}")
-	public Restaurante atualizarParcial(@PathVariable Long id, @RequestBody Map<String, Object> campos, 
+	public RestauranteDTO atualizarParcial(@PathVariable Long id, @RequestBody Map<String, Object> campos, 
 			HttpServletRequest request) {
+		
 		Restaurante restauranteAtual = cadastroRestauranteService.buscar(id);		
 		merge(campos, restauranteAtual, request);
 		validate(restauranteAtual, "restaurante");
-		return atualizar(id, restauranteAtual);
+//		return atualizar(id, restauranteAtual); //removido temporariamente devido do DTO de Input
+		return null;
 	}
 
 	private void validate(Restaurante restaurante, String objectName) {
@@ -124,13 +134,52 @@ public class RestauranteController {
 	}
 	
 	@GetMapping("/com-frete-gratis")
-	public List<Restaurante> restauranteComFreteGratis(String nome) {
-		return restauranteRepository.findComFreteGratis(nome);
+	public List<RestauranteDTO> restauranteComFreteGratis(String nome) {
+		return toCollectionDTO(restauranteRepository.findComFreteGratis(nome));
 	}
 	
 	@GetMapping("/buscar-primeiro")
 	public Optional<Restaurante> buscarPrimeiro() {
 		return restauranteRepository.buscarPrimeiroRegistro();
+	}
+	
+	/*
+	 * efetua a conversao do objeto de Modelo de Dominio para objeto de Modelo de Representacao (DTO de Saida)
+	 */
+	private RestauranteDTO toDTO(Restaurante restaurante) {
+		CozinhaDTO cozinhaDTO = new CozinhaDTO();
+		cozinhaDTO.setId(restaurante.getCozinha().getId());
+		cozinhaDTO.setNome(restaurante.getCozinha().getNome());
+		
+		RestauranteDTO restauranteDTO = new RestauranteDTO();
+		restauranteDTO.setId(restaurante.getId());
+		restauranteDTO.setNome(restaurante.getNome());
+		restauranteDTO.setTaxaFrete(restaurante.getTaxaFrete());
+		restauranteDTO.setCozinha(cozinhaDTO);
+		
+		return restauranteDTO;
+	}
+	
+	/*
+	 * efetua a conversao do objeto de Modelo de Representacao (DTO de Entrada) para Modelo de Dominio
+	 */
+	private Restaurante toDomain(RestauranteDTOInput restauranteInput) {
+		Restaurante restaurante = new Restaurante();
+		restaurante.setNome(restauranteInput.getNome());
+		restaurante.setTaxaFrete(restauranteInput.getTaxaFrete());
+		
+		Cozinha cozinha = new Cozinha();
+		cozinha.setId(restauranteInput.getCozinha().getId());
+		
+		restaurante.setCozinha(cozinha);
+		
+		return restaurante;
+	}
+	
+	private List<RestauranteDTO> toCollectionDTO(List<Restaurante> restaurantes) {
+		return restaurantes.stream()
+				.map(restaurante -> toDTO(restaurante))
+				.collect(Collectors.toList());
 	}
 	
 }
