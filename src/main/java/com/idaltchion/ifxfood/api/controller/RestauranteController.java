@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -30,7 +29,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.idaltchion.ifxfood.api.model.CozinhaDTO;
+import com.idaltchion.ifxfood.api.assembler.RestauranteDTOAssembler;
+import com.idaltchion.ifxfood.api.assembler.RestauranteDTODisassembler;
 import com.idaltchion.ifxfood.api.model.RestauranteDTO;
 import com.idaltchion.ifxfood.api.model.input.RestauranteDTOInput;
 import com.idaltchion.ifxfood.core.validation.ValidacaoException;
@@ -54,23 +54,29 @@ public class RestauranteController {
 	@Autowired
 	private SmartValidator validator;
 	
+	@Autowired
+	private RestauranteDTOAssembler restauranteDTOAssembler;
+	
+	@Autowired
+	private RestauranteDTODisassembler restauranteDTODisassembler;
+	
 	@GetMapping
 	public List<RestauranteDTO> listar() {
-		return toCollectionDTO(restauranteRepository.findAll());
+		return restauranteDTOAssembler.toCollectionDTO(restauranteRepository.findAll());
 	}
 
 	@GetMapping("/{id}")
 	public RestauranteDTO buscar(@PathVariable Long id) {
 		Restaurante restaurante =  cadastroRestauranteService.buscar(id);
-		return toDTO(restaurante);
+		return restauranteDTOAssembler.toDTO(restaurante);
 	}
 	
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public RestauranteDTO adicionar(@RequestBody @Valid RestauranteDTOInput restauranteInput) {
 		try {
-			Restaurante restaurante = toDomain(restauranteInput);
-			return toDTO(cadastroRestauranteService.salvar(restaurante));
+			Restaurante restaurante = restauranteDTODisassembler.toDomain(restauranteInput);
+			return restauranteDTOAssembler.toDTO(cadastroRestauranteService.salvar(restaurante));
 		}
 		catch(CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
@@ -80,11 +86,11 @@ public class RestauranteController {
 	@PutMapping("/{id}")
 	public RestauranteDTO atualizar(@PathVariable Long id, @RequestBody @Valid RestauranteDTOInput restauranteInput) {
 		try {
-			Restaurante restaurante = toDomain(restauranteInput);
+			Restaurante restaurante = restauranteDTODisassembler.toDomain(restauranteInput);
 			Restaurante restauranteAtual = cadastroRestauranteService.buscar(id);
 			BeanUtils.copyProperties(restaurante, restauranteAtual, 
 					"id", "formasPagmento", "endereco", "dataCadastro", "produtos");
-			return toDTO(cadastroRestauranteService.salvar(restauranteAtual));
+			return restauranteDTOAssembler.toDTO(cadastroRestauranteService.salvar(restauranteAtual));
 		}
 		catch(CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
@@ -135,51 +141,12 @@ public class RestauranteController {
 	
 	@GetMapping("/com-frete-gratis")
 	public List<RestauranteDTO> restauranteComFreteGratis(String nome) {
-		return toCollectionDTO(restauranteRepository.findComFreteGratis(nome));
+		return restauranteDTOAssembler.toCollectionDTO(restauranteRepository.findComFreteGratis(nome));
 	}
 	
 	@GetMapping("/buscar-primeiro")
 	public Optional<Restaurante> buscarPrimeiro() {
 		return restauranteRepository.buscarPrimeiroRegistro();
-	}
-	
-	/*
-	 * efetua a conversao do objeto de Modelo de Dominio para objeto de Modelo de Representacao (DTO de Saida)
-	 */
-	private RestauranteDTO toDTO(Restaurante restaurante) {
-		CozinhaDTO cozinhaDTO = new CozinhaDTO();
-		cozinhaDTO.setId(restaurante.getCozinha().getId());
-		cozinhaDTO.setNome(restaurante.getCozinha().getNome());
-		
-		RestauranteDTO restauranteDTO = new RestauranteDTO();
-		restauranteDTO.setId(restaurante.getId());
-		restauranteDTO.setNome(restaurante.getNome());
-		restauranteDTO.setTaxaFrete(restaurante.getTaxaFrete());
-		restauranteDTO.setCozinha(cozinhaDTO);
-		
-		return restauranteDTO;
-	}
-	
-	/*
-	 * efetua a conversao do objeto de Modelo de Representacao (DTO de Entrada) para Modelo de Dominio
-	 */
-	private Restaurante toDomain(RestauranteDTOInput restauranteInput) {
-		Restaurante restaurante = new Restaurante();
-		restaurante.setNome(restauranteInput.getNome());
-		restaurante.setTaxaFrete(restauranteInput.getTaxaFrete());
-		
-		Cozinha cozinha = new Cozinha();
-		cozinha.setId(restauranteInput.getCozinha().getId());
-		
-		restaurante.setCozinha(cozinha);
-		
-		return restaurante;
-	}
-	
-	private List<RestauranteDTO> toCollectionDTO(List<Restaurante> restaurantes) {
-		return restaurantes.stream()
-				.map(restaurante -> toDTO(restaurante))
-				.collect(Collectors.toList());
 	}
 	
 }
