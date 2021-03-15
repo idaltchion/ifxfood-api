@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -36,7 +35,6 @@ import com.idaltchion.ifxfood.api.model.input.RestauranteDTOInput;
 import com.idaltchion.ifxfood.core.validation.ValidacaoException;
 import com.idaltchion.ifxfood.domain.exception.CozinhaNaoEncontradaException;
 import com.idaltchion.ifxfood.domain.exception.NegocioException;
-import com.idaltchion.ifxfood.domain.model.Cozinha;
 import com.idaltchion.ifxfood.domain.model.Restaurante;
 import com.idaltchion.ifxfood.domain.repository.RestauranteRepository;
 import com.idaltchion.ifxfood.domain.service.CadastroRestauranteService;
@@ -86,10 +84,8 @@ public class RestauranteController {
 	@PutMapping("/{id}")
 	public RestauranteDTO atualizar(@PathVariable Long id, @RequestBody @Valid RestauranteDTOInput restauranteInput) {
 		try {
-			Restaurante restaurante = restauranteDTODisassembler.toDomain(restauranteInput);
 			Restaurante restauranteAtual = cadastroRestauranteService.buscar(id);
-			BeanUtils.copyProperties(restaurante, restauranteAtual, 
-					"id", "formasPagmento", "endereco", "dataCadastro", "produtos");
+			restauranteDTODisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
 			return restauranteDTOAssembler.toDTO(cadastroRestauranteService.salvar(restauranteAtual));
 		}
 		catch(CozinhaNaoEncontradaException e) {

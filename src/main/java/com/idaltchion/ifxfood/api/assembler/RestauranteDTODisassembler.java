@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.idaltchion.ifxfood.api.model.input.RestauranteDTOInput;
+import com.idaltchion.ifxfood.domain.model.Cozinha;
 import com.idaltchion.ifxfood.domain.model.Restaurante;
 
 @Component
@@ -18,6 +19,15 @@ public class RestauranteDTODisassembler {
 	 */
 	public Restaurante toDomain(RestauranteDTOInput restauranteInput) {
 		return modelMapper.map(restauranteInput, Restaurante.class);
+	}
+	
+	public void copyToDomainObject(RestauranteDTOInput restauranteInput, Restaurante restaurante) {
+		/* 
+		 * Nova instância de cozinha adicionada para evitar a exception:
+		 * Caused by: org.hibernate.HibernateException: identifier of an instance of com.idaltchion.ifxfood.domain.model.Cozinha was altered from 3 to 1
+		 */
+		restaurante.setCozinha(new Cozinha());
+		modelMapper.map(restauranteInput, restaurante);
 	}
 	
 }
