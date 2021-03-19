@@ -28,6 +28,7 @@ public class CadastroEstadoService {
 	public void remover(Long codigo) {
 		try {
 			estadoRepository.deleteById(codigo);
+			estadoRepository.flush();
 		}
 		catch(EmptyResultDataAccessException e) {
 			throw new EstadoNaoEncontradoException(codigo);			

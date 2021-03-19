@@ -22,7 +22,8 @@ public class CadastroCidadeService {
 	@Transactional
 	public void remover(Long id) {
 		try {
-			cidadeRepository.deleteById(id);			
+			cidadeRepository.deleteById(id);
+			cidadeRepository.flush();
 		}
 		catch(EmptyResultDataAccessException e) {
 			throw new CidadeNaoEncontradaException(id);
