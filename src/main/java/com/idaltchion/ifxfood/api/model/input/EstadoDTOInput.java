@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CozinhaDTOInput {
+public class EstadoDTOInput {
 
 	@NotBlank
 	private String nome;

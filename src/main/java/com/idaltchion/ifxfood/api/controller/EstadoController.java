@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.idaltchion.ifxfood.api.assembler.EstadoDTOAssembler;
+import com.idaltchion.ifxfood.api.assembler.EstadoDTODisassembler;
+import com.idaltchion.ifxfood.api.model.EstadoDTO;
+import com.idaltchion.ifxfood.api.model.input.EstadoDTOInput;
 import com.idaltchion.ifxfood.domain.model.Estado;
 import com.idaltchion.ifxfood.domain.repository.EstadoRepository;
 import com.idaltchion.ifxfood.domain.service.CadastroEstadoService;
@@ -28,29 +31,36 @@ public class EstadoController {
 	private EstadoRepository estadoRepository;
 	
 	@Autowired
+	private EstadoDTOAssembler estadoAssembler;
+	
+	@Autowired
+	private EstadoDTODisassembler estadoDisassembler;
+	
+	@Autowired
 	private CadastroEstadoService cadastroEstadoService;
 	
 	@GetMapping
-	public List<Estado> listar() {
-		return estadoRepository.findAll();
+	public List<EstadoDTO> listar() {
+		return estadoAssembler.toCollectionDTO(estadoRepository.findAll());
 	}
 	
 	@GetMapping("/{codigo}")
-	public Estado buscar(@PathVariable Long codigo) {
-		return cadastroEstadoService.buscar(codigo);
+	public EstadoDTO buscar(@PathVariable Long codigo) {
+		return estadoAssembler.toDTO(cadastroEstadoService.buscar(codigo));
 	}
 	
 	@PutMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public Estado adicionar(@RequestBody @Valid Estado estado) {
-		return cadastroEstadoService.salvar(estado);
+	public EstadoDTO adicionar(@RequestBody @Valid EstadoDTOInput estadoInput) {
+		Estado estado = estadoDisassembler.toDomainObject(estadoInput);
+		return estadoAssembler.toDTO(cadastroEstadoService.salvar(estado));
 	}
 	
 	@PutMapping("/{codigo}")
-	public Estado atualizar(@PathVariable Long codigo, @RequestBody @Valid Estado estado) {
+	public EstadoDTO atualizar(@PathVariable Long codigo, @RequestBody @Valid EstadoDTOInput estadoInput) {
 		Estado estadoAtual = cadastroEstadoService.buscar(codigo);
-		BeanUtils.copyProperties(estado, estadoAtual, "id");
-		return cadastroEstadoService.salvar(estadoAtual);
+		estadoDisassembler.copyToDomainObject(estadoInput, estadoAtual);
+		return estadoAssembler.toDTO(cadastroEstadoService.salvar(estadoAtual));
 	}
 	
 	@DeleteMapping("/{codigo}")
