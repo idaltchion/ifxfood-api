@@ -12,5 +12,4 @@ public class FormaPagamentoNaoEncontradaException extends EntidadeNaoEncontradaE
 		this(String.format("Não existe forma de pagamento com codigo %d", id));
 	}
 	
-	
 }
