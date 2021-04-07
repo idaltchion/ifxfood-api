@@ -34,6 +34,7 @@ import com.idaltchion.ifxfood.api.assembler.RestauranteDTODisassembler;
 import com.idaltchion.ifxfood.api.model.RestauranteDTO;
 import com.idaltchion.ifxfood.api.model.input.RestauranteDTOInput;
 import com.idaltchion.ifxfood.core.validation.ValidacaoException;
+import com.idaltchion.ifxfood.domain.exception.CidadeNaoEncontradaException;
 import com.idaltchion.ifxfood.domain.exception.CozinhaNaoEncontradaException;
 import com.idaltchion.ifxfood.domain.exception.NegocioException;
 import com.idaltchion.ifxfood.domain.model.Restaurante;
@@ -89,7 +90,7 @@ public class RestauranteController {
 			restauranteDTODisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
 			return restauranteDTOAssembler.toDTO(cadastroRestauranteService.salvar(restauranteAtual));
 		}
-		catch(CozinhaNaoEncontradaException e) {
+		catch(CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
 	}

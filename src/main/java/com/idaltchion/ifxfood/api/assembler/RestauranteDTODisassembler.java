@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.idaltchion.ifxfood.api.model.input.RestauranteDTOInput;
+import com.idaltchion.ifxfood.domain.model.Cidade;
 import com.idaltchion.ifxfood.domain.model.Cozinha;
 import com.idaltchion.ifxfood.domain.model.Restaurante;
 
@@ -27,6 +28,8 @@ public class RestauranteDTODisassembler {
 		 * Caused by: org.hibernate.HibernateException: identifier of an instance of com.idaltchion.ifxfood.domain.model.Cozinha was altered from 3 to 1
 		 */
 		restaurante.setCozinha(new Cozinha());
+		restaurante.getEndereco().setCidade(new Cidade());
+		
 		modelMapper.map(restauranteInput, restaurante);
 	}
 	

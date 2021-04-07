@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.idaltchion.ifxfood.domain.exception.RestauranteNaoEncontradoException;
+import com.idaltchion.ifxfood.domain.model.Cidade;
 import com.idaltchion.ifxfood.domain.model.Cozinha;
 import com.idaltchion.ifxfood.domain.model.Restaurante;
 import com.idaltchion.ifxfood.domain.repository.RestauranteRepository;
@@ -18,11 +19,21 @@ public class CadastroRestauranteService {
 	@Autowired
 	private CadastroCozinhaService cadastroCozinhaService;
 	
+	@Autowired
+	private CadastroCidadeService cadastroCidadeService;
+	
 	@Transactional
 	public Restaurante salvar(Restaurante restaurante) {
 		Long cozinhaId = restaurante.getCozinha().getId();
+		Long cidadeId = restaurante.getEndereco().getCidade().getId();
+
 		Cozinha cozinha = cadastroCozinhaService.buscarOuFalhar(cozinhaId);
+		Cidade cidade = cadastroCidadeService.buscar(cidadeId);
+		
+		restaurante.getEndereco().setCidade(cidade);
+		
 		restaurante.setCozinha(cozinha);
+		
 		return restauranteRepository.save(restaurante);
 	}
 	
