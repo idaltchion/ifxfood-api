@@ -46,3 +46,5 @@ insert ignore into produto (id, nome, descricao, preco, ativo, restaurante_id) v
 insert ignore into produto (id, nome, descricao, preco, ativo, restaurante_id) values (9, 'Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 6);
 
 
+insert ignore into grupo (id, nome) values (1, 'Vendedores');
+insert ignore into grupo (id, nome) values (2, 'Entregadores');
