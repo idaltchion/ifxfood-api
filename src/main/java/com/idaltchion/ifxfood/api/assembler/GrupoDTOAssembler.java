@@ -16,7 +16,7 @@ public class GrupoDTOAssembler {
 	@Autowired
 	ModelMapper modelMapper;
 	
-	private GrupoDTO toDTO(Grupo grupo) {
+	public GrupoDTO toDTO(Grupo grupo) {
 		return modelMapper.map(grupo, GrupoDTO.class);
 	}
 	
