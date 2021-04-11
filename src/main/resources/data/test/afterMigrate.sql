@@ -48,3 +48,11 @@ insert ignore into produto (id, nome, descricao, preco, ativo, restaurante_id) v
 
 insert ignore into grupo (id, nome) values (1, 'Vendedores');
 insert ignore into grupo (id, nome) values (2, 'Entregadores');
+
+
+insert ignore into usuario (id, nome, email, senha, data_cadastro) values (1, "Joao Nabuco", "nabuco@ifxfood.com", "123", utc_timestamp);
+insert ignore into usuario (id, nome, email, senha, data_cadastro) values (2, "Maria Joaquina", "joaquina@ifxfood.com", "123", utc_timestamp);
+insert ignore into usuario (id, nome, email, senha, data_cadastro) values (3, "Scarlett Johansson", "scarlett@ifxfood.com", "123", utc_timestamp);
+insert ignore into usuario (id, nome, email, senha, data_cadastro) values (4, "Philip de Moraes", "philip@ifxfood.com", "123", utc_timestamp);
+
+
