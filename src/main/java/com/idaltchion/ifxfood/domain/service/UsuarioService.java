@@ -1,5 +1,7 @@
 package com.idaltchion.ifxfood.domain.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +24,14 @@ public class UsuarioService {
 
 	@Transactional
 	public Usuario salvar(Usuario usuario) {
-		return usuarioRepository.saveAndFlush(usuario);
+		/* Para evitar a exception abaixo ao atualizar (PUT) um objeto já gerenciado pelo JPA:
+		 * Caused by: javax.persistence.NonUniqueResultException: query did not return a unique result: 2 */
+		usuarioRepository.detach(usuario);
+		Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(usuario.getEmail());
+		if (usuarioExistente.isPresent() && !usuarioExistente.get().equals(usuario)) {
+			throw new NegocioException("Já existe e-mail cadastrado com o valor informado");
+		}
+		return usuarioRepository.save(usuario);
 	}
 	
 	@Transactional
