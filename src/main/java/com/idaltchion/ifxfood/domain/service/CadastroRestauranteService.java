@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.idaltchion.ifxfood.domain.exception.RestauranteNaoEncontradoException;
 import com.idaltchion.ifxfood.domain.model.Cidade;
 import com.idaltchion.ifxfood.domain.model.Cozinha;
+import com.idaltchion.ifxfood.domain.model.FormaPagamento;
 import com.idaltchion.ifxfood.domain.model.Restaurante;
 import com.idaltchion.ifxfood.domain.repository.RestauranteRepository;
 
@@ -52,6 +53,16 @@ public class CadastroRestauranteService {
 	public void inativar(Long id) {
 		Restaurante restauranteAtual = buscar(id);
 		restauranteAtual.inativar();
+	}
+
+	@Transactional
+	public void associar(Restaurante restaurante, FormaPagamento formaPagamento) {
+		restaurante.adicionarFormaPagamento(formaPagamento);
+	}
+
+	@Transactional
+	public void desassociar(Restaurante restaurante, FormaPagamento formaPagamento) {
+		restaurante.removerFormaPagamento(formaPagamento);
 	}
 	
 }

@@ -1,5 +1,6 @@
 package com.idaltchion.ifxfood.api.assembler;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,7 @@ public class FormaPagamentoDTOAssembler {
 		return modelMapper.map(formaPagamento, FormaPagamentoDTO.class);
 	}
 	
-	public List<FormaPagamentoDTO> toDTOCollection(List<FormaPagamento> formasPagamento) {
+	public List<FormaPagamentoDTO> toDTOCollection(Collection<FormaPagamento> formasPagamento) {
 		return formasPagamento.stream()
 				.map(formaPagamento -> toDTO(formaPagamento))
 				.collect(Collectors.toList());
