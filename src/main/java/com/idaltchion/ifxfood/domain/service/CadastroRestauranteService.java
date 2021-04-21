@@ -64,5 +64,17 @@ public class CadastroRestauranteService {
 	public void desassociar(Restaurante restaurante, FormaPagamento formaPagamento) {
 		restaurante.removerFormaPagamento(formaPagamento);
 	}
+
+	@Transactional
+	public void abrir(Long id) {
+		Restaurante restaurante = buscar(id);
+		restaurante.abrir();
+	}
+	
+	@Transactional
+	public void fechar(Long id) {
+		Restaurante restaurante = buscar(id);
+		restaurante.fechar();
+	}
 	
 }
