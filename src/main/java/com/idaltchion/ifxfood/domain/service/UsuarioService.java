@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.idaltchion.ifxfood.api.model.SenhaDTOInput;
 import com.idaltchion.ifxfood.domain.exception.NegocioException;
 import com.idaltchion.ifxfood.domain.exception.UsuarioNaoEncontradoException;
+import com.idaltchion.ifxfood.domain.model.Grupo;
 import com.idaltchion.ifxfood.domain.model.Usuario;
 import com.idaltchion.ifxfood.domain.repository.UsuarioRepository;
 
@@ -51,6 +52,16 @@ public class UsuarioService {
 		
 		String novaSenha = senhaInput.getNovaSenha();
 		usuario.setSenha(novaSenha);
+	}
+
+	@Transactional
+	public boolean associarGrupo(Usuario usuario, Grupo grupo) {
+		return usuario.adicionarGrupo(grupo);
+	}
+
+	@Transactional
+	public boolean desassociar(Usuario usuario, Grupo grupo) {
+		return usuario.removerGrupo(grupo);
 	}
 	
 }

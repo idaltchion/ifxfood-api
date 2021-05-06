@@ -65,4 +65,5 @@ insert ignore into usuario (id, nome, email, senha, data_cadastro) values (2, "M
 insert ignore into usuario (id, nome, email, senha, data_cadastro) values (3, "Scarlett Johansson", "scarlett@ifxfood.com", "123", utc_timestamp);
 insert ignore into usuario (id, nome, email, senha, data_cadastro) values (4, "Philip de Moraes", "philip@ifxfood.com", "123", utc_timestamp);
 
+insert ignore into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 5), (3, 2), (3, 5), (3, 7);
 
