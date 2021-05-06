@@ -49,6 +49,16 @@ insert ignore into produto (id, nome, descricao, preco, ativo, restaurante_id) v
 insert ignore into grupo (id, nome) values (1, 'Vendedores');
 insert ignore into grupo (id, nome) values (2, 'Entregadores');
 
+insert ignore into permissao (id, nome, descricao) values (1, 'EDITAR_COZINHA', 'Permite editar cozinhas existentes');
+insert ignore into permissao (id, nome, descricao) values (2, 'CONSULTAR_COZINHA', 'Permite consultar cozinhas existentes');
+insert ignore into permissao (id, nome, descricao) values (3, 'EXCLUIR_COZINHAS', 'Permite excluir cozinhas existentes');
+
+insert ignore into grupo_permissao (grupo_id, permissao_id) values (1, 1);
+insert ignore into grupo_permissao (grupo_id, permissao_id) values (1, 3);
+insert ignore into grupo_permissao (grupo_id, permissao_id) values (2, 2);
+insert ignore into grupo_permissao (grupo_id, permissao_id) values (7, 2);
+
+
 
 insert ignore into usuario (id, nome, email, senha, data_cadastro) values (1, "Joao Nabuco", "nabuco@ifxfood.com", "123", utc_timestamp);
 insert ignore into usuario (id, nome, email, senha, data_cadastro) values (2, "Maria Joaquina", "joaquina@ifxfood.com", "123", utc_timestamp);

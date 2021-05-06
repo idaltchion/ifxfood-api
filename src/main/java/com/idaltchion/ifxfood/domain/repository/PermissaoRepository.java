@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.idaltchion.ifxfood.domain.model.Permissao;
 
 @Repository
-public interface PermissaoRespository extends JpaRepository<Permissao, Long> {
+public interface PermissaoRepository extends JpaRepository<Permissao, Long> {
 	
 }
