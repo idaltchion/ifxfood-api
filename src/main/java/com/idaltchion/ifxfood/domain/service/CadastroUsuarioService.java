@@ -14,7 +14,7 @@ import com.idaltchion.ifxfood.domain.model.Usuario;
 import com.idaltchion.ifxfood.domain.repository.UsuarioRepository;
 
 @Service
-public class UsuarioService {
+public class CadastroUsuarioService {
 
 	@Autowired
 	UsuarioRepository usuarioRepository;

@@ -9,6 +9,7 @@ import com.idaltchion.ifxfood.domain.model.Cidade;
 import com.idaltchion.ifxfood.domain.model.Cozinha;
 import com.idaltchion.ifxfood.domain.model.FormaPagamento;
 import com.idaltchion.ifxfood.domain.model.Restaurante;
+import com.idaltchion.ifxfood.domain.model.Usuario;
 import com.idaltchion.ifxfood.domain.repository.RestauranteRepository;
 
 @Service
@@ -75,6 +76,16 @@ public class CadastroRestauranteService {
 	public void fechar(Long id) {
 		Restaurante restaurante = buscar(id);
 		restaurante.fechar();
+	}
+
+	@Transactional
+	public boolean associarResponsavel(Restaurante restaurante, Usuario usuario) {
+		return restaurante.adicionarResponsavel(usuario);
+	}
+
+	@Transactional
+	public boolean desassociarResponsavel(Restaurante restaurante, Usuario usuario) {
+		return restaurante.removerResponsavel(usuario);
 	}
 	
 }

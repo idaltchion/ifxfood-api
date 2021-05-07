@@ -24,7 +24,7 @@ import com.idaltchion.ifxfood.api.model.input.UsuarioComSenhaDTOInput;
 import com.idaltchion.ifxfood.api.model.input.UsuarioDTOInput;
 import com.idaltchion.ifxfood.domain.model.Usuario;
 import com.idaltchion.ifxfood.domain.repository.UsuarioRepository;
-import com.idaltchion.ifxfood.domain.service.UsuarioService;
+import com.idaltchion.ifxfood.domain.service.CadastroUsuarioService;
 
 @RestController
 @RequestMapping(path = "/usuarios")
@@ -40,7 +40,7 @@ public class UsuarioController {
 	UsuarioDTODisassembler usuarioDTODisassembler;
 	
 	@Autowired
-	UsuarioService usuarioService;
+	CadastroUsuarioService usuarioService;
 	
 	@GetMapping
 	public List<UsuarioDTO> listar() {

@@ -1,5 +1,6 @@
 package com.idaltchion.ifxfood.api.assembler;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,7 @@ public class UsuarioDTOAssembler {
 		return modelMapper.map(usuario, UsuarioDTO.class);
 	}
 
-	public List<UsuarioDTO> toDTOCollection(List<Usuario> usuarios) {
+	public List<UsuarioDTO> toDTOCollection(Collection<Usuario> usuarios) {
 		return usuarios.stream()
 				.map(usuario -> toDTO(usuario))
 				.collect(Collectors.toList());

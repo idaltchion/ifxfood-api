@@ -17,14 +17,14 @@ import com.idaltchion.ifxfood.api.model.GrupoDTO;
 import com.idaltchion.ifxfood.domain.model.Grupo;
 import com.idaltchion.ifxfood.domain.model.Usuario;
 import com.idaltchion.ifxfood.domain.service.CadastroGrupoService;
-import com.idaltchion.ifxfood.domain.service.UsuarioService;
+import com.idaltchion.ifxfood.domain.service.CadastroUsuarioService;
 
 @RestController
 @RequestMapping("/usuarios/{usuario_id}/grupos")
 public class UsuarioGrupoController {
 
 	@Autowired
-	UsuarioService usuarioService;
+	CadastroUsuarioService usuarioService;
 	
 	@Autowired
 	CadastroGrupoService grupoService;
