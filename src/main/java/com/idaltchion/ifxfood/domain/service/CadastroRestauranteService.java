@@ -1,9 +1,12 @@
 package com.idaltchion.ifxfood.domain.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.idaltchion.ifxfood.domain.exception.NegocioException;
 import com.idaltchion.ifxfood.domain.exception.RestauranteNaoEncontradoException;
 import com.idaltchion.ifxfood.domain.model.Cidade;
 import com.idaltchion.ifxfood.domain.model.Cozinha;
@@ -51,9 +54,29 @@ public class CadastroRestauranteService {
 	}
 	
 	@Transactional
+	public void ativarMultiplos(List<Long> restauranteIds) {
+		try {
+			restauranteIds.forEach(this::ativar);
+		}
+		catch(RestauranteNaoEncontradoException e) {
+			throw new NegocioException(e.getMessage());
+		}
+	}
+	
+	@Transactional
 	public void inativar(Long id) {
 		Restaurante restauranteAtual = buscar(id);
 		restauranteAtual.inativar();
+	}
+	
+	@Transactional
+	public void inativarMultiplos(List<Long> restauranteIds) {
+		try {
+			restauranteIds.forEach(this::inativar);
+		}
+		catch(RestauranteNaoEncontradoException e) {
+			throw new NegocioException(e.getMessage());
+		}
 	}
 
 	@Transactional
@@ -87,5 +110,5 @@ public class CadastroRestauranteService {
 	public boolean desassociarResponsavel(Restaurante restaurante, Usuario usuario) {
 		return restaurante.removerResponsavel(usuario);
 	}
-	
+
 }

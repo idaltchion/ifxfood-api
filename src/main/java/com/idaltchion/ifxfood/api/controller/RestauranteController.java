@@ -153,10 +153,22 @@ public class RestauranteController {
 		cadastroRestauranteService.ativar(id);
 	}
 	
+	@PutMapping("/ativacoes")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void ativarMultiplos(@RequestBody List<Long> restauranteIds) {
+		cadastroRestauranteService.ativarMultiplos(restauranteIds);
+	}
+	
 	@DeleteMapping("/{id}/ativo")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void inativar(@PathVariable Long id) {
 		cadastroRestauranteService.inativar(id);
+	}
+	
+	@DeleteMapping("/ativacoes")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void inativarMultiplos(@RequestBody List<Long> restauranteIds) {
+		cadastroRestauranteService.inativarMultiplos(restauranteIds);
 	}
 	
 	@PutMapping("/{id}/abertura")
