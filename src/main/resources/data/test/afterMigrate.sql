@@ -67,3 +67,28 @@ insert ignore into usuario (id, nome, email, senha, data_cadastro) values (4, "P
 
 insert ignore into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 5), (3, 2), (3, 5), (3, 7);
 
+
+
+insert ignore into pedido (
+	id, subtotal, taxa_frete, valor_total, status, 
+	data_criacao, data_confirmacao, data_cancelamento, data_entrega, 
+	endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade_id, 
+	restaurante_id, usuario_cliente_id, forma_pagamento_id) 
+	values (
+	1, 374.5, 25.5, 400, 'CRIADO',
+	utc_timestamp, utc_timestamp, utc_timestamp, utc_timestamp,
+	'22625-081', 'Rua das Araras', '57', 'em frente ao posto de saúde', 'Bairro da Saude', 1, 
+	1, 1, 1); 	 
+
+
+
+insert ignore into item_pedido (id, quantidade, preco_unitario, preco_total, observacao, pedido_id, produto_id) 
+	values (1, 2, 25.9, 51.8, 'sem molho', 1, 8);
+	
+insert ignore into item_pedido (id, quantidade, preco_unitario, preco_total, observacao, pedido_id, produto_id) 
+	values (2, 1, 110.0, 110.0, 'sem observacao', 1, 1);
+
+
+
+
+ 
