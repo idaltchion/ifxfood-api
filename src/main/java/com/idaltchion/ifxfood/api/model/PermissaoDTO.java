@@ -1,4 +1,4 @@
-package com.idaltchion.ifxfood.domain.model;
+package com.idaltchion.ifxfood.api.model;
 
 import lombok.Getter;
 import lombok.Setter;

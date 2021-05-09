@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.idaltchion.ifxfood.api.assembler.PedidoDTOAssembler;
+import com.idaltchion.ifxfood.api.assembler.PedidoResumoDTOAssembler;
 import com.idaltchion.ifxfood.api.model.PedidoDTO;
+import com.idaltchion.ifxfood.api.model.PedidoResumoDTO;
 import com.idaltchion.ifxfood.domain.service.CadastroPedidoService;
 
 @RestController
@@ -22,9 +24,12 @@ public class PedidoController {
 	@Autowired
 	PedidoDTOAssembler pedidoDTOAssembler;
 	
+	@Autowired
+	PedidoResumoDTOAssembler pedidoResumoDTOAssembler;
+	
 	@GetMapping
-	public List<PedidoDTO> listar() {
-		return pedidoDTOAssembler.toCollectionDTO(pedidoService.listar());
+	public List<PedidoResumoDTO> listar() {
+		return pedidoResumoDTOAssembler.toCollectionDTO(pedidoService.listar());
 	}
 	
 	@GetMapping("/{pedido_id}")

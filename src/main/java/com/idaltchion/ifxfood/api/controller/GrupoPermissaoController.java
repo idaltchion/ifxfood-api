@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.idaltchion.ifxfood.api.assembler.PermissaoDTOAssembler;
+import com.idaltchion.ifxfood.api.model.PermissaoDTO;
 import com.idaltchion.ifxfood.domain.model.Grupo;
 import com.idaltchion.ifxfood.domain.model.Permissao;
-import com.idaltchion.ifxfood.domain.model.PermissaoDTO;
 import com.idaltchion.ifxfood.domain.service.CadastroGrupoService;
 import com.idaltchion.ifxfood.domain.service.CadastroPermissaoService;
 

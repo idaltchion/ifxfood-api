@@ -8,8 +8,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.idaltchion.ifxfood.api.model.PermissaoDTO;
 import com.idaltchion.ifxfood.domain.model.Permissao;
-import com.idaltchion.ifxfood.domain.model.PermissaoDTO;
 
 @Component
 public class PermissaoDTOAssembler {
