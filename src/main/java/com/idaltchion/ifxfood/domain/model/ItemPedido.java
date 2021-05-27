@@ -37,4 +37,8 @@ public class ItemPedido {
 	@JoinColumn(nullable = false)
 	private Pedido pedido;
 	
+	public void calcularPrecoTotal() {
+		setPrecoTotal(getPrecoUnitario().multiply(BigDecimal.valueOf(getQuantidade())));
+	}
+	
 }

@@ -5,6 +5,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -55,14 +56,27 @@ public class Pedido {
 	private Restaurante restaurante;
 	
 	@Enumerated(EnumType.STRING)
-	private StatusPedido status;
+	private StatusPedido status = StatusPedido.CRIADO;
 	
 	@ManyToOne
 	@JoinColumn(nullable = false, name = "usuario_cliente_id")
 	private Usuario cliente;
 	
 	
-	@OneToMany(mappedBy = "pedido")
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
 	private List<ItemPedido> itens = new ArrayList<>();
+
+	public void calcularValorTotal() {
+		//1. calcula o preco total de cada item existente
+		getItens().forEach(ItemPedido::calcularPrecoTotal);
+		
+		//2. faz o somatorio dos itens conforme seu preco total
+		setSubtotal(getItens().stream()
+				.map(ItemPedido::getPrecoTotal)
+				.reduce(BigDecimal.ZERO, BigDecimal::add));
+		
+		//3. calcula o subtotal com a taxa frete
+		setValorTotal(getSubtotal().add(getTaxaFrete()));
+	}
 	
 }
