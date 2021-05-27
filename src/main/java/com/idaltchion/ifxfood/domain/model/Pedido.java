@@ -20,6 +20,8 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.idaltchion.ifxfood.domain.exception.NegocioException;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -77,6 +79,30 @@ public class Pedido {
 		
 		//3. calcula o subtotal com a taxa frete
 		setValorTotal(getSubtotal().add(getTaxaFrete()));
+	}
+
+	private void setStatus(StatusPedido novoStatus) {
+		StatusPedido statusAtual = getStatus();
+		if (statusAtual.naoPodeAlterarPara(novoStatus)) {
+			throw new NegocioException(String.format("Status do pedido %d não pode ser alterado de '%s' para '%s'", 
+					getId(), statusAtual.getDescricao(), novoStatus.getDescricao()));
+		}
+		this.status = novoStatus;
+	}
+	
+	public void confirmar() {
+		setStatus(StatusPedido.CONFIRMADO);
+		setDataConfirmacao(OffsetDateTime.now());
+	}
+
+	public void entregar() {
+		setStatus(StatusPedido.ENTREGUE);
+		setDataEntrega(OffsetDateTime.now());
+	}
+
+	public void cancelar() {
+		setStatus(StatusPedido.CANCELADO);
+		setDataCancelamento(OffsetDateTime.now());
 	}
 	
 }
