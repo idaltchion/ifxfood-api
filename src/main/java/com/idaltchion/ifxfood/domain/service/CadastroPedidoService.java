@@ -42,9 +42,9 @@ public class CadastroPedidoService {
 		return pedidoRepository.findAll();
 	}
 
-	public Pedido buscar(Long id) {
-		return pedidoRepository.findById(id).orElseThrow(
-				() -> new PedidoNaoEncontradoException(id));
+	public Pedido buscar(String codigo_pedido) {
+		return pedidoRepository.findByCodigo(codigo_pedido).orElseThrow(
+				() -> new PedidoNaoEncontradoException(codigo_pedido));
 	}
 
 	@Transactional

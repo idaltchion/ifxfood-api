@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
@@ -17,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -34,6 +36,8 @@ public class Pedido {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
 	private Long id;
+	
+	private String codigo;
 	
 	private BigDecimal subtotal;
 	private BigDecimal taxaFrete;
@@ -84,8 +88,8 @@ public class Pedido {
 	private void setStatus(StatusPedido novoStatus) {
 		StatusPedido statusAtual = getStatus();
 		if (statusAtual.naoPodeAlterarPara(novoStatus)) {
-			throw new NegocioException(String.format("Status do pedido %d não pode ser alterado de '%s' para '%s'", 
-					getId(), statusAtual.getDescricao(), novoStatus.getDescricao()));
+			throw new NegocioException(String.format("Status do pedido '%s' não pode ser alterado de '%s' para '%s'", 
+					getCodigo(), statusAtual.getDescricao(), novoStatus.getDescricao()));
 		}
 		this.status = novoStatus;
 	}
@@ -103,6 +107,11 @@ public class Pedido {
 	public void cancelar() {
 		setStatus(StatusPedido.CANCELADO);
 		setDataCancelamento(OffsetDateTime.now());
+	}
+	
+	@PrePersist
+	private void gerarCodigoPedido() {
+		setCodigo(UUID.randomUUID().toString());
 	}
 	
 }

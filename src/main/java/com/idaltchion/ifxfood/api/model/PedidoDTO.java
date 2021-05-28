@@ -13,7 +13,8 @@ import lombok.Setter;
 @Setter
 public class PedidoDTO {
 
-	private Long id;
+	private String codigo;
+	private StatusPedido status;
 	private BigDecimal subtotal;
 	private BigDecimal taxaFrete;
 	private BigDecimal valorTotal;
@@ -24,7 +25,6 @@ public class PedidoDTO {
 	private FormaPagamentoDTO formaPagamento;
 	private EnderecoDTO enderecoEntrega;
 	private RestauranteResumoDTO restaurante;
-	private StatusPedido status;
 	private UsuarioDTO cliente;
 	private List<ItemPedidoDTO> itens;
 	

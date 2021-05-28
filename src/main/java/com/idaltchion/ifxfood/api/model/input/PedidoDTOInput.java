@@ -30,10 +30,4 @@ public class PedidoDTOInput {
 	@Valid
 	private EnderecoDTOInput enderecoEntrega;
 	
-	//	private StatusPedido status;
-	//private BigDecimal subtotal;
-	//private BigDecimal taxaFrete;
-	//private BigDecimal valorTotal;
-	//private OffsetDateTime dataCriacao;
-	
 }

@@ -12,13 +12,13 @@ import lombok.Setter;
 @Setter
 public class PedidoResumoDTO {
 
-	private Long id;
+	private String codigo;
+	private StatusPedido status;
 	private BigDecimal subtotal;
 	private BigDecimal taxaFrete;
 	private BigDecimal valorTotal;
 	private OffsetDateTime dataCriacao;
 	private RestauranteResumoDTO restaurante;
-	private StatusPedido status;
 	private UsuarioDTO cliente;
 	
 }

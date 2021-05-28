@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.idaltchion.ifxfood.domain.service.FluxoPedidoService;
 
 @RestController
-@RequestMapping("/pedidos/{pedido_id}")
+@RequestMapping("/pedidos/{codigo_pedido}")
 public class FluxoPedidoController {
 
 	@Autowired
@@ -19,20 +19,20 @@ public class FluxoPedidoController {
 	
 	@PutMapping("/confirmacao")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void confirmacao(@PathVariable Long pedido_id) {
-		fluxoPedidoService.confirmacao(pedido_id);
+	public void confirmacao(@PathVariable String codigo_pedido) {
+		fluxoPedidoService.confirmacao(codigo_pedido);
 	}
 	
 	@PutMapping("/entrega")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void entrega(@PathVariable Long pedido_id) {
-		fluxoPedidoService.entrega(pedido_id);
+	public void entrega(@PathVariable String codigo_pedido) {
+		fluxoPedidoService.entrega(codigo_pedido);
 	}
 	
 	@PutMapping("/cancelamento")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void cancelamento(@PathVariable Long pedido_id) {
-		fluxoPedidoService.cancelamento(pedido_id);
+	public void cancelamento(@PathVariable String codigo_pedido) {
+		fluxoPedidoService.cancelamento(codigo_pedido);
 	}
 	
 }
