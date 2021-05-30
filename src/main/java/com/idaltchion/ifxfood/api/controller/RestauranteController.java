@@ -27,12 +27,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.idaltchion.ifxfood.api.assembler.RestauranteDTOAssembler;
 import com.idaltchion.ifxfood.api.assembler.RestauranteDTODisassembler;
 import com.idaltchion.ifxfood.api.model.RestauranteDTO;
 import com.idaltchion.ifxfood.api.model.input.RestauranteDTOInput;
+import com.idaltchion.ifxfood.api.model.view.RestauranteView;
 import com.idaltchion.ifxfood.core.validation.ValidacaoException;
 import com.idaltchion.ifxfood.domain.exception.CidadeNaoEncontradaException;
 import com.idaltchion.ifxfood.domain.exception.CozinhaNaoEncontradaException;
@@ -61,8 +63,15 @@ public class RestauranteController {
 	private RestauranteDTODisassembler restauranteDTODisassembler;
 	
 	@GetMapping
+	@JsonView(RestauranteView.Resumo.class)
 	public List<RestauranteDTO> listar() {
 		return restauranteDTOAssembler.toCollectionDTO(restauranteRepository.findAll());
+	}
+	
+	@GetMapping(params = "projecao=apenas-nome")
+	@JsonView(RestauranteView.ApenasNome.class)
+	public List<RestauranteDTO> listarApenasNomes() {
+		return listar();
 	}
 
 	@GetMapping("/{id}")
