@@ -20,6 +20,7 @@ import com.idaltchion.ifxfood.api.assembler.PedidoResumoDTOAssembler;
 import com.idaltchion.ifxfood.api.model.PedidoDTO;
 import com.idaltchion.ifxfood.api.model.PedidoResumoDTO;
 import com.idaltchion.ifxfood.api.model.input.PedidoDTOInput;
+import com.idaltchion.ifxfood.api.model.input.filter.PedidoFilter;
 import com.idaltchion.ifxfood.domain.model.Pedido;
 import com.idaltchion.ifxfood.domain.model.Usuario;
 import com.idaltchion.ifxfood.domain.service.CadastroPedidoService;
@@ -41,8 +42,9 @@ public class PedidoController {
 	PedidoResumoDTOAssembler pedidoResumoDTOAssembler;
 	
 	@GetMapping
-	public List<PedidoResumoDTO> listar() {
-		return pedidoResumoDTOAssembler.toCollectionDTO(pedidoService.listar());
+	public List<PedidoResumoDTO> pesquisar(PedidoFilter filtro) {
+		List<Pedido> pedidos = pedidoService.listar(filtro);
+		return pedidoResumoDTOAssembler.toCollectionDTO(pedidos);
 	}
 	
 	@GetMapping("/{codigo_pedido}")

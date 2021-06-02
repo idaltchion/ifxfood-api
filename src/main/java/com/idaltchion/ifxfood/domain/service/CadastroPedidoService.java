@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.idaltchion.ifxfood.api.model.input.filter.PedidoFilter;
 import com.idaltchion.ifxfood.domain.exception.NegocioException;
 import com.idaltchion.ifxfood.domain.exception.PedidoNaoEncontradoException;
 import com.idaltchion.ifxfood.domain.model.Cidade;
@@ -16,6 +17,7 @@ import com.idaltchion.ifxfood.domain.model.Produto;
 import com.idaltchion.ifxfood.domain.model.Restaurante;
 import com.idaltchion.ifxfood.domain.model.Usuario;
 import com.idaltchion.ifxfood.domain.repository.PedidoRepository;
+import com.idaltchion.ifxfood.infrastructure.repository.spec.PedidoSpecs;
 
 @Service
 public class CadastroPedidoService {
@@ -38,8 +40,8 @@ public class CadastroPedidoService {
 	@Autowired
 	CadastroUsuarioService usuarioService;
 	
-	public List<Pedido> listar() {
-		return pedidoRepository.findAll();
+	public List<Pedido> listar(PedidoFilter filtro) {
+		return pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro));
 	}
 
 	public Pedido buscar(String codigo_pedido) {

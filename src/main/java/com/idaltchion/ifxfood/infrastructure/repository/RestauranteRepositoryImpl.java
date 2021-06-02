@@ -24,7 +24,6 @@ import org.springframework.util.StringUtils;
 import com.idaltchion.ifxfood.domain.model.Restaurante;
 import com.idaltchion.ifxfood.domain.repository.RestauranteRepository;
 import com.idaltchion.ifxfood.domain.repository.RestauranteRepositoryCustomQueries;
-import com.idaltchion.ifxfood.infrastructure.repository.spec.RestauranteSpecs;
 
 /*
  * Classe criada para possibilitar consultas SQL mais dinamicas
