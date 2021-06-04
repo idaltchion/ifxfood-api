@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.common.collect.ImmutableMap;
 import com.idaltchion.ifxfood.api.assembler.PedidoDTOAssembler;
 import com.idaltchion.ifxfood.api.assembler.PedidoDTODisassembler;
 import com.idaltchion.ifxfood.api.assembler.PedidoResumoDTOAssembler;
@@ -25,6 +26,7 @@ import com.idaltchion.ifxfood.api.model.PedidoDTO;
 import com.idaltchion.ifxfood.api.model.PedidoResumoDTO;
 import com.idaltchion.ifxfood.api.model.input.PedidoDTOInput;
 import com.idaltchion.ifxfood.api.model.input.filter.PedidoFilter;
+import com.idaltchion.ifxfood.core.data.PageableTranslator;
 import com.idaltchion.ifxfood.domain.model.Pedido;
 import com.idaltchion.ifxfood.domain.model.Usuario;
 import com.idaltchion.ifxfood.domain.service.CadastroPedidoService;
@@ -46,7 +48,8 @@ public class PedidoController {
 	PedidoResumoDTOAssembler pedidoResumoDTOAssembler;
 	
 	@GetMapping
-	public Page<PedidoResumoDTO> pesquisar(PedidoFilter filtro, @PageableDefault(size = 3) Pageable pageable) {
+	public Page<PedidoResumoDTO> pesquisar(PedidoFilter filtro, @PageableDefault(size = 5) Pageable pageable) {
+		pageable = traduzirPageable(pageable);
 		Page<Pedido> pedidosPage = pedidoService.listar(filtro, pageable);
 		List<PedidoResumoDTO> pedidosDTO = pedidoResumoDTOAssembler.toCollectionDTO(pedidosPage.getContent());
 		Page<PedidoResumoDTO> pedidosDTOPage = new PageImpl<>(pedidosDTO, pageable, pedidosPage.getTotalElements());
@@ -70,4 +73,18 @@ public class PedidoController {
 		return pedidoDTOAssembler.toDTO(novoPedido);
 	}
 
+	/* metodo que faz uma tradução das propriedades passadas pelo sort DA paginacao
+	 * PARA os atributos existentes na classe de dominio (Pedido).
+	 * Os atributos aqui mencionados, também são os permitidos a realizar ordenação. */
+	private Pageable traduzirPageable(Pageable apiPageable) {
+		var mapeamento = ImmutableMap.of(
+					"codigo", "codigo",
+					"status", "status",
+					"dataCriacao", "dataCriacao",
+					"restaurante.nome", "restaurante.nome",
+					"cliente.nome", "cliente.nome"					
+				);
+		return PageableTranslator.translate(apiPageable, mapeamento);
+	}
+	
 }
