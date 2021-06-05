@@ -109,7 +109,7 @@ insert into pedido (
 	restaurante_id, usuario_cliente_id, forma_pagamento_id) 
 	values (
 	1, '8b9e7c80-46d1-4a35-b520-196c56823b22', 374.5, 25.5, 400, 'CRIADO',
-	utc_timestamp, utc_timestamp, utc_timestamp, utc_timestamp,
+	'2021-06-04 00:01:36', utc_timestamp, utc_timestamp, utc_timestamp,
 	'22625-081', 'Rua das Araras', '57', 'em frente ao posto de saúde', 'Bairro da Saude', 1, 
 	1, 1, 1);
 
@@ -127,7 +127,7 @@ insert into pedido (
 	restaurante_id, usuario_cliente_id, forma_pagamento_id) 
 	values (
 	2, 'f9b40634-016f-44c1-aa22-ecc22729f6ca', 30, 7, 37, 'ENTREGUE',
-	utc_timestamp, utc_timestamp, utc_timestamp, utc_timestamp,
+	'2021-06-02 01:31:21', '2021-06-02 01:45:31', null, '2021-06-02 02:11:27',
 	'80654-050', 'Av. Rui Barbosa', '22', 'em frente a floricultura', 'Afonso Pena', 2, 
 	3, 4, 2);
 
@@ -138,5 +138,51 @@ insert into item_pedido (id, quantidade, preco_unitario, preco_total, observacao
 	values (4, 3, 60, 118, 'molho separado', 2, 2);
 
 
+insert into pedido (
+	id, codigo, subtotal, taxa_frete, valor_total, status, 
+	data_criacao, data_confirmacao, data_cancelamento, data_entrega, 
+	endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade_id, 
+	restaurante_id, usuario_cliente_id, forma_pagamento_id) 
+	values (
+	4, uuid(), 30, 7, 37, 'CANCELADO',
+	'2021-05-14 13:41:31', null, '2021-05-14 14:11:10', null,
+	'45567-150', 'Rua Bambino', '100', null, 'Portao Alegre', 4, 
+	6, 3, 1);
 
- 
+insert into item_pedido (id, quantidade, preco_unitario, preco_total, observacao, pedido_id, produto_id) 
+	values (5, 1, 35, 35, '', 4, 9);
+	
+insert into item_pedido (id, quantidade, preco_unitario, preco_total, observacao, pedido_id, produto_id) 
+	values (6, 3, 60, 118, 'molho separado', 4, 2);
+	
+	
+insert into pedido (
+	id, codigo, subtotal, taxa_frete, valor_total, status, 
+	data_criacao, data_confirmacao, data_cancelamento, data_entrega, 
+	endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade_id, 
+	restaurante_id, usuario_cliente_id, forma_pagamento_id) 
+	values (
+	6, uuid(), 30, 7, 37, 'CONFIRMADO',
+	'2021-05-27 15:23:12', '2021-05-27 15:36:52', null, null,
+	'80654-050', 'Av. Rui Barbosa', '22', 'em frente a floricultura', 'Afonso Pena', 2, 
+	2, 4, 2);
+
+insert into item_pedido (id, quantidade, preco_unitario, preco_total, observacao, pedido_id, produto_id) 
+	values (7, 2, 15, 30, '', 6, 5);
+	
+	
+insert into pedido (
+	id, codigo, subtotal, taxa_frete, valor_total, status, 
+	data_criacao, data_confirmacao, data_cancelamento, data_entrega, 
+	endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade_id, 
+	restaurante_id, usuario_cliente_id, forma_pagamento_id) 
+	values (
+	8, uuid(), 30, 7, 37, 'CANCELADO',
+	'2021-05-29 17:32:18', null, '2021-05-29 18:22:59', null,
+	'80654-050', 'Av. Rui Barbosa', '22', 'em frente a floricultura', 'Afonso Pena', 2, 
+	4, 4, 2);
+	
+insert into item_pedido (id, quantidade, preco_unitario, preco_total, observacao, pedido_id, produto_id) 
+	values (8, 3, 60, 118, 'molho separado', 8, 6);
+
+

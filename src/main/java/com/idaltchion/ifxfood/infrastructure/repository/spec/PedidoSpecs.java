@@ -6,7 +6,7 @@ import javax.persistence.criteria.Predicate;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import com.idaltchion.ifxfood.api.model.input.filter.PedidoFilter;
+import com.idaltchion.ifxfood.domain.filter.PedidoFilter;
 import com.idaltchion.ifxfood.domain.model.Pedido;
 
 public class PedidoSpecs {

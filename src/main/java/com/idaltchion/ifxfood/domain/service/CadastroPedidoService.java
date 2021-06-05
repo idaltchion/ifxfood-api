@@ -8,9 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.idaltchion.ifxfood.api.model.input.filter.PedidoFilter;
 import com.idaltchion.ifxfood.domain.exception.NegocioException;
 import com.idaltchion.ifxfood.domain.exception.PedidoNaoEncontradoException;
+import com.idaltchion.ifxfood.domain.filter.PedidoFilter;
 import com.idaltchion.ifxfood.domain.model.Cidade;
 import com.idaltchion.ifxfood.domain.model.FormaPagamento;
 import com.idaltchion.ifxfood.domain.model.ItemPedido;

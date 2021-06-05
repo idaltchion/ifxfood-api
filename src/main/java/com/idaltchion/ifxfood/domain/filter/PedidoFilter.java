@@ -1,4 +1,4 @@
-package com.idaltchion.ifxfood.api.model.input.filter;
+package com.idaltchion.ifxfood.domain.filter;
 
 import java.time.OffsetDateTime;
 
