@@ -127,7 +127,7 @@ insert into pedido (
 	restaurante_id, usuario_cliente_id, forma_pagamento_id) 
 	values (
 	2, 'f9b40634-016f-44c1-aa22-ecc22729f6ca', 30, 7, 37, 'ENTREGUE',
-	'2021-06-02 01:31:21', '2021-06-02 01:45:31', null, '2021-06-02 02:11:27',
+	'2021-06-03 01:31:21', '2021-06-03 01:45:31', null, '2021-06-03 02:11:27',
 	'80654-050', 'Av. Rui Barbosa', '22', 'em frente a floricultura', 'Afonso Pena', 2, 
 	3, 4, 2);
 
@@ -144,8 +144,8 @@ insert into pedido (
 	endereco_cep, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade_id, 
 	restaurante_id, usuario_cliente_id, forma_pagamento_id) 
 	values (
-	4, uuid(), 30, 7, 37, 'CANCELADO',
-	'2021-05-14 13:41:31', null, '2021-05-14 14:11:10', null,
+	4, uuid(), 30, 7, 37, 'CONFIRMADO',
+	'2021-06-02 23:31:21', '2021-06-02 23:47:11', null, '2021-06-02 23:59:21',
 	'45567-150', 'Rua Bambino', '100', null, 'Portao Alegre', 4, 
 	6, 3, 1);
 
