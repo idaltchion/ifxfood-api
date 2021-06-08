@@ -1,4 +1,4 @@
-package com.idaltchion.ifxfood.infrastructure.service;
+package com.idaltchion.ifxfood.infrastructure.service.query;
 
 import java.util.ArrayList;
 import java.util.Date;
