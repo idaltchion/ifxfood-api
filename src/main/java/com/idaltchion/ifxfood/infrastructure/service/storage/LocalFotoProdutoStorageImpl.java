@@ -4,17 +4,18 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
+import com.idaltchion.ifxfood.core.storage.StorageProperties;
 import com.idaltchion.ifxfood.domain.service.FotoProdutoStorageService;
 
 @Service
 public class LocalFotoProdutoStorageImpl implements FotoProdutoStorageService {
 
-	@Value("${ifxfood.local.storage.foto-produto}")
-	private Path diretorioFoto;
+	@Autowired
+	private StorageProperties storageProperties;
 	
 	@Override
 	public void armazenar(NovaFoto novaFoto) {		
@@ -47,7 +48,7 @@ public class LocalFotoProdutoStorageImpl implements FotoProdutoStorageService {
 	}
 	
 	private Path getArquivoPath(String arquivo) {
-		return diretorioFoto.resolve(Path.of(arquivo));
+		return storageProperties.getLocal().getFolder().resolve(Path.of(arquivo));
 	}
 
 
