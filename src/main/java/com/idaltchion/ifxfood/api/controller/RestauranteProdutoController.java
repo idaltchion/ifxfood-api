@@ -1,13 +1,13 @@
 package com.idaltchion.ifxfood.api.controller;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +41,7 @@ import com.idaltchion.ifxfood.domain.service.CadastroProdutoService;
 import com.idaltchion.ifxfood.domain.service.CadastroRestauranteService;
 import com.idaltchion.ifxfood.domain.service.CatalogoFotoProdutoService;
 import com.idaltchion.ifxfood.domain.service.FotoProdutoStorageService;
+import com.idaltchion.ifxfood.domain.service.FotoProdutoStorageService.FotoRecuperada;
 
 @RestController
 @RequestMapping("/restaurantes/{restauranteId}/produtos")
@@ -143,23 +144,36 @@ public class RestauranteProdutoController {
 	}
 	
 	@GetMapping(path = "/{produtoId}/foto")
-	public ResponseEntity<InputStreamResource> servirFoto(
+	public ResponseEntity<?> servirFoto(
 			@PathVariable Long restauranteId, 
 			@PathVariable Long produtoId,
 			@RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
 		try {
 			FotoProduto foto = fotoProdutoService.buscar(restauranteId, produtoId);
-			InputStream inputStream = fotoStorageService.recuperar(foto.getNomeArquivo());
+			FotoRecuperada fotoRecuperada = fotoStorageService.recuperar(foto.getNomeArquivo());
 			
 			MediaType mediaTypeFoto = MediaType.parseMediaType(foto.getContentType());
 			List<MediaType> mediaTypesAceitas = MediaType.parseMediaTypes(acceptHeader);
 			
 			verificarCompatibilidadeMediaType(mediaTypeFoto, mediaTypesAceitas);
 			
-			return ResponseEntity
-					.ok()
-					.contentType(mediaTypeFoto)
-					.body(new InputStreamResource(inputStream));
+			/* 
+			 * disponibiliza o arquivo para o consumidor, caso o serviço de foto esteja definindo em disco local
+			 */
+			if (fotoRecuperada.hasInputStream()) {
+				return ResponseEntity
+						.ok()
+						.contentType(mediaTypeFoto)
+						.body(new InputStreamResource(fotoRecuperada.getInputStream()));				
+			} else {
+				/* 
+				 * disponibiliza a url para o consumidor, caso o serviço de foto esteja definindo na Amazon S3
+				 */
+				return ResponseEntity
+						.status(HttpStatus.FOUND)
+						.header(HttpHeaders.LOCATION, fotoRecuperada.getUrl())
+						.build();
+			}
 		}
 		catch (EntidadeNaoEncontradaException e){
 			return ResponseEntity.notFound().build();
