@@ -94,10 +94,10 @@ insert into grupo_permissao (grupo_id, permissao_id) values (3, 2);
 
 
 
-insert into usuario (id, nome, email, senha, data_cadastro) values (1, "Joao Nabuco", "nabuco@ifxfood.com", "123", utc_timestamp);
-insert into usuario (id, nome, email, senha, data_cadastro) values (2, "Maria Joaquina", "joaquina@ifxfood.com", "123", utc_timestamp);
-insert into usuario (id, nome, email, senha, data_cadastro) values (3, "Scarlett Johansson", "scarlett@ifxfood.com", "123", utc_timestamp);
-insert into usuario (id, nome, email, senha, data_cadastro) values (4, "Philip de Moraes", "philip@ifxfood.com", "123", utc_timestamp);
+insert into usuario (id, nome, email, senha, data_cadastro) values (1, "Joao Nabuco", "idaltchion+joao@gmail.com", "123", utc_timestamp);
+insert into usuario (id, nome, email, senha, data_cadastro) values (2, "Maria Joaquina", "idaltchion+maria@gmail.com", "123", utc_timestamp);
+insert into usuario (id, nome, email, senha, data_cadastro) values (3, "Scarlett Johansson", "idaltchion+scarlett@gmail.com", "123", utc_timestamp);
+insert into usuario (id, nome, email, senha, data_cadastro) values (4, "Philip de Moraes", "idaltchion+philip@gmail.com", "123", utc_timestamp);
 
 insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 1), (3, 2), (3, 3), (3, 1);
 
