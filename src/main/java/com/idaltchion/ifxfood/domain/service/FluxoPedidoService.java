@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.idaltchion.ifxfood.domain.model.Pedido;
-import com.idaltchion.ifxfood.domain.service.EnvioEmailService.Mensagem;
+import com.idaltchion.ifxfood.domain.repository.PedidoRepository;
 
 @Service
 public class FluxoPedidoService {
@@ -14,21 +14,13 @@ public class FluxoPedidoService {
 	CadastroPedidoService pedidoService;
 	
 	@Autowired
-	private EnvioEmailService envioEmail;
+	private PedidoRepository pedidoRepository;
 	
 	@Transactional
 	public void confirmacao(String codigo_pedido) {
 		Pedido pedido = pedidoService.buscar(codigo_pedido);
 		pedido.confirmar();
-		
-		var mensagem = Mensagem.builder()
-				.assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
-				.corpo("pedido-confirmado.html")
-				.variavel("pedido", pedido)
-				.destinatario(pedido.getCliente().getEmail())
-				.build();
-		
-		envioEmail.enviar(mensagem );
+		pedidoRepository.save(pedido);
 	}
 
 	@Transactional
