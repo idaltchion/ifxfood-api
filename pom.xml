@@ -21,6 +21,8 @@
 		<jasperreport.version>6.13.0</jasperreport.version>
 		<aws-java-sdk-s3.version>1.12.17</aws-java-sdk-s3.version>
 		<freemarker.version>2.3.31</freemarker.version>
+		<springfox.version>3.0.0</springfox.version>
+		<spring-plugin.version>2.0.0.RELEASE</spring-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -84,8 +86,7 @@
 			<version>2.3.0</version>
 		</dependency>
 
-		<!-- Utilizado para possibilitar realizar filtros de maneira flexivel baseado 
-			no Jackson -->
+		<!-- Utilizado para possibilitar realizar filtros de maneira flexivel baseado no Jackson -->
 		<dependency>
 			<groupId>com.github.bohnman</groupId>
 			<artifactId>squiggly-filter-jackson</artifactId>
@@ -130,6 +131,20 @@
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
 			<version>${freemarker.version}</version>
+		</dependency>
+
+		<!-- Utilizado para gerar a definição da API conforme na especificacao OpenAPI -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-boot-starter</artifactId>
+			<version>${springfox.version}</version>
+		</dependency>
+		
+		<!-- dependência do springfox v3 quando utiliza spring boot <= 2.1 -->
+		<dependency>
+			<groupId>org.springframework.plugin</groupId>
+			<artifactId>spring-plugin-core</artifactId>
+			<version>${spring-plugin.version}</version>
 		</dependency>
 
 	</dependencies>
