@@ -23,6 +23,9 @@ import com.idaltchion.ifxfood.domain.model.Estado;
 import com.idaltchion.ifxfood.domain.repository.EstadoRepository;
 import com.idaltchion.ifxfood.domain.service.CadastroEstadoService;
 
+import io.swagger.annotations.Api;
+
+@Api(tags = "Estado")
 @RestController
 @RequestMapping("/estados")
 public class EstadoController {

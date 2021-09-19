@@ -16,6 +16,9 @@ import com.idaltchion.ifxfood.domain.model.VendaDiaria;
 import com.idaltchion.ifxfood.domain.service.VendaQueryService;
 import com.idaltchion.ifxfood.domain.service.VendaReportService;
 
+import io.swagger.annotations.Api;
+
+@Api(tags = "Estatistica")
 @RestController
 @RequestMapping(path = "/estatisticas")
 public class EstatisticasController {
