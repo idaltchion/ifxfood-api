@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 import org.apache.http.HttpStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.fasterxml.classmate.TypeResolver;
 import com.idaltchion.ifxfood.api.exceptionhandler.Problem;
+import com.idaltchion.ifxfood.core.openapi.model.PageableModelOpenAPI;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RepresentationBuilder;
@@ -51,6 +53,7 @@ public class SpringfoxConfig implements WebMvcConfigurer {
 			.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
 			.globalResponses(HttpMethod.PUT, globalPutResponseMessages())
 			.additionalModels(typeResolver.resolve(Problem.class))
+			.directModelSubstitute(Pageable.class, PageableModelOpenAPI.class)
 			.apiInfo(apiInfo())
 			.tags(tags()[0], tags());
 	}
