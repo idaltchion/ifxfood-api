@@ -1,4 +1,4 @@
-package com.idaltchion.ifxfood.core.openapi.model;
+package com.idaltchion.ifxfood.api.openapi.model;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class PageableModelOpenAPI {
 	@ApiModelProperty(value = "Número de elementos a serem exibidos em uma página", example = "10")
 	private int size;
 	
-	@ApiModelProperty(value = "Número da página (pagina inicial: page=0)", example = "0")
+	@ApiModelProperty(value = "Número da página (primeira página = 0)", example = "0")
 	private int page;
 	
 	@ApiModelProperty(value = "Atributos a serem ordenados seguido do tipo da ordenação (asc: ascendente (default), desc: descendente", example = "nome,desc")

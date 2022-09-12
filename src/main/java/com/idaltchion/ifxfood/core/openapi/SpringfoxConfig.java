@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 import org.apache.http.HttpStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -15,12 +16,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.fasterxml.classmate.TypeResolver;
 import com.idaltchion.ifxfood.api.exceptionhandler.Problem;
-import com.idaltchion.ifxfood.core.openapi.model.PageableModelOpenAPI;
+import com.idaltchion.ifxfood.api.model.PedidoResumoDTO;
+import com.idaltchion.ifxfood.api.openapi.model.PageOpenApi;
+import com.idaltchion.ifxfood.api.openapi.model.PageableModelOpenAPI;
+import com.idaltchion.ifxfood.api.openapi.model.PedidoResumoDTOOpenAPI;
+import com.idaltchion.ifxfood.domain.filter.PedidoFilter;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RepresentationBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseBuilder;
+import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.Response;
@@ -38,7 +44,7 @@ public class SpringfoxConfig implements WebMvcConfigurer {
 		registry.addResourceHandler("index.html")
 			.addResourceLocations("classpath:META-INF/resources/webjars/springfox-swagger-ui/**");
 	}
-	
+		
 	@Bean
 	public Docket apiDocket() {
 		var typeResolver = new TypeResolver();
@@ -52,7 +58,12 @@ public class SpringfoxConfig implements WebMvcConfigurer {
 			.globalResponses(HttpMethod.POST, globalPostResponseMessages())
 			.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
 			.globalResponses(HttpMethod.PUT, globalPutResponseMessages())
-			.additionalModels(typeResolver.resolve(Problem.class))
+			.additionalModels(
+					typeResolver.resolve(Problem.class), 
+					typeResolver.resolve(PedidoFilter.class),
+					typeResolver.resolve(PageOpenApi.class))
+			.alternateTypeRules(AlternateTypeRules.newRule(
+					typeResolver.resolve(Page.class, PedidoResumoDTO.class), PedidoResumoDTOOpenAPI.class))
 			.directModelSubstitute(Pageable.class, PageableModelOpenAPI.class)
 			.apiInfo(apiInfo())
 			.tags(tags()[0], tags());
@@ -146,11 +157,10 @@ public class SpringfoxConfig implements WebMvcConfigurer {
 			new Tag("Cozinha", "Gerenciamento de Cozinhas"),
 			new Tag("Estado", "Gerenciamento de Estados"),
 			new Tag("Estatistica", "Consultas estatísticas"),
-			new Tag("Fluxo Pedido", "Altera status do pedido"),
 			new Tag("Forma de Pagamento", "Gerenciamento de Formas de Pagamento"),
 			new Tag("Grupo", "Gerenciamento de Grupos"),
 			new Tag("Grupo Permissao", "Gerenciamento das Permissões de Grupos"),
-			new Tag("Pedido", "Pesquisa e Emissão de Pedidos"),
+			new Tag("Pedido", "Gerenciamento de Pedidos"),
 			new Tag("Restaurante", "Gerenciamento de Restaurantes")
 		};
 	}

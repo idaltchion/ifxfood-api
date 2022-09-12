@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,14 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.idaltchion.ifxfood.api.assembler.FormaPagamentoDTOAssembler;
 import com.idaltchion.ifxfood.api.model.FormaPagamentoDTO;
+import com.idaltchion.ifxfood.api.openapi.controller.RestauranteFormaPagamentoControllerOpenAPI;
 import com.idaltchion.ifxfood.domain.model.FormaPagamento;
 import com.idaltchion.ifxfood.domain.model.Restaurante;
 import com.idaltchion.ifxfood.domain.service.CadastroFormaPagamentoService;
 import com.idaltchion.ifxfood.domain.service.CadastroRestauranteService;
 
 @RestController
-@RequestMapping("/restaurantes/{restauranteId}/formas-pagamento")
-public class RestauranteFormaPagamentoController {
+@RequestMapping(path = "/restaurantes/{restauranteId}/formas-pagamento", produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestauranteFormaPagamentoController implements RestauranteFormaPagamentoControllerOpenAPI {
 
 	@Autowired
 	CadastroRestauranteService restauranteService;

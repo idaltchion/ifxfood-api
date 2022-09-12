@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,12 +24,13 @@ import com.idaltchion.ifxfood.api.assembler.FormaPagamentoDTOAssembler;
 import com.idaltchion.ifxfood.api.assembler.FormaPagamentoDTODisassembler;
 import com.idaltchion.ifxfood.api.model.FormaPagamentoDTO;
 import com.idaltchion.ifxfood.api.model.input.FormaPagamentoDTOInput;
+import com.idaltchion.ifxfood.api.openapi.controller.FormaPagamentoControllerOpenAPI;
 import com.idaltchion.ifxfood.domain.model.FormaPagamento;
 import com.idaltchion.ifxfood.domain.service.CadastroFormaPagamentoService;
 
 @RestController
 @RequestMapping("/formas-pagamento")
-public class FormaPagamentoController {
+public class FormaPagamentoController implements FormaPagamentoControllerOpenAPI {
 
 	@Autowired
 	private CadastroFormaPagamentoService cadastroFormaPagamentoService;
@@ -39,7 +41,7 @@ public class FormaPagamentoController {
 	@Autowired
 	private FormaPagamentoDTODisassembler formaPagamentoDTODisassembler;
 	
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<FormaPagamentoDTO>> listar() {
 		List<FormaPagamentoDTO> formasPagamento = formaPagamentoDTOAssembler.toDTOCollection(cadastroFormaPagamentoService.listar());
 		
@@ -49,7 +51,7 @@ public class FormaPagamentoController {
 				.body(formasPagamento);
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<FormaPagamentoDTO> buscar(@PathVariable Long id) {
 		FormaPagamento formaPagamento = cadastroFormaPagamentoService.buscar(id);
 		FormaPagamentoDTO formaPagamentoDTO = formaPagamentoDTOAssembler.toDTO(formaPagamento);
@@ -59,7 +61,7 @@ public class FormaPagamentoController {
 				.body(formaPagamentoDTO);
 	}
 	
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public FormaPagamentoDTO adicionar(@RequestBody @Valid FormaPagamentoDTOInput formaPagamentoInput) {
 		FormaPagamento formaPagamento = formaPagamentoDTODisassembler.toModelObject(formaPagamentoInput);
@@ -72,7 +74,7 @@ public class FormaPagamentoController {
 		cadastroFormaPagamentoService.remover(id);
 	}
 	
-	@PutMapping("/{id}")
+	@PutMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public FormaPagamentoDTO atualizar(@PathVariable Long id, @RequestBody @Valid FormaPagamentoDTOInput formaPagamentoInput) {
 		FormaPagamento formaPagamentoAtual = cadastroFormaPagamentoService.buscar(id);
 		formaPagamentoDTODisassembler.copyToDomainObject(formaPagamentoInput, formaPagamentoAtual);

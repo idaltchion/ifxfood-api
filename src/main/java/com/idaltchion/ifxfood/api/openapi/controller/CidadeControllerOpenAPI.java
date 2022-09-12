@@ -1,10 +1,10 @@
-package com.idaltchion.ifxfood.api.controller.openapi;
+package com.idaltchion.ifxfood.api.openapi.controller;
 
 import java.util.List;
 
 import com.idaltchion.ifxfood.api.exceptionhandler.Problem;
-import com.idaltchion.ifxfood.api.model.GrupoDTO;
-import com.idaltchion.ifxfood.api.model.input.GrupoDTOInput;
+import com.idaltchion.ifxfood.api.model.CidadeDTO;
+import com.idaltchion.ifxfood.api.model.input.CidadeDTOInput;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,41 +14,42 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-@Api(tags = "Grupo")
-public interface GrupoControllerOpenAPI {	
+@Api(tags = "Cidade")
+public interface CidadeControllerOpenAPI {
 	
-	@ApiOperation("Lista todos os grupos cadastrados")
-	public List<GrupoDTO> listar();
+	@ApiOperation("Lista todas as cidades cadastradas")
+	List<CidadeDTO> listar();
 	
-	@ApiOperation("Busca um grupo pelo id")
 	@ApiResponses({
 		@ApiResponse(responseCode = "400", description = "Resource id is invalid", content = @Content(schema = @Schema(implementation = Problem.class))),
 		@ApiResponse(responseCode = "404", description = "Resource not found", content = @Content(schema = @Schema(implementation = Problem.class)))
 	})
-	public GrupoDTO buscar(
-			@ApiParam(value = "Codigo do grupo", example = "5")
+	@ApiOperation("Busca uma cidade pelo id")
+	CidadeDTO buscar(
+			@ApiParam(value = "Codigo da cidade", example = "9")
 			Long id);
 	
-	@ApiOperation("Cadastra um novo grupo")
-	public GrupoDTO adicionar(GrupoDTOInput grupoInput);
-	
-	@ApiOperation("Remove um grupo pelo id")
 	@ApiResponses({
+		@ApiResponse(responseCode = "204", description = "Resource deleted"),
 		@ApiResponse(responseCode = "400", description = "Resource id is invalid", content = @Content(schema = @Schema(implementation = Problem.class))),
 		@ApiResponse(responseCode = "404", description = "Resource not found", content = @Content(schema = @Schema(implementation = Problem.class)))
 	})
-	public void remover(
-			@ApiParam(value = "Codigo do grupo", example = "5")
+	@ApiOperation("Remove uma cidade pelo id")
+	void remover(
+			@ApiParam(value = "Codigo da cidade")
 			Long id);
 	
-	@ApiOperation("Atualiza um grupo pelo id")
+	@ApiOperation("Cadastra uma nova cidade")
+	CidadeDTO adicionar(CidadeDTOInput cidadeDTOInput);
+	
 	@ApiResponses({
 		@ApiResponse(responseCode = "400", description = "Resource id is invalid", content = @Content(schema = @Schema(implementation = Problem.class))),
 		@ApiResponse(responseCode = "404", description = "Resource not found", content = @Content(schema = @Schema(implementation = Problem.class)))
 	})
-	public GrupoDTO atualizar(
-			@ApiParam(value = "Codigo do grupo", example = "5")
+	@ApiOperation("Atualiza uma cidade pelo id")
+	CidadeDTO atualizar(
+			@ApiParam(value = "Codigo da cidade")
 			Long id, 
-			GrupoDTOInput grupoInput);
-	
+			CidadeDTOInput cidadeDTOInput);
+
 }

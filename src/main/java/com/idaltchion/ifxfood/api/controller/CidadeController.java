@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.idaltchion.ifxfood.api.assembler.CidadeDTOAssember;
 import com.idaltchion.ifxfood.api.assembler.CidadeDTODisassembler;
-import com.idaltchion.ifxfood.api.controller.openapi.CidadeControllerOpenAPI;
 import com.idaltchion.ifxfood.api.model.CidadeDTO;
 import com.idaltchion.ifxfood.api.model.input.CidadeDTOInput;
+import com.idaltchion.ifxfood.api.openapi.controller.CidadeControllerOpenAPI;
 import com.idaltchion.ifxfood.domain.exception.EstadoNaoEncontradoException;
 import com.idaltchion.ifxfood.domain.exception.NegocioException;
 import com.idaltchion.ifxfood.domain.model.Cidade;

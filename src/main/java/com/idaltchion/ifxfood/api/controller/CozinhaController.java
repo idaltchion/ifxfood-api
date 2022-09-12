@@ -25,20 +25,18 @@ import com.idaltchion.ifxfood.api.assembler.CozinhaDTOAssembler;
 import com.idaltchion.ifxfood.api.assembler.CozinhaDTODisassembler;
 import com.idaltchion.ifxfood.api.model.CozinhaDTO;
 import com.idaltchion.ifxfood.api.model.input.CozinhaDTOInput;
+import com.idaltchion.ifxfood.api.openapi.controller.CozinhaControllerOpenAPI;
 import com.idaltchion.ifxfood.domain.model.Cozinha;
 import com.idaltchion.ifxfood.domain.repository.CozinhaRepository;
 import com.idaltchion.ifxfood.domain.service.CadastroCozinhaService;
-
-import io.swagger.annotations.Api;
 
 /*
  * produces: suporta no Accept (header) tanto application/json quanto application/xml, o default, mesmo sem especificar, é JSON
  * entretanto, deve adicionar no pom.xml a dependencia jackson-dataformat
  */
-@Api(tags = "Cozinha")
 @RestController
 @RequestMapping(value = "/cozinhas", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-public class CozinhaController {
+public class CozinhaController implements CozinhaControllerOpenAPI {
 
 	@Autowired
 	private CozinhaRepository cozinhaRepository;

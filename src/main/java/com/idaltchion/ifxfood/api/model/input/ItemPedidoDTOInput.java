@@ -2,6 +2,7 @@ package com.idaltchion.ifxfood.api.model.input;
 
 import javax.validation.constraints.NotNull;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,14 +10,15 @@ import lombok.Setter;
 @Setter
 public class ItemPedidoDTOInput {
 
+	@ApiModelProperty(example = "9", required = true)
 	@NotNull
 	private Long produtoId;
 	
+	@ApiModelProperty(example = "3", required = true)
 	@NotNull
 	private Integer quantidade;
-//	private BigDecimal precoUnitario;
-//	private BigDecimal precoTotal;
+	
+	@ApiModelProperty(example = "sem molho de pimenta")
 	private String observacao;
-//	private Produto produto;
 	
 }

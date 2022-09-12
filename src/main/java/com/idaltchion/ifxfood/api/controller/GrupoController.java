@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.idaltchion.ifxfood.api.assembler.GrupoDTOAssembler;
 import com.idaltchion.ifxfood.api.assembler.GrupoDTODisassembler;
-import com.idaltchion.ifxfood.api.controller.openapi.GrupoControllerOpenAPI;
 import com.idaltchion.ifxfood.api.model.GrupoDTO;
 import com.idaltchion.ifxfood.api.model.input.GrupoDTOInput;
+import com.idaltchion.ifxfood.api.openapi.controller.GrupoControllerOpenAPI;
 import com.idaltchion.ifxfood.domain.model.Grupo;
 import com.idaltchion.ifxfood.domain.repository.GrupoRepository;
 import com.idaltchion.ifxfood.domain.service.CadastroGrupoService;
@@ -53,6 +53,7 @@ public class GrupoController implements GrupoControllerOpenAPI {
 	}
 	
 	@PostMapping
+	@ResponseStatus(code = HttpStatus.CREATED)
 	public GrupoDTO adicionar(@RequestBody @Valid GrupoDTOInput grupoInput) {
 		Grupo novoGrupo = grupoDTODisassembler.toDomainObject(grupoInput);
 		return grupoDTOAssembler.toDTO(grupoService.salvar(novoGrupo));

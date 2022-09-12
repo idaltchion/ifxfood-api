@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
@@ -35,6 +36,7 @@ import com.idaltchion.ifxfood.api.assembler.RestauranteDTODisassembler;
 import com.idaltchion.ifxfood.api.model.RestauranteDTO;
 import com.idaltchion.ifxfood.api.model.input.RestauranteDTOInput;
 import com.idaltchion.ifxfood.api.model.view.RestauranteView;
+import com.idaltchion.ifxfood.api.openapi.controller.RestauranteControllerOpenAPI;
 import com.idaltchion.ifxfood.core.validation.ValidacaoException;
 import com.idaltchion.ifxfood.domain.exception.CidadeNaoEncontradaException;
 import com.idaltchion.ifxfood.domain.exception.CozinhaNaoEncontradaException;
@@ -44,8 +46,8 @@ import com.idaltchion.ifxfood.domain.repository.RestauranteRepository;
 import com.idaltchion.ifxfood.domain.service.CadastroRestauranteService;
 
 @RestController
-@RequestMapping("/restaurantes")
-public class RestauranteController {
+@RequestMapping(path = "/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestauranteController implements RestauranteControllerOpenAPI {
 
 	@Autowired
 	private RestauranteRepository restauranteRepository;
@@ -114,37 +116,6 @@ public class RestauranteController {
 //		return atualizar(id, restauranteAtual); //removido temporariamente devido do DTO de Input
 		return null;
 	}
-
-	private void validate(Restaurante restaurante, String objectName) {
-		BeanPropertyBindingResult bindingresult = new BeanPropertyBindingResult(restaurante, objectName);
-		validator.validate(restaurante, bindingresult);
-		if (bindingresult.hasErrors()) {
-			throw new ValidacaoException(bindingresult);
-		}
-	}
-
-	/* Reflections - maneira de inspecionar objetos para que possamos fazer alguma manipulacao no mesmo em tempo de execucao */
-	private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
-		ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
-		try {
-			//Converte os tipos dos campos em dadosOrigem para os tipos existentes na classe Restaurante
-			ObjectMapper objectMapper = new ObjectMapper();
-			objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
-			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
-			Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
-			dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
-				// Procura na classe Restaurante um atributo que possui um nome que vem da variavel 'nomePropriedade'
-				Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
-				//Permite acessar os atributos que estão como privados da classe Restaurante
-				field.setAccessible(true);
-				Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
-				ReflectionUtils.setField(field, restauranteDestino, novoValor);
-			});
-		} catch(IllegalArgumentException e) {
-			Throwable rootCause = ExceptionUtils.getRootCause(e);
-			throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
-		}
-	}
 	
 	@GetMapping("/com-frete-gratis")
 	public List<RestauranteDTO> restauranteComFreteGratis(String nome) {
@@ -190,6 +161,37 @@ public class RestauranteController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void fechar(@PathVariable Long id) {
 		cadastroRestauranteService.fechar(id);
+	}
+	
+	private void validate(Restaurante restaurante, String objectName) {
+		BeanPropertyBindingResult bindingresult = new BeanPropertyBindingResult(restaurante, objectName);
+		validator.validate(restaurante, bindingresult);
+		if (bindingresult.hasErrors()) {
+			throw new ValidacaoException(bindingresult);
+		}
+	}
+
+	/* Reflections - maneira de inspecionar objetos para que possamos fazer alguma manipulacao no mesmo em tempo de execucao */
+	private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
+		ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
+		try {
+			//Converte os tipos dos campos em dadosOrigem para os tipos existentes na classe Restaurante
+			ObjectMapper objectMapper = new ObjectMapper();
+			objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
+			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+			Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
+			dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
+				// Procura na classe Restaurante um atributo que possui um nome que vem da variavel 'nomePropriedade'
+				Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
+				//Permite acessar os atributos que estão como privados da classe Restaurante
+				field.setAccessible(true);
+				Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
+				ReflectionUtils.setField(field, restauranteDestino, novoValor);
+			});
+		} catch(IllegalArgumentException e) {
+			Throwable rootCause = ExceptionUtils.getRootCause(e);
+			throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
+		}
 	}
 	
 }
