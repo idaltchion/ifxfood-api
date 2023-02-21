@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.idaltchion.ifxfood.api.ResourceUriHelper;
 import com.idaltchion.ifxfood.api.assembler.CidadeDTOAssember;
 import com.idaltchion.ifxfood.api.assembler.CidadeDTODisassembler;
 import com.idaltchion.ifxfood.api.model.CidadeDTO;
@@ -66,7 +67,11 @@ public class CidadeController implements CidadeControllerOpenAPI {
 	public CidadeDTO adicionar(@RequestBody @Valid CidadeDTOInput cidadeDTOInput) {
 		try {
 			Cidade cidade = cidadeDTODisassembler.toDomainObject(cidadeDTOInput);
-			return cidadeDTOAssembler.toDTO(cadastroCidadeService.salvar(cidade));
+			CidadeDTO cidadeDTO = cidadeDTOAssembler.toDTO(cadastroCidadeService.salvar(cidade));
+			
+			ResourceUriHelper.addUriInResponse(cidadeDTO.getId());
+			
+			return cidadeDTO;
 		}
 		catch(EstadoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage());
