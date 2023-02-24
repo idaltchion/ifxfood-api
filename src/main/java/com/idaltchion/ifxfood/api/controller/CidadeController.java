@@ -1,13 +1,9 @@
 package com.idaltchion.ifxfood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.IanaLinkRelations;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -49,29 +45,14 @@ public class CidadeController implements CidadeControllerOpenAPI {
 	private CidadeDTODisassembler cidadeDTODisassembler;
 	
 	@GetMapping
-	public CollectionModel<CidadeDTO> listar() {
-		List<CidadeDTO> cidadeDTOCollection = cidadeDTOAssembler.toDTOCollection(cidadeRepository.findAll());		 
-		cidadeDTOCollection.forEach(cidadeDTO -> {
-			cidadeDTO.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CidadeController.class).buscar(cidadeDTO.getId())).withSelfRel());
-			cidadeDTO.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CidadeController.class).listar()).withRel(IanaLinkRelations.COLLECTION));
-			cidadeDTO.getEstado().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EstadoController.class).buscar(cidadeDTO.getEstado().getId())).withSelfRel());
-		});
-		
-		CollectionModel<CidadeDTO> cidadesCollectionModel = CollectionModel.of(cidadeDTOCollection);
-		cidadesCollectionModel.add(WebMvcLinkBuilder.linkTo(CidadeController.class).withSelfRel());
-		
-		return cidadesCollectionModel;
+	public CollectionModel<CidadeDTO> listar() {		 
+		return cidadeDTOAssembler.toCollectionModel(cidadeRepository.findAll());
 	}
 	
 	@GetMapping("/{id}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public CidadeDTO buscar(@PathVariable Long id) {
-		CidadeDTO cidadeDTO = cidadeDTOAssembler.toDTO(cadastroCidadeService.buscar(id));
-		
-		cidadeDTO.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CidadeController.class).buscar(cidadeDTO.getId())).withSelfRel());
-		cidadeDTO.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CidadeController.class).listar()).withRel(IanaLinkRelations.COLLECTION));
-		cidadeDTO.getEstado().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EstadoController.class).buscar(cidadeDTO.getEstado().getId())).withSelfRel());
-		
+		CidadeDTO cidadeDTO = cidadeDTOAssembler.toModel(cadastroCidadeService.buscar(id));		
 		return cidadeDTO;
 	}
 	
@@ -86,7 +67,7 @@ public class CidadeController implements CidadeControllerOpenAPI {
 	public CidadeDTO adicionar(@RequestBody @Valid CidadeDTOInput cidadeDTOInput) {
 		try {
 			Cidade cidade = cidadeDTODisassembler.toDomainObject(cidadeDTOInput);
-			CidadeDTO cidadeDTO = cidadeDTOAssembler.toDTO(cadastroCidadeService.salvar(cidade));
+			CidadeDTO cidadeDTO = cidadeDTOAssembler.toModel(cadastroCidadeService.salvar(cidade));
 			
 			ResourceUriHelper.addUriInResponse(cidadeDTO.getId());
 			
@@ -103,7 +84,7 @@ public class CidadeController implements CidadeControllerOpenAPI {
 		try {
 			Cidade cidadeAtual = cadastroCidadeService.buscar(id);
 			cidadeDTODisassembler.copyToDomainObject(cidadeDTOInput, cidadeAtual);
-			return cidadeDTOAssembler.toDTO(cadastroCidadeService.salvar(cidadeAtual));
+			return cidadeDTOAssembler.toModel(cadastroCidadeService.salvar(cidadeAtual));
 		}
 		catch(EstadoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage(), e.getCause());
