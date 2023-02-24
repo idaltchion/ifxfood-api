@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -48,8 +49,18 @@ public class CidadeController implements CidadeControllerOpenAPI {
 	private CidadeDTODisassembler cidadeDTODisassembler;
 	
 	@GetMapping
-	public List<CidadeDTO> listar() {
-		return cidadeDTOAssembler.toDTOCollection(cidadeRepository.findAll());
+	public CollectionModel<CidadeDTO> listar() {
+		List<CidadeDTO> cidadeDTOCollection = cidadeDTOAssembler.toDTOCollection(cidadeRepository.findAll());		 
+		cidadeDTOCollection.forEach(cidadeDTO -> {
+			cidadeDTO.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CidadeController.class).buscar(cidadeDTO.getId())).withSelfRel());
+			cidadeDTO.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CidadeController.class).listar()).withRel(IanaLinkRelations.COLLECTION));
+			cidadeDTO.getEstado().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EstadoController.class).buscar(cidadeDTO.getEstado().getId())).withSelfRel());
+		});
+		
+		CollectionModel<CidadeDTO> cidadesCollectionModel = CollectionModel.of(cidadeDTOCollection);
+		cidadesCollectionModel.add(WebMvcLinkBuilder.linkTo(CidadeController.class).withSelfRel());
+		
+		return cidadesCollectionModel;
 	}
 	
 	@GetMapping("/{id}")

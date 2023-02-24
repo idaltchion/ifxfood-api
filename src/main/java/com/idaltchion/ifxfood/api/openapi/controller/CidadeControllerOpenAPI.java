@@ -1,6 +1,6 @@
 package com.idaltchion.ifxfood.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 import com.idaltchion.ifxfood.api.exceptionhandler.Problem;
 import com.idaltchion.ifxfood.api.model.CidadeDTO;
@@ -18,7 +18,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public interface CidadeControllerOpenAPI {
 	
 	@ApiOperation("Lista todas as cidades cadastradas")
-	List<CidadeDTO> listar();
+	CollectionModel<CidadeDTO> listar();
 	
 	@ApiResponses({
 		@ApiResponse(responseCode = "400", description = "Resource id is invalid", content = @Content(schema = @Schema(implementation = Problem.class))),
