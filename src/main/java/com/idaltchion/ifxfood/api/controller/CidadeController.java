@@ -57,9 +57,9 @@ public class CidadeController implements CidadeControllerOpenAPI {
 	public CidadeDTO buscar(@PathVariable Long id) {
 		CidadeDTO cidadeDTO = cidadeDTOAssembler.toDTO(cadastroCidadeService.buscar(id));
 		
-		cidadeDTO.add(WebMvcLinkBuilder.linkTo(CidadeController.class).slash(cidadeDTO.getId()).withSelfRel());
-		cidadeDTO.add(WebMvcLinkBuilder.linkTo(CidadeController.class).withRel(IanaLinkRelations.COLLECTION));
-		cidadeDTO.getEstado().add(WebMvcLinkBuilder.linkTo(EstadoController.class).slash(cidadeDTO.getEstado().getId()).withSelfRel());
+		cidadeDTO.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CidadeController.class).buscar(cidadeDTO.getId())).withSelfRel());
+		cidadeDTO.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CidadeController.class).listar()).withRel(IanaLinkRelations.COLLECTION));
+		cidadeDTO.getEstado().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EstadoController.class).buscar(cidadeDTO.getEstado().getId())).withSelfRel());
 		
 		return cidadeDTO;
 	}
