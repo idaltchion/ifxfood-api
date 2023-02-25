@@ -1,10 +1,9 @@
 package com.idaltchion.ifxfood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,27 +42,27 @@ public class UsuarioController {
 	CadastroUsuarioService usuarioService;
 	
 	@GetMapping
-	public List<UsuarioDTO> listar() {
-		return usuarioDTOAssembler.toDTOCollection(usuarioRepository.findAll());
+	public CollectionModel<UsuarioDTO> listar() {
+		return usuarioDTOAssembler.toCollectionModel(usuarioRepository.findAll());
 	}
 	
 	@GetMapping("/{id}")
 	public UsuarioDTO buscar(@PathVariable Long id) {
-		return usuarioDTOAssembler.toDTO(usuarioService.buscar(id));
+		return usuarioDTOAssembler.toModelWithCollectionRel(usuarioService.buscar(id));
 	}
 	
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public UsuarioDTO adicionar(@RequestBody @Valid UsuarioComSenhaDTOInput usuarioInput) {
 		Usuario novoUsuario = usuarioDTODisassembler.toModelObject(usuarioInput);
-		return usuarioDTOAssembler.toDTO(usuarioService.salvar(novoUsuario));
+		return usuarioDTOAssembler.toModel(usuarioService.salvar(novoUsuario));
 	}
 	
 	@PutMapping("/{id}")
 	public UsuarioDTO atualizar(@PathVariable Long id, @RequestBody @Valid UsuarioDTOInput usuarioInput) {
 		Usuario usuarioAtual = usuarioService.buscar(id);
 		usuarioDTODisassembler.copyToModelObject(usuarioInput, usuarioAtual);
-		return usuarioDTOAssembler.toDTO(usuarioService.salvar(usuarioAtual));
+		return usuarioDTOAssembler.toModel(usuarioService.salvar(usuarioAtual));
 	}
 	
 	@DeleteMapping("/{id}")
