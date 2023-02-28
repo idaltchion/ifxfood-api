@@ -1,10 +1,9 @@
 package com.idaltchion.ifxfood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,27 +42,27 @@ public class EstadoController implements EstadoControllerOpenAPI {
 	private CadastroEstadoService cadastroEstadoService;
 	
 	@GetMapping
-	public List<EstadoDTO> listar() {
-		return estadoAssembler.toCollectionDTO(estadoRepository.findAll());
+	public CollectionModel<EstadoDTO> listar() {
+		return estadoAssembler.toCollectionModel(estadoRepository.findAll());
 	}
 	
 	@GetMapping("/{codigo}")
 	public EstadoDTO buscar(@PathVariable Long codigo) {
-		return estadoAssembler.toDTO(cadastroEstadoService.buscar(codigo));
+		return estadoAssembler.toModelWithCollectionRel(cadastroEstadoService.buscar(codigo));
 	}
 	
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public EstadoDTO adicionar(@RequestBody @Valid EstadoDTOInput estadoInput) {
 		Estado estado = estadoDisassembler.toDomainObject(estadoInput);
-		return estadoAssembler.toDTO(cadastroEstadoService.salvar(estado));
+		return estadoAssembler.toModel(cadastroEstadoService.salvar(estado));
 	}
 	
 	@PutMapping("/{codigo}")
 	public EstadoDTO atualizar(@PathVariable Long codigo, @RequestBody @Valid EstadoDTOInput estadoInput) {
 		Estado estadoAtual = cadastroEstadoService.buscar(codigo);
 		estadoDisassembler.copyToDomainObject(estadoInput, estadoAtual);
-		return estadoAssembler.toDTO(cadastroEstadoService.salvar(estadoAtual));
+		return estadoAssembler.toModel(cadastroEstadoService.salvar(estadoAtual));
 	}
 	
 	@DeleteMapping("/{codigo}")

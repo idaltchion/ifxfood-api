@@ -1,6 +1,6 @@
 package com.idaltchion.ifxfood.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 import com.idaltchion.ifxfood.api.exceptionhandler.Problem;
 import com.idaltchion.ifxfood.api.model.EstadoDTO;
@@ -18,7 +18,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public interface EstadoControllerOpenAPI {
 	
 	@ApiOperation(value = "Lista os Estados cadastrados")
-	List<EstadoDTO> listar();
+	CollectionModel<EstadoDTO> listar();
 	
 	@ApiOperation(value = "Busca um Estado pelo código")
 	@ApiResponses({

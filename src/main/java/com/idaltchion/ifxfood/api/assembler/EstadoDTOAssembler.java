@@ -1,12 +1,14 @@
 package com.idaltchion.ifxfood.api.assembler;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
+import com.idaltchion.ifxfood.api.controller.EstadoController;
 import com.idaltchion.ifxfood.api.model.EstadoDTO;
 import com.idaltchion.ifxfood.domain.model.Estado;
 
@@ -14,19 +16,34 @@ import com.idaltchion.ifxfood.domain.model.Estado;
  * Classe responsavel por transformar um objeto do tipo Modelo de Dominio para objeto de Modelo de Representacao 
  */
 @Component
-public class EstadoDTOAssembler {
+public class EstadoDTOAssembler extends RepresentationModelAssemblerSupport<Estado, EstadoDTO> {
 
 	@Autowired
 	private ModelMapper modelMapper;
-	
-	public EstadoDTO toDTO(Estado estado) {
-		return modelMapper.map(estado, EstadoDTO.class);
+
+	public EstadoDTOAssembler() {
+		super(EstadoController.class, EstadoDTO.class);
 	}
-	
-	public List<EstadoDTO> toCollectionDTO(List<Estado> estados) {
-		return estados.stream()
-				.map(estado -> toDTO(estado))
-				.collect(Collectors.toList());
+
+	@Override
+	public EstadoDTO toModel(Estado estado) {
+		EstadoDTO estadoDTO = createModelWithId(estado.getId(), estado);
+		modelMapper.map(estado, estadoDTO);
+
+		return estadoDTO;
 	}
-	
+
+	@Override
+	public CollectionModel<EstadoDTO> toCollectionModel(Iterable<? extends Estado> estados) {
+		return super.toCollectionModel(estados)
+				.add(WebMvcLinkBuilder.linkTo(EstadoController.class).withRel(IanaLinkRelations.COLLECTION));
+	}
+
+	public EstadoDTO toModelWithCollectionRel(Estado estado) {
+		EstadoDTO estadoDTO = toModel(estado);
+		estadoDTO.add(WebMvcLinkBuilder.linkTo(EstadoController.class).withRel(IanaLinkRelations.COLLECTION));
+
+		return estadoDTO;
+	}
+
 }
