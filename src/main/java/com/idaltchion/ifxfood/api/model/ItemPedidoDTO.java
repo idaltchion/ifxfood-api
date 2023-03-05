@@ -2,14 +2,19 @@ package com.idaltchion.ifxfood.api.model;
 
 import java.math.BigDecimal;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ItemPedidoDTO {
+public class ItemPedidoDTO extends RepresentationModel<ItemPedidoDTO> {
 
+	@ApiModelProperty(value = "Codigo do produto", example = "5")
+	private Long produtoId;
+	
 	@ApiModelProperty(value = "Nome do produto", example = "Barreado")
 	private String produtoNome;
 	

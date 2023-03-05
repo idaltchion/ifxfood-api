@@ -3,15 +3,19 @@ package com.idaltchion.ifxfood.api.model;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
+
 import com.idaltchion.ifxfood.domain.model.StatusPedido;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+@Relation(collectionRelation = "pedidos-resumo")
 @Getter
 @Setter
-public class PedidoResumoDTO {
+public class PedidoResumoDTO extends RepresentationModel<PedidoResumoDTO> {
 
 	@ApiModelProperty(value = "Codigo do pedido", example = "cf43ed0a-12ac-4ebe-a0b5-b6b10465db66")
 	private String codigo;

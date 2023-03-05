@@ -3,6 +3,7 @@ package com.idaltchion.ifxfood.api.openapi.controller;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.PagedModel;
 
 import com.idaltchion.ifxfood.api.model.PedidoDTO;
 import com.idaltchion.ifxfood.api.model.PedidoResumoDTO;
@@ -25,7 +26,7 @@ public interface PedidoControllerOpenAPI {
 		@ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separadas por ponto e vírgula",
 				name = "campos", paramType = "query", dataType = "string")
 	})
-	Page<PedidoResumoDTO> pesquisar(PedidoFilter filtro, @PageableDefault(size = 5) Pageable pageable);
+	PagedModel<PedidoResumoDTO> pesquisar(PedidoFilter filtro, @PageableDefault(size = 5) Pageable pageable);
 	
 	@ApiOperation(value = "Busca um pedido pelo codigo")
 	@ApiResponses(

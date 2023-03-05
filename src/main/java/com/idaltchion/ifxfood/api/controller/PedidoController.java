@@ -1,14 +1,13 @@
 package com.idaltchion.ifxfood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,18 +48,21 @@ public class PedidoController implements PedidoControllerOpenAPI {
 	@Autowired
 	PedidoResumoDTOAssembler pedidoResumoDTOAssembler;
 	
+	@Autowired
+	PagedResourcesAssembler<Pedido> pagedResourceAssember;
+	
 	@GetMapping
-	public Page<PedidoResumoDTO> pesquisar(PedidoFilter filtro, @PageableDefault(size = 5) Pageable pageable) {
+	public PagedModel<PedidoResumoDTO> pesquisar(PedidoFilter filtro, @PageableDefault(size = 5) Pageable pageable) {
 		pageable = traduzirPageable(pageable);
 		Page<Pedido> pedidosPage = pedidoService.listar(filtro, pageable);
-		List<PedidoResumoDTO> pedidosDTO = pedidoResumoDTOAssembler.toCollectionDTO(pedidosPage.getContent());
-		Page<PedidoResumoDTO> pedidosDTOPage = new PageImpl<>(pedidosDTO, pageable, pedidosPage.getTotalElements());
-		return pedidosDTOPage;
+		PagedModel<PedidoResumoDTO> pedidosPagedModel = pagedResourceAssember.toModel(pedidosPage, pedidoResumoDTOAssembler);
+		
+		return pedidosPagedModel;
 	}
 	
 	@GetMapping("/{codigo_pedido}")
 	public PedidoDTO buscar(@PathVariable String codigo_pedido) {
-		return pedidoDTOAssembler.toDTO(pedidoService.buscar(codigo_pedido));
+		return pedidoDTOAssembler.toModelWithCollectionRel(pedidoService.buscar(codigo_pedido));
 	}
 	
 	@PutMapping
@@ -72,7 +74,7 @@ public class PedidoController implements PedidoControllerOpenAPI {
 		novoPedido.getCliente().setId(1L);
 		
 		novoPedido = pedidoService.emitirPedido(novoPedido);
-		return pedidoDTOAssembler.toDTO(novoPedido);
+		return pedidoDTOAssembler.toModelWithCollectionRel(novoPedido);
 	}
 
 	/* metodo que faz uma tradução das propriedades passadas pelo sort DA paginacao
