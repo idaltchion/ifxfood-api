@@ -26,6 +26,7 @@ import com.idaltchion.ifxfood.api.model.PedidoDTO;
 import com.idaltchion.ifxfood.api.model.PedidoResumoDTO;
 import com.idaltchion.ifxfood.api.model.input.PedidoDTOInput;
 import com.idaltchion.ifxfood.api.openapi.controller.PedidoControllerOpenAPI;
+import com.idaltchion.ifxfood.core.data.PageWrapper;
 import com.idaltchion.ifxfood.core.data.PageableTranslator;
 import com.idaltchion.ifxfood.domain.filter.PedidoFilter;
 import com.idaltchion.ifxfood.domain.model.Pedido;
@@ -53,11 +54,18 @@ public class PedidoController implements PedidoControllerOpenAPI {
 	
 	@GetMapping
 	public PagedModel<PedidoResumoDTO> pesquisar(PedidoFilter filtro, @PageableDefault(size = 5) Pageable pageable) {
-		pageable = traduzirPageable(pageable);
-		Page<Pedido> pedidosPage = pedidoService.listar(filtro, pageable);
-		PagedModel<PedidoResumoDTO> pedidosPagedModel = pagedResourceAssember.toModel(pedidosPage, pedidoResumoDTOAssembler);
+		Pageable pageableTraduzido = traduzirPageable(pageable);
+		Page<Pedido> pedidosPage = pedidoService.listar(filtro, pageableTraduzido);
 		
-		return pedidosPagedModel;
+		/*
+		 * correcao de 'bug': 
+		 * - para poder repassar os nomes dos atributos da paginacao original (ao inves do traduzido) nos links
+		 * - sem esse artificio, os atributos 'traduzidos', ou seja, atributos de dominio estavam sendo repassados nos links
+		 * - a consequencia disso é que como os atributos de dominio nao estao na lista de 'permitidos', os links com a opcao 'sort' nao eram repassados nos links
+		 */
+		pedidosPage = new PageWrapper<>(pedidosPage, pageable);
+		
+		return pagedResourceAssember.toModel(pedidosPage, pedidoResumoDTOAssembler);
 	}
 	
 	@GetMapping("/{codigo_pedido}")
