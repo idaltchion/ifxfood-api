@@ -1,14 +1,14 @@
 package com.idaltchion.ifxfood.api.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -50,31 +50,37 @@ public class CozinhaController implements CozinhaControllerOpenAPI {
 	@Autowired
 	private CozinhaDTODisassembler cozinhaDTODisassembler;
 
+	@Autowired
+	private PagedResourcesAssembler<Cozinha> pagedResourceAssembler;
+	
 	@GetMapping
-	public Page<CozinhaDTO> listar(Pageable pageable) {
+	public PagedModel<CozinhaDTO> listar(Pageable pageable) {
 		Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
-		List<CozinhaDTO> cozinhasDTO = cozinhaDTOAssembler.toDTOCollection(cozinhasPage.getContent());
-		Page<CozinhaDTO> cozinhasDTOPage = new PageImpl<CozinhaDTO>(cozinhasDTO, pageable, cozinhasPage.getTotalElements());
-		return cozinhasDTOPage;
+//		List<CozinhaDTO> cozinhasDTO = cozinhaDTOAssembler.toCollectionModel(cozinhasPage.getContent());
+//		Page<CozinhaDTO> cozinhasDTOPage = new PageImpl<CozinhaDTO>(cozinhasDTO, pageable, cozinhasPage.getTotalElements());
+		
+		PagedModel<CozinhaDTO> cozinhasPagedModel = pagedResourceAssembler.toModel(cozinhasPage, cozinhaDTOAssembler);
+		
+		return cozinhasPagedModel;
 	}
 
 	@GetMapping("/{id}")
 	public CozinhaDTO buscar(@PathVariable Long id) {
-		return cozinhaDTOAssembler.toDTO(cadastroCozinhaService.buscarOuFalhar(id));
+		return cozinhaDTOAssembler.toModelWithCollectionRel(cadastroCozinhaService.buscarOuFalhar(id));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CozinhaDTO adicionar(@RequestBody @Valid CozinhaDTOInput cozinhaInput) {
 		Cozinha cozinha = cozinhaDTODisassembler.toDomainObject(cozinhaInput);
-		return cozinhaDTOAssembler.toDTO(cadastroCozinhaService.salvar(cozinha));
+		return cozinhaDTOAssembler.toModel(cadastroCozinhaService.salvar(cozinha));
 	}
 
 	@PutMapping("/{id}")
 	public CozinhaDTO atualizar(@PathVariable Long id, @RequestBody CozinhaDTOInput cozinhaInput) {
 		Cozinha cozinhaAtual = cadastroCozinhaService.buscarOuFalhar(id);
 		cozinhaDTODisassembler.copyToDomainObject(cozinhaInput, cozinhaAtual);
-		return cozinhaDTOAssembler.toDTO(cadastroCozinhaService.salvar(cozinhaAtual));
+		return cozinhaDTOAssembler.toModel(cadastroCozinhaService.salvar(cozinhaAtual));
 	}
 
 	@DeleteMapping("/{id}")

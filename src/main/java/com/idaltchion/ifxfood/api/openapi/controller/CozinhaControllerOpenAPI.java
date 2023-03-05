@@ -2,8 +2,8 @@ package com.idaltchion.ifxfood.api.openapi.controller;
 
 import java.util.Optional;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 
 import com.idaltchion.ifxfood.api.exceptionhandler.Problem;
 import com.idaltchion.ifxfood.api.model.CozinhaDTO;
@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public interface CozinhaControllerOpenAPI {
 	
 	@ApiOperation(value = "Lista todas as cozinhas cadastradas")
-	Page<CozinhaDTO> listar(Pageable pageable);
+	PagedModel<CozinhaDTO> listar(Pageable pageable);
 	
 	@ApiResponses({
 		@ApiResponse(responseCode = "400", description = "Resource id is invalid", content = @Content(schema = @Schema(implementation = Problem.class))),
