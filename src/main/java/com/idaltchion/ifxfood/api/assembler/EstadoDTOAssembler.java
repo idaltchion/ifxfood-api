@@ -3,11 +3,10 @@ package com.idaltchion.ifxfood.api.assembler;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
+import com.idaltchion.ifxfood.api.IfxLinks;
 import com.idaltchion.ifxfood.api.controller.EstadoController;
 import com.idaltchion.ifxfood.api.model.EstadoDTO;
 import com.idaltchion.ifxfood.domain.model.Estado;
@@ -20,6 +19,9 @@ public class EstadoDTOAssembler extends RepresentationModelAssemblerSupport<Esta
 
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Autowired
+	private IfxLinks ifxLinks;
 
 	public EstadoDTOAssembler() {
 		super(EstadoController.class, EstadoDTO.class);
@@ -36,12 +38,12 @@ public class EstadoDTOAssembler extends RepresentationModelAssemblerSupport<Esta
 	@Override
 	public CollectionModel<EstadoDTO> toCollectionModel(Iterable<? extends Estado> estados) {
 		return super.toCollectionModel(estados)
-				.add(WebMvcLinkBuilder.linkTo(EstadoController.class).withRel(IanaLinkRelations.COLLECTION));
+				.add(ifxLinks.linkToEstados());
 	}
 
 	public EstadoDTO toModelWithCollectionRel(Estado estado) {
 		EstadoDTO estadoDTO = toModel(estado);
-		estadoDTO.add(WebMvcLinkBuilder.linkTo(EstadoController.class).withRel(IanaLinkRelations.COLLECTION));
+		estadoDTO.add(ifxLinks.linkToEstados());
 
 		return estadoDTO;
 	}

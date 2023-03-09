@@ -32,6 +32,7 @@ import com.idaltchion.ifxfood.api.model.FotoProdutoDTO;
 import com.idaltchion.ifxfood.api.model.ProdutoDTO;
 import com.idaltchion.ifxfood.api.model.input.ProdutoDTOInput;
 import com.idaltchion.ifxfood.api.model.input.ProdutoFotoInput;
+import com.idaltchion.ifxfood.api.openapi.controller.RestauranteProdutoControllerOpenAPI;
 import com.idaltchion.ifxfood.domain.exception.EntidadeNaoEncontradaException;
 import com.idaltchion.ifxfood.domain.model.FotoProduto;
 import com.idaltchion.ifxfood.domain.model.Produto;
@@ -45,7 +46,7 @@ import com.idaltchion.ifxfood.domain.service.FotoProdutoStorageService.FotoRecup
 
 @RestController
 @RequestMapping("/restaurantes/{restauranteId}/produtos")
-public class RestauranteProdutoController {
+public class RestauranteProdutoController implements RestauranteProdutoControllerOpenAPI {
 	
 	@Autowired
 	private CadastroRestauranteService restauranteService;

@@ -5,12 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 import com.ctc.wstx.shaded.msv_core.reader.Controller;
-import com.idaltchion.ifxfood.api.controller.CidadeController;
-import com.idaltchion.ifxfood.api.controller.EstadoController;
+import com.idaltchion.ifxfood.api.IfxLinks;
 import com.idaltchion.ifxfood.api.model.CidadeDTO;
 import com.idaltchion.ifxfood.domain.model.Cidade;
 
@@ -19,6 +17,9 @@ public class CidadeDTOAssember extends RepresentationModelAssemblerSupport<Cidad
 
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Autowired
+	private IfxLinks ifxLinks;
 	
 	public CidadeDTOAssember() {
 		super(Controller.class, CidadeDTO.class);
@@ -31,15 +32,20 @@ public class CidadeDTOAssember extends RepresentationModelAssemblerSupport<Cidad
 		
 		modelMapper.map(cidade, cidadeDTO);
 //		cidadeDTO.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CidadeController.class).buscar(cidadeDTO.getId())).withSelfRel());
-		cidadeDTO.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CidadeController.class).listar()).withRel(IanaLinkRelations.COLLECTION));
-		cidadeDTO.getEstado().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EstadoController.class).buscar(cidadeDTO.getEstado().getId())).withSelfRel());
+		cidadeDTO.getEstado().add(ifxLinks.linkToEstados(cidadeDTO.getEstado().getId()));
 	
+		return cidadeDTO;
+	}
+	
+	public CidadeDTO toModelWithCollectionRel(Cidade cidade) {
+		CidadeDTO cidadeDTO = toModel(cidade);
+		cidadeDTO.add(ifxLinks.linkToCidades(IanaLinkRelations.COLLECTION_VALUE));
 		return cidadeDTO;
 	}
 	
 	@Override
 	public CollectionModel<CidadeDTO> toCollectionModel(Iterable<? extends Cidade> cidades) {
-		return super.toCollectionModel(cidades).add(WebMvcLinkBuilder.linkTo(CidadeController.class).withSelfRel());
+		return super.toCollectionModel(cidades).add(ifxLinks.linkToCidades(IanaLinkRelations.SELF_VALUE));
 	}
 	
 }

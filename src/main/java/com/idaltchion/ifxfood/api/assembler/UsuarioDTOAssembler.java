@@ -7,8 +7,8 @@ import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSuppor
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
+import com.idaltchion.ifxfood.api.IfxLinks;
 import com.idaltchion.ifxfood.api.controller.UsuarioController;
-import com.idaltchion.ifxfood.api.controller.UsuarioGrupoController;
 import com.idaltchion.ifxfood.api.model.UsuarioDTO;
 import com.idaltchion.ifxfood.domain.model.Usuario;
 
@@ -17,6 +17,9 @@ public class UsuarioDTOAssembler extends RepresentationModelAssemblerSupport<Usu
 
 	@Autowired
 	ModelMapper modelMapper;
+	
+	@Autowired
+	private IfxLinks ifxLinks;
 
 	public UsuarioDTOAssembler() {
 		super(UsuarioController.class, UsuarioDTO.class);
@@ -26,7 +29,7 @@ public class UsuarioDTOAssembler extends RepresentationModelAssemblerSupport<Usu
 	public UsuarioDTO toModel(Usuario usuario) {
 		UsuarioDTO usuarioDTO = createModelWithId(usuario.getId(), usuario);
 		modelMapper.map(usuario, usuarioDTO);
-		usuarioDTO.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioGrupoController.class).listar(usuarioDTO.getId())).withRel("grupos-usuario"));
+		usuarioDTO.add(ifxLinks.linkToGruposUsuario(usuarioDTO.getId()));
 		
 		return usuarioDTO;
 	}
@@ -38,7 +41,7 @@ public class UsuarioDTOAssembler extends RepresentationModelAssemblerSupport<Usu
 	
 	public UsuarioDTO toModelWithCollectionRel(Usuario usuario) {
 		UsuarioDTO usuarioDTO = toModel(usuario);
-		usuarioDTO.add(WebMvcLinkBuilder.linkTo(UsuarioController.class).withRel("usuarios"));
+		usuarioDTO.add(ifxLinks.linkToUsuarios());
 		return usuarioDTO;
 	}
 

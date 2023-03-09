@@ -3,12 +3,10 @@ package com.idaltchion.ifxfood.api.assembler;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
+import com.idaltchion.ifxfood.api.IfxLinks;
 import com.idaltchion.ifxfood.api.controller.PedidoController;
-import com.idaltchion.ifxfood.api.controller.RestauranteController;
-import com.idaltchion.ifxfood.api.controller.UsuarioController;
 import com.idaltchion.ifxfood.api.model.PedidoResumoDTO;
 import com.idaltchion.ifxfood.domain.model.Pedido;
 
@@ -17,6 +15,9 @@ public class PedidoResumoDTOAssembler extends RepresentationModelAssemblerSuppor
 
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Autowired
+	private IfxLinks ifxLinks;
 
 	public PedidoResumoDTOAssembler() {
 		super(PedidoController.class, PedidoResumoDTO.class);
@@ -27,8 +28,8 @@ public class PedidoResumoDTOAssembler extends RepresentationModelAssemblerSuppor
 		PedidoResumoDTO pedidoResumoDTO = createModelWithId(pedido.getCodigo(), pedido); 
 		modelMapper.map(pedido, pedidoResumoDTO);
 		
-		pedidoResumoDTO.getRestaurante().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteController.class).buscar(pedidoResumoDTO.getRestaurante().getId())).withSelfRel());
-		pedidoResumoDTO.getCliente().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).buscar(pedidoResumoDTO.getCliente().getId())).withSelfRel());
+		pedidoResumoDTO.getRestaurante().add(ifxLinks.linkToRestaurantes(pedidoResumoDTO.getRestaurante().getId()));
+		pedidoResumoDTO.getCliente().add(ifxLinks.linkToUsuarios(pedidoResumoDTO.getCliente().getId()));
 		
 		return pedidoResumoDTO;
 	}

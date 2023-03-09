@@ -52,7 +52,7 @@ public class CidadeController implements CidadeControllerOpenAPI {
 	@GetMapping("/{id}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public CidadeDTO buscar(@PathVariable Long id) {
-		CidadeDTO cidadeDTO = cidadeDTOAssembler.toModel(cadastroCidadeService.buscar(id));		
+		CidadeDTO cidadeDTO = cidadeDTOAssembler.toModelWithCollectionRel(cadastroCidadeService.buscar(id));		
 		return cidadeDTO;
 	}
 	
