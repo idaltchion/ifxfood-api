@@ -41,6 +41,18 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
 		PedidoDTO pedidoDTO = toModel(pedido);
 		pedidoDTO.add(ifxLinks.linkToPedidos());
 		
+		if (pedido.podeSerConfirmado()) {
+			pedidoDTO.add(ifxLinks.linkToConfirmacaoPedido(pedidoDTO.getCodigo()));
+		}
+		
+		if (pedido.podeSerEntregue()) {
+			pedidoDTO.add(ifxLinks.linkToEntregaPedido(pedidoDTO.getCodigo()));
+		}
+		
+		if (pedido.podeSerCancelado()) {
+			pedidoDTO.add(ifxLinks.linkToCancelamentoPedido(pedidoDTO.getCodigo()));
+		}
+		
 		return pedidoDTO;
 	}
 	

@@ -3,6 +3,7 @@ package com.idaltchion.ifxfood.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,20 +22,23 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenAPI {
 	
 	@PutMapping("/confirmacao")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void confirmacao(@PathVariable String codigo_pedido) {
+	public ResponseEntity<Void> confirmacao(@PathVariable String codigo_pedido) {
 		fluxoPedidoService.confirmacao(codigo_pedido);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@PutMapping("/entrega")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void entrega(@PathVariable String codigo_pedido) {
+	public ResponseEntity<Void> entrega(@PathVariable String codigo_pedido) {
 		fluxoPedidoService.entrega(codigo_pedido);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@PutMapping("/cancelamento")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void cancelamento(@PathVariable String codigo_pedido) {
+	public ResponseEntity<Void> cancelamento(@PathVariable String codigo_pedido) {
 		fluxoPedidoService.cancelamento(codigo_pedido);
+		return ResponseEntity.noContent().build();
 	}
 	
 }

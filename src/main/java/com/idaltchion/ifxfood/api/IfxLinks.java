@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import com.idaltchion.ifxfood.api.controller.CidadeController;
 import com.idaltchion.ifxfood.api.controller.CozinhaController;
 import com.idaltchion.ifxfood.api.controller.EstadoController;
+import com.idaltchion.ifxfood.api.controller.FluxoPedidoController;
 import com.idaltchion.ifxfood.api.controller.FormaPagamentoController;
 import com.idaltchion.ifxfood.api.controller.PedidoController;
 import com.idaltchion.ifxfood.api.controller.RestauranteController;
@@ -37,6 +38,18 @@ public class IfxLinks {
 				new TemplateVariable("dataCriacaoFim", VariableType.REQUEST_PARAM));
 		
 		return Link.of(UriTemplate.of(pedidosUrl, filterVariables.concat(PAGE_VARIABLES)), IanaLinkRelations.COLLECTION);
+	}
+	
+	public Link linkToConfirmacaoPedido(String codigo_pedido) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(FluxoPedidoController.class).confirmacao(codigo_pedido)).withRel("confirmar");
+	}
+
+	public Link linkToEntregaPedido(String codigo_pedido) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(FluxoPedidoController.class).entrega(codigo_pedido)).withRel("entregar");
+	}
+
+	public Link linkToCancelamentoPedido(String codigo_pedido) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(FluxoPedidoController.class).cancelamento(codigo_pedido)).withRel("cancelar");
 	}
 	
 	public Link linkToCidades(Long cidadeId) {
@@ -88,13 +101,5 @@ public class IfxLinks {
 				.buscar(restauranteId, produtoId))
 				.withSelfRel();
 	}
-
-	
-
-	
-
-	
-
-	
 	
 }

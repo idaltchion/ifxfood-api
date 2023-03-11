@@ -1,5 +1,7 @@
 package com.idaltchion.ifxfood.api.openapi.controller;
 
+import org.springframework.http.ResponseEntity;
+
 import com.idaltchion.ifxfood.api.exceptionhandler.Problem;
 
 import io.swagger.annotations.Api;
@@ -18,7 +20,7 @@ public interface FluxoPedidoControllerOpenAPI {
 		@ApiResponse(responseCode = "204", description = "Pedido confirmado com sucesso"),
 		@ApiResponse(responseCode = "404", description = "Pedido não localizado", content = @Content(schema = @Schema(implementation = Problem.class)))
 	})
-	void confirmacao(
+	ResponseEntity<Void> confirmacao(
 			@ApiParam(value = "Código do pedido", example = "2049d811-cd30-4b8e-bd0b-42acc26f93e8")
 			String codigo_pedido);
 	
@@ -27,7 +29,7 @@ public interface FluxoPedidoControllerOpenAPI {
 		@ApiResponse(responseCode = "204", description = "Pedido entregue com sucesso"),
 		@ApiResponse(responseCode = "404", description = "Pedido não localizado", content = @Content(schema = @Schema(implementation = Problem.class)))
 	})
-	void entrega(
+	ResponseEntity<Void> entrega(
 			@ApiParam(value = "Código do pedido", example = "2049d811-cd30-4b8e-bd0b-42acc26f93e8")
 			String codigo_pedido);
 	
@@ -36,7 +38,7 @@ public interface FluxoPedidoControllerOpenAPI {
 		@ApiResponse(responseCode = "204", description = "Pedido cancelado com sucesso"),
 		@ApiResponse(responseCode = "404", description = "Pedido não localizado", content = @Content(schema = @Schema(implementation = Problem.class)))
 	})
-	void cancelamento(
+	ResponseEntity<Void> cancelamento(
 			@ApiParam(value = "Código do pedido", example = "2049d811-cd30-4b8e-bd0b-42acc26f93e8")
 			String codigo_pedido);
 	
