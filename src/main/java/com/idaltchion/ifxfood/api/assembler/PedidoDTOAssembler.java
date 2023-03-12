@@ -28,12 +28,12 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
 		PedidoDTO pedidoDTO = createModelWithId(pedido.getCodigo(), pedido);
 		modelMapper.map(pedido, pedidoDTO);
 				
-		pedidoDTO.getFormaPagamento().add(ifxLinks.linkToFormasPagamento(pedidoDTO.getFormaPagamento().getId()));
-		pedidoDTO.getEnderecoEntrega().getCidade().add(ifxLinks.linkToCidades(pedidoDTO.getEnderecoEntrega().getCidade().getId()));
-		pedidoDTO.getRestaurante().add(ifxLinks.linkToRestaurantes(pedidoDTO.getRestaurante().getId()));
-		pedidoDTO.getCliente().add(ifxLinks.linkToUsuarios(pedidoDTO.getCliente().getId()));
+		pedidoDTO.getFormaPagamento().add(ifxLinks.linkToFormaPagamento(pedidoDTO.getFormaPagamento().getId()));
+		pedidoDTO.getEnderecoEntrega().getCidade().add(ifxLinks.linkToCidade(pedidoDTO.getEnderecoEntrega().getCidade().getId()));
+		pedidoDTO.getRestaurante().add(ifxLinks.linkToRestaurante(pedidoDTO.getRestaurante().getId()));
+		pedidoDTO.getCliente().add(ifxLinks.linkToUsuario(pedidoDTO.getCliente().getId()));
 		pedidoDTO.getItens().forEach(item -> 
-			item.add(ifxLinks.linkToProdutos(pedidoDTO.getRestaurante().getId(), item.getProdutoId())));
+			item.add(ifxLinks.linkToProduto(pedidoDTO.getRestaurante().getId(), item.getProdutoId())));
 		return pedidoDTO;
 	}
 	

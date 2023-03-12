@@ -32,7 +32,7 @@ public class CidadeDTOAssember extends RepresentationModelAssemblerSupport<Cidad
 		
 		modelMapper.map(cidade, cidadeDTO);
 //		cidadeDTO.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CidadeController.class).buscar(cidadeDTO.getId())).withSelfRel());
-		cidadeDTO.getEstado().add(ifxLinks.linkToEstados(cidadeDTO.getEstado().getId()));
+		cidadeDTO.getEstado().add(ifxLinks.linkToEstado(cidadeDTO.getEstado().getId()));
 	
 		return cidadeDTO;
 	}

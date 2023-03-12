@@ -6,8 +6,13 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
+
 import com.idaltchion.ifxfood.api.exceptionhandler.Problem;
+import com.idaltchion.ifxfood.api.model.RestauranteApenasNomeDTO;
 import com.idaltchion.ifxfood.api.model.RestauranteDTO;
+import com.idaltchion.ifxfood.api.model.RestauranteTaxaFreteDTO;
 import com.idaltchion.ifxfood.api.model.input.RestauranteDTOInput;
 import com.idaltchion.ifxfood.domain.model.Restaurante;
 
@@ -30,10 +35,10 @@ public interface RestauranteControllerOpenAPI {
 			@ApiImplicitParam(value = "Nome da projeção de pedidos. Ex: apenas-nome", allowableValues = "apenas-nome",
 					name = "projecao", paramType = "query", type = "string")
 	})
-	List<RestauranteDTO> listar();
+	CollectionModel<RestauranteTaxaFreteDTO> listar();
 	
 	@ApiOperation(value = "Lista restaurantes", hidden = true)
-	List<RestauranteDTO> listarApenasNomes();
+	CollectionModel<RestauranteApenasNomeDTO> listarApenasNomes();
 	
 	@ApiResponses({
 		@ApiResponse(responseCode = "400", description = "ID do restaurante inválido", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Problem.class)))),
@@ -74,7 +79,7 @@ public interface RestauranteControllerOpenAPI {
 			HttpServletRequest request);
 	
 	@ApiOperation(value = "Lista restaurantes cadastrados que possuem frete grátis")
-	List<RestauranteDTO> restauranteComFreteGratis(
+	CollectionModel<RestauranteDTO> restauranteComFreteGratis(
 			@ApiParam(value = "Nome do restaurante")
 			String nome);
 	
@@ -87,7 +92,7 @@ public interface RestauranteControllerOpenAPI {
 		@ApiResponse(responseCode = "400", description = "ID do restaurante inválido", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Problem.class)))),
 		@ApiResponse(responseCode = "404", description = "Restaurante não localizado", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Problem.class))))
 	})
-	void ativar(
+	ResponseEntity<Void> ativar(
 			@ApiParam(value = "Código do restaurante", example = "2")
 			Long id);
 	
@@ -105,7 +110,7 @@ public interface RestauranteControllerOpenAPI {
 		@ApiResponse(responseCode = "400", description = "ID do restaurante inválido", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Problem.class)))),
 		@ApiResponse(responseCode = "404", description = "Restaurante não localizado", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Problem.class))))
 	})
-	void inativar(
+	ResponseEntity<Void> inativar(
 			@ApiParam(value = "Código do restaurante", example = "2")
 			Long id);
 	
@@ -123,7 +128,7 @@ public interface RestauranteControllerOpenAPI {
 		@ApiResponse(responseCode = "400", description = "ID do restaurante inválido", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Problem.class)))),
 		@ApiResponse(responseCode = "404", description = "Restaurante não localizado", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Problem.class))))
 	})
-	void abrir(
+	ResponseEntity<Void> abrir(
 			@ApiParam(value = "Código do restaurante", example = "2")
 			Long id);
 	
@@ -134,7 +139,7 @@ public interface RestauranteControllerOpenAPI {
 		@ApiResponse(responseCode = "400", description = "ID do restaurante inválido", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Problem.class)))),
 		@ApiResponse(responseCode = "404", description = "Restaurante não localizado", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Problem.class))))
 	})
-	void fechar(
+	ResponseEntity<Void> fechar(
 			@ApiParam(value = "Código do restaurante", example = "2")
 			Long id);
 	

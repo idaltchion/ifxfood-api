@@ -45,7 +45,7 @@ public class PedidoDTO extends RepresentationModel<PedidoDTO> {
 	
 	private FormaPagamentoDTO formaPagamento;
 	private EnderecoDTO enderecoEntrega;
-	private RestauranteResumoDTO restaurante;
+	private RestauranteApenasNomeDTO restaurante;
 	private UsuarioDTO cliente;
 	
 	@ApiModelProperty(value = "Itens do pedido")

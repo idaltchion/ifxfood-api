@@ -52,7 +52,7 @@ public class IfxLinks {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(FluxoPedidoController.class).cancelamento(codigo_pedido)).withRel("cancelar");
 	}
 	
-	public Link linkToCidades(Long cidadeId) {
+	public Link linkToCidade(Long cidadeId) {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CidadeController.class).buscar(cidadeId)).withSelfRel();
 	}
 	
@@ -68,19 +68,27 @@ public class IfxLinks {
 		return WebMvcLinkBuilder.linkTo(EstadoController.class).withRel(IanaLinkRelations.COLLECTION);
 	}
 	
-	public Link linkToEstados(Long estadoId) {
+	public Link linkToEstado(Long estadoId) {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EstadoController.class).buscar(estadoId)).withSelfRel();
 	}
 
 	public Link linkToCozinhas() {
 		return WebMvcLinkBuilder.linkTo(CozinhaController.class).withRel(IanaLinkRelations.COLLECTION);
 	}
+	
+	public Link linkToCozinha(Long cozinhaId) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CozinhaController.class).buscar(cozinhaId)).withSelfRel();
+	}
 
-	public Link linkToFormasPagamento(Long formaPagamentoId) {
+	public Link linkToFormaPagamento(Long formaPagamentoId) {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(FormaPagamentoController.class).buscar(formaPagamentoId)).withSelfRel();
 	}
 
-	public Link linkToRestaurantes(Long restauranteId) {
+	public Link linkToRestaurantes() {
+		return WebMvcLinkBuilder.linkTo(RestauranteController.class).withSelfRel();
+	}
+	
+	public Link linkToRestaurante(Long restauranteId) {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteController.class).buscar(restauranteId)).withSelfRel();
 	}
 
@@ -88,7 +96,7 @@ public class IfxLinks {
 		return WebMvcLinkBuilder.linkTo(UsuarioController.class).withRel("usuarios");
 	}
 	
-	public Link linkToUsuarios(Long usuarioId) {
+	public Link linkToUsuario(Long usuarioId) {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).buscar(usuarioId)).withSelfRel();
 	}
 
@@ -96,7 +104,7 @@ public class IfxLinks {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioGrupoController.class).listar(usuarioId)).withRel("grupos-usuario");
 	}
 	
-	public Link linkToProdutos(Long restauranteId, Long produtoId) {
+	public Link linkToProduto(Long restauranteId, Long produtoId) {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteProdutoController.class)
 				.buscar(restauranteId, produtoId))
 				.withSelfRel();
