@@ -3,6 +3,7 @@ package com.idaltchion.ifxfood.api.assembler;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
@@ -33,6 +34,7 @@ public class RestauranteDTOAssembler extends RepresentationModelAssemblerSupport
 		Long restauranteId = restaurante.getId();
 		RestauranteDTO restauranteDTO = createModelWithId(restauranteId, restaurante);
 		modelMapper.map(restaurante, restauranteDTO);
+		restauranteDTO.add(ifxLinks.linkToRestaurantes(IanaLinkRelations.COLLECTION_VALUE));
 		restauranteDTO.getCozinha().add(ifxLinks.linkToCozinha(restauranteDTO.getCozinha().getId()));
 		restauranteDTO.add(ifxLinks.linkToFormasPagamentoRestaurante(restauranteId));
 		restauranteDTO.add(ifxLinks.linkToResponsaveisRestaurante(restauranteId));

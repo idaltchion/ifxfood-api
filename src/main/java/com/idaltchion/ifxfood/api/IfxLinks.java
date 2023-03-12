@@ -86,8 +86,12 @@ public class IfxLinks {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(FormaPagamentoController.class).buscar(formaPagamentoId)).withSelfRel();
 	}
 
-	public Link linkToRestaurantes() {
-		return WebMvcLinkBuilder.linkTo(RestauranteController.class).withSelfRel();
+	public Link linkToRestaurantes(String rel) {
+		String restauranteUrl = WebMvcLinkBuilder.linkTo(RestauranteController.class).toUri().toString();
+		TemplateVariables templateVariables = new TemplateVariables(
+				new TemplateVariable("projecao", VariableType.REQUEST_PARAM));
+		
+		return Link.of(UriTemplate.of(restauranteUrl, templateVariables), rel);
 	}
 	
 	public Link linkToRestaurante(Long restauranteId) {

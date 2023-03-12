@@ -3,6 +3,7 @@ package com.idaltchion.ifxfood.api.assembler;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -34,6 +35,6 @@ public class RestauranteApenasNomeDTOAssembler extends RepresentationModelAssemb
 	
 	@Override
 	public CollectionModel<RestauranteApenasNomeDTO> toCollectionModel(Iterable<? extends Restaurante> restaurantes) {
-		return super.toCollectionModel(restaurantes).add(ifxLinks.linkToRestaurantes());
+		return super.toCollectionModel(restaurantes).add(ifxLinks.linkToRestaurantes(IanaLinkRelations.SELF_VALUE));
 	}
 }
