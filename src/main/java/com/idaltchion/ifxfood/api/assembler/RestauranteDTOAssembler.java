@@ -30,12 +30,31 @@ public class RestauranteDTOAssembler extends RepresentationModelAssemblerSupport
 	 */
 	@Override
 	public RestauranteDTO toModel(Restaurante restaurante) {
-		
-		RestauranteDTO restauranteDTO = createModelWithId(restaurante.getId(), restaurante);
+		Long restauranteId = restaurante.getId();
+		RestauranteDTO restauranteDTO = createModelWithId(restauranteId, restaurante);
 		modelMapper.map(restaurante, restauranteDTO);
 		restauranteDTO.getCozinha().add(ifxLinks.linkToCozinha(restauranteDTO.getCozinha().getId()));
-		if (restauranteDTO.getEndereco() != null) {
+		restauranteDTO.add(ifxLinks.linkToFormasPagamentoRestaurante(restauranteId));
+		restauranteDTO.add(ifxLinks.linkToResponsaveisRestaurante(restauranteId));
+		
+		if (restaurante.getEndereco() != null) {
 			restauranteDTO.getEndereco().getCidade().add(ifxLinks.linkToCidade(restauranteDTO.getEndereco().getCidade().getId()));
+		}
+		
+		if (restaurante.inativacaoPermitida()) {
+			restauranteDTO.add(ifxLinks.linkToInativarRestaurante(restauranteId));
+		}
+		
+		if (restaurante.ativacaoPermitida()) {
+			restauranteDTO.add(ifxLinks.linkToAtivarRestaurante(restauranteId));
+		}
+		
+		if (restaurante.aberturaPermitida()) {
+			restauranteDTO.add(ifxLinks.linkToAbrirRestaurante(restauranteId));
+		} 
+		
+		if (restaurante.fechamentoPermitido()) {
+			restauranteDTO.add(ifxLinks.linkToFecharRestaurante(restauranteId));
 		}
 		
 		return restauranteDTO;

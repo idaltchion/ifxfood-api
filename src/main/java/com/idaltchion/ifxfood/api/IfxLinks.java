@@ -16,7 +16,9 @@ import com.idaltchion.ifxfood.api.controller.FluxoPedidoController;
 import com.idaltchion.ifxfood.api.controller.FormaPagamentoController;
 import com.idaltchion.ifxfood.api.controller.PedidoController;
 import com.idaltchion.ifxfood.api.controller.RestauranteController;
+import com.idaltchion.ifxfood.api.controller.RestauranteFormaPagamentoController;
 import com.idaltchion.ifxfood.api.controller.RestauranteProdutoController;
+import com.idaltchion.ifxfood.api.controller.RestauranteUsuarioResponsavelController;
 import com.idaltchion.ifxfood.api.controller.UsuarioController;
 import com.idaltchion.ifxfood.api.controller.UsuarioGrupoController;
 
@@ -108,6 +110,30 @@ public class IfxLinks {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteProdutoController.class)
 				.buscar(restauranteId, produtoId))
 				.withSelfRel();
+	}
+
+	public Link linkToFormasPagamentoRestaurante(Long restauranteId) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteFormaPagamentoController.class).listar(restauranteId)).withRel("formas-pagamento");
+	}
+
+	public Link linkToResponsaveisRestaurante(Long restauranteId) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteUsuarioResponsavelController.class).listar(restauranteId)).withRel("responsaveis");
+	}
+
+	public Link linkToInativarRestaurante(Long restauranteId) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteController.class).inativar(restauranteId)).withRel("inativar");
+	}
+
+	public Link linkToAtivarRestaurante(Long restauranteId) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteController.class).ativar(restauranteId)).withRel("ativar");
+	}
+
+	public Link linkToFecharRestaurante(Long restauranteId) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteController.class).fechar(restauranteId)).withRel("fechar");
+	}
+
+	public Link linkToAbrirRestaurante(Long restauranteId) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteController.class).abrir(restauranteId)).withRel("abrir");
 	}
 	
 }
