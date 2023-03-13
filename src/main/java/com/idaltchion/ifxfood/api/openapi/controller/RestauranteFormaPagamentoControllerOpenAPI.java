@@ -1,6 +1,7 @@
 package com.idaltchion.ifxfood.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 import com.idaltchion.ifxfood.api.exceptionhandler.Problem;
 import com.idaltchion.ifxfood.api.model.FormaPagamentoDTO;
@@ -20,7 +21,7 @@ public interface RestauranteFormaPagamentoControllerOpenAPI {
 	@ApiResponses({
 		@ApiResponse(responseCode = "404", description = "Restaurante não encontrado", content = @Content(schema = @Schema(implementation = Problem.class)))
 	})
-	public List<FormaPagamentoDTO> listar(
+	public CollectionModel<FormaPagamentoDTO> listar(
 			@ApiParam(value = "Codigo do restaurante", example = "3", required = true)
 			Long restauranteId);
 	
@@ -29,7 +30,7 @@ public interface RestauranteFormaPagamentoControllerOpenAPI {
 		@ApiResponse(responseCode = "204", description = "Associação realizada com sucesso"),
 		@ApiResponse(responseCode = "404", description = "Restaurante ou forma de pagamento não encontrado", content = @Content(schema = @Schema(implementation = Problem.class)))
 	})
-	public void associar(
+	public ResponseEntity<Void> associar(
 			@ApiParam(value = "Codigo da forma de pagamento", example = "5", required = true)
 			Long formaPagamentoId, 
 			@ApiParam(value = "Codigo do restaurante", example = "3", required = true)
@@ -40,7 +41,7 @@ public interface RestauranteFormaPagamentoControllerOpenAPI {
 		@ApiResponse(responseCode = "204", description = "Desassociação realizada com sucesso"),
 		@ApiResponse(responseCode = "404", description = "Restaurante ou forma de pagamento não encontrado", content = @Content(schema = @Schema(implementation = Problem.class)))
 	})
-	public void desassociar(
+	public ResponseEntity<Void> desassociar(
 			@ApiParam(value = "Codigo da forma de pagamento", example = "5", required = true)
 			Long formaPagamentoId, 
 			@ApiParam(value = "Codigo do restaurante", example = "3", required = true)

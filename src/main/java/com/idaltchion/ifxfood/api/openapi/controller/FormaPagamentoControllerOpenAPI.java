@@ -1,7 +1,6 @@
 package com.idaltchion.ifxfood.api.openapi.controller;
 
-import java.util.List;
-
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 
 import com.idaltchion.ifxfood.api.exceptionhandler.Problem;
@@ -20,7 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public interface FormaPagamentoControllerOpenAPI {
 
 	@ApiOperation(value = "Lista as formas de pagamentos cadastradas")
-	ResponseEntity<List<FormaPagamentoDTO>> listar();
+	ResponseEntity<CollectionModel<FormaPagamentoDTO>> listar();
 	
 	@ApiOperation(value = "Busca uma forma de pagamento pelo id")
 	@ApiResponses({

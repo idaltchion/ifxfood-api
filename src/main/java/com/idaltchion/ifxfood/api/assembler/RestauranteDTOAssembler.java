@@ -36,7 +36,7 @@ public class RestauranteDTOAssembler extends RepresentationModelAssemblerSupport
 		modelMapper.map(restaurante, restauranteDTO);
 		restauranteDTO.add(ifxLinks.linkToRestaurantes(IanaLinkRelations.COLLECTION_VALUE));
 		restauranteDTO.getCozinha().add(ifxLinks.linkToCozinha(restauranteDTO.getCozinha().getId()));
-		restauranteDTO.add(ifxLinks.linkToFormasPagamentoRestaurante(restauranteId));
+		restauranteDTO.add(ifxLinks.linkToFormasPagamentoRestaurante(restauranteId, "formas-pagamento"));
 		restauranteDTO.add(ifxLinks.linkToResponsaveisRestaurante(restauranteId));
 		
 		if (restaurante.getEndereco() != null) {

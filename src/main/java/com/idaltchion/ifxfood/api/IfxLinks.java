@@ -116,8 +116,8 @@ public class IfxLinks {
 				.withSelfRel();
 	}
 
-	public Link linkToFormasPagamentoRestaurante(Long restauranteId) {
-		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteFormaPagamentoController.class).listar(restauranteId)).withRel("formas-pagamento");
+	public Link linkToFormasPagamentoRestaurante(Long restauranteId, String rel) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteFormaPagamentoController.class).listar(restauranteId)).withRel(rel);
 	}
 
 	public Link linkToResponsaveisRestaurante(Long restauranteId) {
@@ -138,6 +138,18 @@ public class IfxLinks {
 
 	public Link linkToAbrirRestaurante(Long restauranteId) {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteController.class).abrir(restauranteId)).withRel("abrir");
+	}
+
+	public Link linkToFormasPagamento(String rel) {
+		return WebMvcLinkBuilder.linkTo(FormaPagamentoController.class).withRel(rel);
+	}
+
+	public Link linktoDesassociarFormaPagamentoRestaurante(Long formaPagamentoId, Long restauranteId, String rel) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteFormaPagamentoController.class).desassociar(formaPagamentoId, restauranteId)).withRel(rel);
+	}
+
+	public Link linktoAssociarFormaPagamentoRestaurante(Long restauranteId, String rel) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteFormaPagamentoController.class).associar(null, restauranteId)).withRel(rel);
 	}
 	
 }
