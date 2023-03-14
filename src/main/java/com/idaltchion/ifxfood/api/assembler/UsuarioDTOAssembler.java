@@ -39,6 +39,13 @@ public class UsuarioDTOAssembler extends RepresentationModelAssemblerSupport<Usu
 		return super.toCollectionModel(usuarios).add(WebMvcLinkBuilder.linkTo(UsuarioController.class).withSelfRel());
 	}
 	
+	public CollectionModel<UsuarioDTO> toCollectionModelWithAssociarResponsavel(Iterable<? extends Usuario> usuarios, Long restaurante_id) {
+		CollectionModel<UsuarioDTO> usuariosCollectionModel = toCollectionModel(usuarios);
+		usuariosCollectionModel.getContent().forEach(usuario ->
+				usuario.add(ifxLinks.linktoDessassociarResponsavelRestaurante(usuario.getId(), restaurante_id, "desassociar")));
+		return usuariosCollectionModel;
+	}
+	
 	public UsuarioDTO toModelWithCollectionRel(Usuario usuario) {
 		UsuarioDTO usuarioDTO = toModel(usuario);
 		usuarioDTO.add(ifxLinks.linkToUsuarios());
