@@ -7,6 +7,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,8 +26,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.idaltchion.ifxfood.api.IfxLinks;
 import com.idaltchion.ifxfood.api.assembler.FotoProdutoDTOAssembler;
-import com.idaltchion.ifxfood.api.assembler.FotoProdutoDTODisassembler;
 import com.idaltchion.ifxfood.api.assembler.ProdutoDTOAssembler;
 import com.idaltchion.ifxfood.api.assembler.ProdutoDTODisassembler;
 import com.idaltchion.ifxfood.api.model.FotoProdutoDTO;
@@ -64,9 +66,6 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 	private CadastroProdutoService produtoService;
 	
 	@Autowired
-	private FotoProdutoDTODisassembler fotoProdutoDTODisassembler;
-	
-	@Autowired
 	private FotoProdutoDTOAssembler fotoProdutoDTOAssembler;
 	@Autowired
 	private CatalogoFotoProdutoService fotoProdutoService;
@@ -74,9 +73,12 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 	@Autowired
 	private FotoProdutoStorageService fotoStorageService;
 	
+	@Autowired
+	private IfxLinks ifxLinks;
+	
 	@GetMapping
-	public List<ProdutoDTO> listar(@PathVariable Long restauranteId, 
-			@RequestParam(required = false) boolean exibirInativos) {
+	public CollectionModel<ProdutoDTO> listar(@PathVariable Long restauranteId, 
+			@RequestParam(required = false, defaultValue = "false") Boolean exibirInativos) {
 		Restaurante restaurante = restauranteService.buscar(restauranteId);
 		List<Produto> produtos = null;
 		if (exibirInativos) {
@@ -84,13 +86,14 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 		} else {
 			produtos = produtoRepository.findAtivosByRestaurante(restaurante);
 		}
-		return produtoDTOAssembler.toDTOCollection(produtos);
+		return produtoDTOAssembler.toCollectionModel(produtos)
+				.add(ifxLinks.linkToProdutos(restauranteId, IanaLinkRelations.SELF_VALUE));
 	}
 	
 	@GetMapping("/{produtoId}")
 	public ProdutoDTO buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
 		Produto produto = produtoService.buscar(produtoId, restauranteId);
-		return produtoDTOAssembler.toDTO(produto);
+		return produtoDTOAssembler.toModelWithCollectionRel(produto);
 	}
 	
 	@PostMapping
@@ -99,7 +102,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 		Restaurante restaurante = restauranteService.buscar(restauranteId);
 		Produto produto = produtoDTODisassembler.toObjectModel(produtoInput);
 		produto.setRestaurante(restaurante);
-		return produtoDTOAssembler.toDTO(produtoService.salvar(produto));
+		return produtoDTOAssembler.toModel(produtoService.salvar(produto));
 	}
 	
 	@PutMapping("/{produtoId}")
@@ -107,7 +110,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 		Produto produtoAtual = produtoService.buscar(produtoId, restauranteId);
 		produtoDTODisassembler.copyToDomainObject(produtoInput, produtoAtual);
 		produtoAtual = produtoService.salvar(produtoAtual);
-		return produtoDTOAssembler.toDTO(produtoAtual);
+		return produtoDTOAssembler.toModel(produtoAtual);
 	}
 	
 	@DeleteMapping("/{produtoId}")
@@ -135,13 +138,14 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 		
 		FotoProduto fotoSalva = fotoProdutoService.salvar(foto, inputStream);
 		
-		return fotoProdutoDTOAssembler.toDTO(fotoSalva);
+		return fotoProdutoDTOAssembler.toModel(fotoSalva);
 	}
 	
 	@GetMapping(path = "/{produtoId}/foto", produces = MediaType.APPLICATION_JSON_VALUE)
 	public FotoProdutoDTO buscarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
+		//TODO: Tratar a exception quando o 'Accept' nao existe no cabecalho da requisicao
 		FotoProduto foto = fotoProdutoService.buscar(restauranteId, produtoId);
-		return fotoProdutoDTODisassembler.toDTO(foto);
+		return fotoProdutoDTOAssembler.toModel(foto);
 	}
 	
 	@GetMapping(path = "/{produtoId}/foto")

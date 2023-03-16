@@ -110,10 +110,10 @@ public class IfxLinks {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioGrupoController.class).listar(usuarioId)).withRel("grupos-usuario");
 	}
 	
-	public Link linkToProduto(Long restauranteId, Long produtoId) {
+	public Link linkToProduto(Long restauranteId, Long produtoId, String rel) {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteProdutoController.class)
 				.buscar(restauranteId, produtoId))
-				.withSelfRel();
+				.withRel(rel);
 	}
 
 	public Link linkToFormasPagamentoRestaurante(Long restauranteId, String rel) {
@@ -158,6 +158,14 @@ public class IfxLinks {
 
 	public Link linktoDessassociarResponsavelRestaurante(Long usuario_id, Long restaurante_id, String rel) {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteUsuarioResponsavelController.class).desassociar(restaurante_id, usuario_id)).withRel(rel);
+	}
+
+	public Link linkToProdutos(Long restauranteId, String rel) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteProdutoController.class).listar(restauranteId, null)).withRel(rel);
+	}
+
+	public Link linkToFotoProduto(Long restauranteId, Long produtoId, String rel) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteProdutoController.class).buscarFoto(restauranteId, produtoId)).withRel(rel);
 	}
 	
 }

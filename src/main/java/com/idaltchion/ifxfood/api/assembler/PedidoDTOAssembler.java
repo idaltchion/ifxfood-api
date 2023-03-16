@@ -2,6 +2,7 @@ package com.idaltchion.ifxfood.api.assembler;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +34,7 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
 		pedidoDTO.getRestaurante().add(ifxLinks.linkToRestaurante(pedidoDTO.getRestaurante().getId()));
 		pedidoDTO.getCliente().add(ifxLinks.linkToUsuario(pedidoDTO.getCliente().getId()));
 		pedidoDTO.getItens().forEach(item -> 
-			item.add(ifxLinks.linkToProduto(pedidoDTO.getRestaurante().getId(), item.getProdutoId())));
+			item.add(ifxLinks.linkToProduto(pedidoDTO.getRestaurante().getId(), item.getProdutoId(), IanaLinkRelations.SELF_VALUE)));
 		return pedidoDTO;
 	}
 	
