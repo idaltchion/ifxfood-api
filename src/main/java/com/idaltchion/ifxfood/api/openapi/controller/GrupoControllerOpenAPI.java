@@ -1,6 +1,6 @@
 package com.idaltchion.ifxfood.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 import com.idaltchion.ifxfood.api.exceptionhandler.Problem;
 import com.idaltchion.ifxfood.api.model.GrupoDTO;
@@ -18,7 +18,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public interface GrupoControllerOpenAPI {	
 	
 	@ApiOperation("Lista todos os grupos cadastrados")
-	List<GrupoDTO> listar();
+	CollectionModel<GrupoDTO> listar();
 	
 	@ApiOperation("Busca um grupo pelo id")
 	@ApiResponses({

@@ -14,7 +14,10 @@ import com.idaltchion.ifxfood.api.controller.CozinhaController;
 import com.idaltchion.ifxfood.api.controller.EstadoController;
 import com.idaltchion.ifxfood.api.controller.FluxoPedidoController;
 import com.idaltchion.ifxfood.api.controller.FormaPagamentoController;
+import com.idaltchion.ifxfood.api.controller.GrupoController;
+import com.idaltchion.ifxfood.api.controller.GrupoPermissaoController;
 import com.idaltchion.ifxfood.api.controller.PedidoController;
+import com.idaltchion.ifxfood.api.controller.PermissaoController;
 import com.idaltchion.ifxfood.api.controller.RestauranteController;
 import com.idaltchion.ifxfood.api.controller.RestauranteFormaPagamentoController;
 import com.idaltchion.ifxfood.api.controller.RestauranteProdutoController;
@@ -82,10 +85,6 @@ public class IfxLinks {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CozinhaController.class).buscar(cozinhaId)).withSelfRel();
 	}
 
-	public Link linkToFormaPagamento(Long formaPagamentoId) {
-		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(FormaPagamentoController.class).buscar(formaPagamentoId)).withSelfRel();
-	}
-
 	public Link linkToRestaurantes(String rel) {
 		String restauranteUrl = WebMvcLinkBuilder.linkTo(RestauranteController.class).toUri().toString();
 		TemplateVariables templateVariables = new TemplateVariables(
@@ -106,22 +105,12 @@ public class IfxLinks {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).buscar(usuarioId)).withSelfRel();
 	}
 
-	public Link linkToGruposUsuario(Long usuarioId) {
-		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioGrupoController.class).listar(usuarioId)).withRel("grupos-usuario");
+	public Link linkToGrupos(String rel) {
+		return WebMvcLinkBuilder.linkTo(GrupoController.class).withRel(rel);
 	}
 	
-	public Link linkToProduto(Long restauranteId, Long produtoId, String rel) {
-		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteProdutoController.class)
-				.buscar(restauranteId, produtoId))
-				.withRel(rel);
-	}
-
-	public Link linkToFormasPagamentoRestaurante(Long restauranteId, String rel) {
-		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteFormaPagamentoController.class).listar(restauranteId)).withRel(rel);
-	}
-
-	public Link linkToResponsaveisRestaurante(Long restauranteId, String rel) {
-		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteUsuarioResponsavelController.class).listar(restauranteId)).withRel(rel);
+	public Link linkToGruposUsuario(Long usuarioId) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioGrupoController.class).listar(usuarioId)).withRel("grupos-usuario");
 	}
 
 	public Link linkToInativarRestaurante(Long restauranteId) {
@@ -151,21 +140,67 @@ public class IfxLinks {
 	public Link linktoAssociarFormaPagamentoRestaurante(Long restauranteId, String rel) {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteFormaPagamentoController.class).associar(null, restauranteId)).withRel(rel);
 	}
+	
+	public Link linkToFormaPagamento(Long formaPagamentoId) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(FormaPagamentoController.class).buscar(formaPagamentoId)).withSelfRel();
+	}
+	
+	public Link linkToFormasPagamentoRestaurante(Long restauranteId, String rel) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteFormaPagamentoController.class).listar(restauranteId)).withRel(rel);
+	}
 
 	public Link linktoAssociarResponsavelRestaurante(Long restaurante_id, String rel) {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteUsuarioResponsavelController.class).associar(restaurante_id, null)).withRel(rel);
 	}
+	
+	public Link linkToResponsaveisRestaurante(Long restauranteId, String rel) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteUsuarioResponsavelController.class).listar(restauranteId)).withRel(rel);
+	}
 
-	public Link linktoDessassociarResponsavelRestaurante(Long usuario_id, Long restaurante_id, String rel) {
+	public Link linktoDesassociarResponsavelRestaurante(Long usuario_id, Long restaurante_id, String rel) {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteUsuarioResponsavelController.class).desassociar(restaurante_id, usuario_id)).withRel(rel);
 	}
 
 	public Link linkToProdutos(Long restauranteId, String rel) {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteProdutoController.class).listar(restauranteId, null)).withRel(rel);
 	}
+	
+	public Link linkToProduto(Long restauranteId, Long produtoId, String rel) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteProdutoController.class)
+				.buscar(restauranteId, produtoId))
+				.withRel(rel);
+	}
 
 	public Link linkToFotoProduto(Long restauranteId, Long produtoId, String rel) {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteProdutoController.class).buscarFoto(restauranteId, produtoId)).withRel(rel);
+	}
+	
+	public Link linktoPermissoesGrupo(Long grupoId, String rel) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GrupoPermissaoController.class).buscar(grupoId)).withRel(rel);
+	}
+
+	public Link linktoDesassociarPermissao(Long grupoId, Long permissaoId, String rel) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GrupoPermissaoController.class).desassociar(grupoId, permissaoId)).withRel(rel);
+	}
+
+	public Link linkToAssociarPermissao(Long grupoId, Long permissaoId, String rel) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GrupoPermissaoController.class).associar(grupoId, permissaoId)).withRel(rel);
+	}
+
+	public Link linkToAssociarPermissao(Long grupoId, String rel) {
+		return linkToAssociarPermissao(grupoId, null, rel);
+	}
+
+	public Link linkToPermissoes(String rel) {
+		return WebMvcLinkBuilder.linkTo(PermissaoController.class).withRel(rel);
+	}
+
+	public Link linkToDesassociarGrupoUsuario(Long usuarioId, Long grupoId, String rel) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioGrupoController.class).desassociar(usuarioId, grupoId)).withRel(rel);
+	}
+
+	public Link linkToAssociarGrupoUsuario(Long usuarioId, String rel) {
+		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioGrupoController.class).associar(usuarioId, null)).withRel(rel);
 	}
 	
 }

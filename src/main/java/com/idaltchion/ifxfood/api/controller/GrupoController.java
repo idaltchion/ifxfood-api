@@ -1,10 +1,9 @@
 package com.idaltchion.ifxfood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,20 +42,20 @@ public class GrupoController implements GrupoControllerOpenAPI {
 	CadastroGrupoService grupoService;
 	
 	@GetMapping
-	public List<GrupoDTO> listar() {
-		return grupoDTOAssembler.toCollectionDTO(grupoRepository.findAll());
+	public CollectionModel<GrupoDTO> listar() {
+		return grupoDTOAssembler.toCollectionModel(grupoRepository.findAll());
 	}
 	
 	@GetMapping("/{id}")
 	public GrupoDTO buscar(@PathVariable Long id) {
-		return grupoDTOAssembler.toDTO(grupoService.buscar(id));
+		return grupoDTOAssembler.toModelWithCollectionRel(grupoService.buscar(id));
 	}
 	
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public GrupoDTO adicionar(@RequestBody @Valid GrupoDTOInput grupoInput) {
 		Grupo novoGrupo = grupoDTODisassembler.toDomainObject(grupoInput);
-		return grupoDTOAssembler.toDTO(grupoService.salvar(novoGrupo));
+		return grupoDTOAssembler.toModel(grupoService.salvar(novoGrupo));
 	}
 	
 	@DeleteMapping("/{id}")
@@ -70,7 +69,7 @@ public class GrupoController implements GrupoControllerOpenAPI {
 		Grupo grupoAtual = grupoService.buscar(id);
 		grupoDTODisassembler.copyToDomainObject(grupoInput, grupoAtual);
 		grupoAtual = grupoService.salvar(grupoAtual);
-		return grupoDTOAssembler.toDTO(grupoAtual);
+		return grupoDTOAssembler.toModel(grupoAtual);
 	}
 	
 }

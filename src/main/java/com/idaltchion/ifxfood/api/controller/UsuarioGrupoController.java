@@ -1,9 +1,9 @@
 package com.idaltchion.ifxfood.api.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,25 +33,29 @@ public class UsuarioGrupoController {
 	GrupoDTOAssembler grupoAssembler;
 	
 	@GetMapping
-	public List<GrupoDTO> listar(@PathVariable Long usuario_id) {
+	public CollectionModel<GrupoDTO> listar(@PathVariable Long usuario_id) {
 		Usuario usuarioExistente = usuarioService.buscar(usuario_id);
-		return grupoAssembler.toCollectionDTO(usuarioExistente.getGrupos());
+		return grupoAssembler.toCollectionModelWithAssociarDesassociarGrupo(usuarioExistente.getGrupos(), usuario_id);
 	}
 	
 	@PutMapping("/{grupo_id}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	public void associar(@PathVariable Long usuario_id, @PathVariable Long grupo_id) {
+	public ResponseEntity<Void> associar(@PathVariable Long usuario_id, @PathVariable Long grupo_id) {
 		Usuario usuarioExistente = usuarioService.buscar(usuario_id);
 		Grupo grupoExistente = grupoService.buscar(grupo_id);
 		usuarioService.associarGrupo(usuarioExistente, grupoExistente);
+		
+		return ResponseEntity.noContent().build();
 	}
 	
 	@DeleteMapping("/{grupo_id}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	public void desassociar(@PathVariable Long usuario_id, @PathVariable Long grupo_id) {
+	public ResponseEntity<Void> desassociar(@PathVariable Long usuario_id, @PathVariable Long grupo_id) {
 		Usuario usuarioExistente = usuarioService.buscar(usuario_id);
 		Grupo grupoExistente = grupoService.buscar(grupo_id);
 		usuarioService.desassociar(usuarioExistente, grupoExistente);
+		
+		return ResponseEntity.noContent().build();
 	}
 	
 }

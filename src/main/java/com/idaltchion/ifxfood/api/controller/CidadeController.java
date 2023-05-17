@@ -45,7 +45,7 @@ public class CidadeController implements CidadeControllerOpenAPI {
 	private CidadeDTODisassembler cidadeDTODisassembler;
 	
 	@GetMapping
-	public CollectionModel<CidadeDTO> listar() {		 
+	public CollectionModel<CidadeDTO> listar() {
 		return cidadeDTOAssembler.toCollectionModel(cidadeRepository.findAll());
 	}
 	

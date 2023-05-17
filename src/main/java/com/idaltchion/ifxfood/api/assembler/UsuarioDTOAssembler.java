@@ -42,7 +42,7 @@ public class UsuarioDTOAssembler extends RepresentationModelAssemblerSupport<Usu
 	public CollectionModel<UsuarioDTO> toCollectionModelWithAssociarResponsavel(Iterable<? extends Usuario> usuarios, Long restaurante_id) {
 		CollectionModel<UsuarioDTO> usuariosCollectionModel = toCollectionModel(usuarios);
 		usuariosCollectionModel.getContent().forEach(usuario ->
-				usuario.add(ifxLinks.linktoDessassociarResponsavelRestaurante(usuario.getId(), restaurante_id, "desassociar")));
+				usuario.add(ifxLinks.linktoDesassociarResponsavelRestaurante(usuario.getId(), restaurante_id, "desassociar")));
 		return usuariosCollectionModel;
 	}
 	
