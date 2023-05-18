@@ -33,7 +33,7 @@ public class CozinhaDTOAssembler extends RepresentationModelAssemblerSupport<Coz
 	
 	public CozinhaDTO toModelWithCollectionRel(Cozinha cozinha) {
 		CozinhaDTO cozinhaDTO = toModel(cozinha);
-		cozinhaDTO.add(ifxLinks.linkToCozinhas());
+		cozinhaDTO.add(ifxLinks.linkToCozinhas("cozinhas"));
 		
 		return cozinhaDTO;
 	}

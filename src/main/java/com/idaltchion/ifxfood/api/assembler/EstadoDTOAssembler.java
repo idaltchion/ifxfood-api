@@ -38,12 +38,12 @@ public class EstadoDTOAssembler extends RepresentationModelAssemblerSupport<Esta
 	@Override
 	public CollectionModel<EstadoDTO> toCollectionModel(Iterable<? extends Estado> estados) {
 		return super.toCollectionModel(estados)
-				.add(ifxLinks.linkToEstados());
+				.add(ifxLinks.linkToEstados("estados"));
 	}
 
 	public EstadoDTO toModelWithCollectionRel(Estado estado) {
 		EstadoDTO estadoDTO = toModel(estado);
-		estadoDTO.add(ifxLinks.linkToEstados());
+		estadoDTO.add(ifxLinks.linkToEstados("estados"));
 
 		return estadoDTO;
 	}

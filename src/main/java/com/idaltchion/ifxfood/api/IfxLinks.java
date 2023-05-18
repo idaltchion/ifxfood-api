@@ -33,7 +33,7 @@ public class IfxLinks {
 			new TemplateVariable("size", VariableType.REQUEST_PARAM),
 			new TemplateVariable("sort", VariableType.REQUEST_PARAM));
 	
-	public Link linkToPedidos() {
+	public Link linkToPedidos(String rel) {
 		String pedidosUrl = WebMvcLinkBuilder.linkTo(PedidoController.class).toUri().toString();
 		
 		TemplateVariables filterVariables = new TemplateVariables(
@@ -42,7 +42,7 @@ public class IfxLinks {
 				new TemplateVariable("dataCriacaoInicio", VariableType.REQUEST_PARAM),
 				new TemplateVariable("dataCriacaoFim", VariableType.REQUEST_PARAM));
 		
-		return Link.of(UriTemplate.of(pedidosUrl, filterVariables.concat(PAGE_VARIABLES)), IanaLinkRelations.COLLECTION);
+		return Link.of(UriTemplate.of(pedidosUrl, filterVariables.concat(PAGE_VARIABLES)), rel);
 	}
 	
 	public Link linkToConfirmacaoPedido(String codigo_pedido) {
@@ -69,16 +69,16 @@ public class IfxLinks {
 		return linkToCidades(IanaLinkRelations.SELF.value());
 	}
 	
-	public Link linkToEstados() {
-		return WebMvcLinkBuilder.linkTo(EstadoController.class).withRel(IanaLinkRelations.COLLECTION);
+	public Link linkToEstados(String rel) {
+		return WebMvcLinkBuilder.linkTo(EstadoController.class).withRel(rel);
 	}
 	
 	public Link linkToEstado(Long estadoId) {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(EstadoController.class).buscar(estadoId)).withSelfRel();
 	}
 
-	public Link linkToCozinhas() {
-		return WebMvcLinkBuilder.linkTo(CozinhaController.class).withRel(IanaLinkRelations.COLLECTION);
+	public Link linkToCozinhas(String rel) {
+		return WebMvcLinkBuilder.linkTo(CozinhaController.class).withRel(rel);
 	}
 	
 	public Link linkToCozinha(Long cozinhaId) {
@@ -97,8 +97,8 @@ public class IfxLinks {
 		return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteController.class).buscar(restauranteId)).withSelfRel();
 	}
 
-	public Link linkToUsuarios() {
-		return WebMvcLinkBuilder.linkTo(UsuarioController.class).withRel("usuarios");
+	public Link linkToUsuarios(String rel) {
+		return WebMvcLinkBuilder.linkTo(UsuarioController.class).withRel(rel);
 	}
 	
 	public Link linkToUsuario(Long usuarioId) {

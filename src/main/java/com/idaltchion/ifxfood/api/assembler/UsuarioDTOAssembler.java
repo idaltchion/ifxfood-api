@@ -48,7 +48,7 @@ public class UsuarioDTOAssembler extends RepresentationModelAssemblerSupport<Usu
 	
 	public UsuarioDTO toModelWithCollectionRel(Usuario usuario) {
 		UsuarioDTO usuarioDTO = toModel(usuario);
-		usuarioDTO.add(ifxLinks.linkToUsuarios());
+		usuarioDTO.add(ifxLinks.linkToUsuarios("usuarios"));
 		return usuarioDTO;
 	}
 

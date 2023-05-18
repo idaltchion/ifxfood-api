@@ -40,7 +40,7 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
 	
 	public PedidoDTO toModelWithCollectionRel(Pedido pedido) {
 		PedidoDTO pedidoDTO = toModel(pedido);
-		pedidoDTO.add(ifxLinks.linkToPedidos());
+		pedidoDTO.add(ifxLinks.linkToPedidos("pedidos"));
 		
 		if (pedido.podeSerConfirmado()) {
 			pedidoDTO.add(ifxLinks.linkToConfirmacaoPedido(pedidoDTO.getCodigo()));
