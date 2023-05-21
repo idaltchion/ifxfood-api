@@ -3,6 +3,7 @@ package com.idaltchion.ifxfood.api.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.idaltchion.ifxfood.api.IfxLinks;
 import com.idaltchion.ifxfood.domain.filter.VendaDiariaFilter;
 import com.idaltchion.ifxfood.domain.model.VendaDiaria;
 import com.idaltchion.ifxfood.domain.service.VendaQueryService;
@@ -28,6 +30,19 @@ public class EstatisticasController {
 	
 	@Autowired
 	public VendaReportService vendaReportService;
+	
+	@Autowired
+	private IfxLinks ifxLinks;
+	
+	private static class EstatisticasModel extends RepresentationModel<EstatisticasModel>{
+	}
+	
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public EstatisticasModel estatisticas() {
+		var estatisticasModel = new EstatisticasModel();
+		estatisticasModel.add(ifxLinks.linkToEstatisticasVendasDiarias("vendas-diarias"));
+		return estatisticasModel;
+	}
 	
 	@GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<VendaDiaria> consultaVendasDiarias(VendaDiariaFilter filtro, 

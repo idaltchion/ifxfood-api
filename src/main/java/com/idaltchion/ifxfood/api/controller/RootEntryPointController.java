@@ -28,6 +28,7 @@ public class RootEntryPointController {
 		rootEntryPoint.add(ifxLinks.linkToFormasPagamento("formas-pagamento"));
 		rootEntryPoint.add(ifxLinks.linkToGrupos("grupos"));
 		rootEntryPoint.add(ifxLinks.linkToUsuarios("usuarios"));
+		rootEntryPoint.add(ifxLinks.linkToEstatisticas("estatisticas"));
 		
 		return rootEntryPoint;
 	}
