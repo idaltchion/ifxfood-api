@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import com.idaltchion.ifxfood.api.exceptionhandler.Problem;
 import com.idaltchion.ifxfood.api.model.FormaPagamentoDTO;
 import com.idaltchion.ifxfood.api.model.input.FormaPagamentoDTOInput;
+import com.idaltchion.ifxfood.api.openapi.model.FormaPagamentoDTOOpenAPI;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,6 +20,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public interface FormaPagamentoControllerOpenAPI {
 
 	@ApiOperation(value = "Lista as formas de pagamentos cadastradas")
+	@io.swagger.annotations.ApiResponses({ //usando "ApiResponse" v2 devido a bug na representacao do objeto utilizando "response" no swagger
+		@io.swagger.annotations.ApiResponse(code = 200, message = "OK", response = FormaPagamentoDTOOpenAPI.class)
+	})
 	ResponseEntity<CollectionModel<FormaPagamentoDTO>> listar();
 	
 	@ApiOperation(value = "Busca uma forma de pagamento pelo id")

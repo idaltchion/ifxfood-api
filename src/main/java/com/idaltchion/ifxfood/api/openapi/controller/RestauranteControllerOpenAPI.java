@@ -26,6 +26,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Api(tags = "Restaurante")
 public interface RestauranteControllerOpenAPI {
@@ -37,6 +38,7 @@ public interface RestauranteControllerOpenAPI {
 	})
 	CollectionModel<RestauranteTaxaFreteDTO> listar();
 	
+	@ApiIgnore //annotation para nao exibir essa representacao na documentacao (schemas)
 	@ApiOperation(value = "Lista restaurantes", hidden = true)
 	CollectionModel<RestauranteApenasNomeDTO> listarApenasNomes();
 	

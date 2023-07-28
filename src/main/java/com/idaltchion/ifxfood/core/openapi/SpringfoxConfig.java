@@ -7,8 +7,10 @@ import java.util.function.Consumer;
 import org.apache.http.HttpStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Links;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -16,10 +18,26 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.fasterxml.classmate.TypeResolver;
 import com.idaltchion.ifxfood.api.exceptionhandler.Problem;
+import com.idaltchion.ifxfood.api.model.CidadeDTO;
+import com.idaltchion.ifxfood.api.model.CozinhaDTO;
+import com.idaltchion.ifxfood.api.model.EstadoDTO;
+import com.idaltchion.ifxfood.api.model.FormaPagamentoDTO;
+import com.idaltchion.ifxfood.api.model.GrupoDTO;
 import com.idaltchion.ifxfood.api.model.PedidoResumoDTO;
-import com.idaltchion.ifxfood.api.openapi.model.PageOpenApi;
+import com.idaltchion.ifxfood.api.model.ProdutoDTO;
+import com.idaltchion.ifxfood.api.model.RestauranteTaxaFreteDTO;
+import com.idaltchion.ifxfood.api.model.UsuarioDTO;
+import com.idaltchion.ifxfood.api.openapi.model.CidadeDTOOpenAPI;
+import com.idaltchion.ifxfood.api.openapi.model.CozinhaDTOOpenAPI;
+import com.idaltchion.ifxfood.api.openapi.model.EstadoDTOOpenAPI;
+import com.idaltchion.ifxfood.api.openapi.model.FormaPagamentoDTOOpenAPI;
+import com.idaltchion.ifxfood.api.openapi.model.GrupoDTOOpenAPI;
+import com.idaltchion.ifxfood.api.openapi.model.LinksModelOpenAPI;
 import com.idaltchion.ifxfood.api.openapi.model.PageableModelOpenAPI;
 import com.idaltchion.ifxfood.api.openapi.model.PedidoResumoDTOOpenAPI;
+import com.idaltchion.ifxfood.api.openapi.model.ProdutoDTOOpenAPI;
+import com.idaltchion.ifxfood.api.openapi.model.RestauranteDTOOpenAPI;
+import com.idaltchion.ifxfood.api.openapi.model.UsuarioDTOOpenAPI;
 import com.idaltchion.ifxfood.domain.filter.PedidoFilter;
 
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -60,11 +78,28 @@ public class SpringfoxConfig implements WebMvcConfigurer {
 			.globalResponses(HttpMethod.PUT, globalPutResponseMessages())
 			.additionalModels(
 					typeResolver.resolve(Problem.class), 
-					typeResolver.resolve(PedidoFilter.class),
-					typeResolver.resolve(PageOpenApi.class))
-			.alternateTypeRules(AlternateTypeRules.newRule(
-					typeResolver.resolve(Page.class, PedidoResumoDTO.class), PedidoResumoDTOOpenAPI.class))
+					typeResolver.resolve(PedidoFilter.class))
+			.alternateTypeRules(
+					AlternateTypeRules.newRule(
+							typeResolver.resolve(PagedModel.class, PedidoResumoDTO.class), PedidoResumoDTOOpenAPI.class),
+					AlternateTypeRules.newRule(
+							typeResolver.resolve(PagedModel.class, CozinhaDTO.class), CozinhaDTOOpenAPI.class),
+					AlternateTypeRules.newRule(
+							typeResolver.resolve(CollectionModel.class, CidadeDTO.class), CidadeDTOOpenAPI.class),
+					AlternateTypeRules.newRule(
+							typeResolver.resolve(CollectionModel.class, EstadoDTO.class), EstadoDTOOpenAPI.class),
+					AlternateTypeRules.newRule(
+							typeResolver.resolve(CollectionModel.class, FormaPagamentoDTO.class), FormaPagamentoDTOOpenAPI.class),
+					AlternateTypeRules.newRule(
+							typeResolver.resolve(CollectionModel.class, GrupoDTO.class), GrupoDTOOpenAPI.class),
+					AlternateTypeRules.newRule(
+							typeResolver.resolve(CollectionModel.class, ProdutoDTO.class), ProdutoDTOOpenAPI.class),
+					AlternateTypeRules.newRule(
+							typeResolver.resolve(CollectionModel.class, UsuarioDTO.class), UsuarioDTOOpenAPI.class),
+					AlternateTypeRules.newRule(
+							typeResolver.resolve(CollectionModel.class, RestauranteTaxaFreteDTO.class), RestauranteDTOOpenAPI.class))
 			.directModelSubstitute(Pageable.class, PageableModelOpenAPI.class)
+			.directModelSubstitute(Links.class, LinksModelOpenAPI.class)
 			.apiInfo(apiInfo())
 			.tags(tags()[0], tags());
 	}

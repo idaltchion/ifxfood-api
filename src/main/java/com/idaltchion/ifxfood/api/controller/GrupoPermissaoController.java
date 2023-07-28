@@ -19,6 +19,9 @@ import com.idaltchion.ifxfood.domain.model.Permissao;
 import com.idaltchion.ifxfood.domain.service.CadastroGrupoService;
 import com.idaltchion.ifxfood.domain.service.CadastroPermissaoService;
 
+/*
+ * TODO: Implementar interface OpenApi de Grupos x Permissoes  para documentacao
+ */
 @RestController
 @RequestMapping("/grupos/{grupo_id}/permissoes")
 public class GrupoPermissaoController {
