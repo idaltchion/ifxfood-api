@@ -26,7 +26,7 @@ import com.idaltchion.ifxfood.domain.repository.UsuarioRepository;
 import com.idaltchion.ifxfood.domain.service.CadastroUsuarioService;
 
 @RestController
-@RequestMapping(path = "/usuarios")
+@RequestMapping(path = "/v1/usuarios")
 public class UsuarioController {
 
 	@Autowired

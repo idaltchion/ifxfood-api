@@ -11,7 +11,7 @@ import com.idaltchion.ifxfood.api.v1.model.PermissaoDTO;
 import com.idaltchion.ifxfood.domain.repository.PermissaoRepository;
 
 @RestController
-@RequestMapping(path = "/permissoes")
+@RequestMapping(path = "/v1/permissoes")
 public class PermissaoController {
 	
 	@Autowired

@@ -22,7 +22,7 @@ import io.swagger.annotations.Api;
 
 @Api(tags = "Estatistica")
 @RestController
-@RequestMapping(path = "/estatisticas")
+@RequestMapping(path = "/v1/estatisticas")
 public class EstatisticasController {
 
 	@Autowired

@@ -23,7 +23,7 @@ import com.idaltchion.ifxfood.domain.service.CadastroRestauranteService;
 import com.idaltchion.ifxfood.domain.service.CadastroUsuarioService;
 
 @RestController
-@RequestMapping("/restaurantes/{restaurante_id}/responsaveis")
+@RequestMapping("/v1/restaurantes/{restaurante_id}/responsaveis")
 public class RestauranteUsuarioResponsavelController implements RestauranteUsuarioResponsavelControllerOpenAPI {
 	
 	@Autowired

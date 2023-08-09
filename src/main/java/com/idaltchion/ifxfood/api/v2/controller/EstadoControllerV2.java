@@ -1,4 +1,4 @@
-package com.idaltchion.ifxfood.api.v1.controller;
+package com.idaltchion.ifxfood.api.v2.controller;
 
 import javax.validation.Valid;
 
@@ -16,50 +16,49 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.idaltchion.ifxfood.api.v1.assembler.EstadoDTOAssembler;
-import com.idaltchion.ifxfood.api.v1.assembler.EstadoDTODisassembler;
-import com.idaltchion.ifxfood.api.v1.model.EstadoDTO;
-import com.idaltchion.ifxfood.api.v1.model.input.EstadoDTOInput;
-import com.idaltchion.ifxfood.api.v1.openapi.controller.EstadoControllerOpenAPI;
+import com.idaltchion.ifxfood.api.v2.assembler.EstadoDTOAssemblerV2;
+import com.idaltchion.ifxfood.api.v2.assembler.EstadoDTODisassemblerV2;
+import com.idaltchion.ifxfood.api.v2.model.EstadoDTOV2;
+import com.idaltchion.ifxfood.api.v2.model.input.EstadoDTOInputV2;
 import com.idaltchion.ifxfood.domain.model.Estado;
 import com.idaltchion.ifxfood.domain.repository.EstadoRepository;
 import com.idaltchion.ifxfood.domain.service.CadastroEstadoService;
 
 @RestController
-@RequestMapping(path = "/v1/estados", produces = MediaType.APPLICATION_JSON_VALUE)
-public class EstadoController implements EstadoControllerOpenAPI {
+@RequestMapping(path = "/v2/estados", produces = MediaType.APPLICATION_JSON_VALUE)
+public class EstadoControllerV2 {
 
 	@Autowired
 	private EstadoRepository estadoRepository;
 	
 	@Autowired
-	private EstadoDTOAssembler estadoAssembler;
+	private EstadoDTOAssemblerV2 estadoAssembler;
 	
 	@Autowired
-	private EstadoDTODisassembler estadoDisassembler;
+	private EstadoDTODisassemblerV2 estadoDisassembler;
 	
 	@Autowired
 	private CadastroEstadoService cadastroEstadoService;
 	
 	@GetMapping
-	public CollectionModel<EstadoDTO> listar() {
+	public CollectionModel<EstadoDTOV2> listar() {
 		return estadoAssembler.toCollectionModel(estadoRepository.findAll());
 	}
 	
 	@GetMapping("/{codigo}")
-	public EstadoDTO buscar(@PathVariable Long codigo) {
+	public EstadoDTOV2 buscar(@PathVariable Long codigo) {
 		return estadoAssembler.toModelWithCollectionRel(cadastroEstadoService.buscar(codigo));
 	}
 	
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public EstadoDTO adicionar(@RequestBody @Valid EstadoDTOInput estadoInput) {
+	public EstadoDTOV2 adicionar(@RequestBody @Valid EstadoDTOInputV2 estadoInput) {
 		Estado estado = estadoDisassembler.toDomainObject(estadoInput);
 		return estadoAssembler.toModel(cadastroEstadoService.salvar(estado));
 	}
 	
 	@PutMapping("/{codigo}")
-	public EstadoDTO atualizar(@PathVariable Long codigo, @RequestBody @Valid EstadoDTOInput estadoInput) {
+	public EstadoDTOV2 atualizar(@PathVariable Long codigo, @RequestBody @Valid EstadoDTOInputV2 estadoInput) {
 		Estado estadoAtual = cadastroEstadoService.buscar(codigo);
 		estadoDisassembler.copyToDomainObject(estadoInput, estadoAtual);
 		return estadoAssembler.toModel(cadastroEstadoService.salvar(estadoAtual));

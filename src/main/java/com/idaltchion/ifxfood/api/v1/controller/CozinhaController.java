@@ -35,7 +35,7 @@ import com.idaltchion.ifxfood.domain.service.CadastroCozinhaService;
  * entretanto, deve adicionar no pom.xml a dependencia jackson-dataformat
  */
 @RestController
-@RequestMapping(value = "/cozinhas", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+@RequestMapping(value = "/v1/cozinhas", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 public class CozinhaController implements CozinhaControllerOpenAPI {
 
 	@Autowired

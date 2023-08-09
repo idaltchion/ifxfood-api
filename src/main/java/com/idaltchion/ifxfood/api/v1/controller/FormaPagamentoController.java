@@ -29,7 +29,7 @@ import com.idaltchion.ifxfood.domain.model.FormaPagamento;
 import com.idaltchion.ifxfood.domain.service.CadastroFormaPagamentoService;
 
 @RestController
-@RequestMapping("/formas-pagamento")
+@RequestMapping("/v1/formas-pagamento")
 public class FormaPagamentoController implements FormaPagamentoControllerOpenAPI {
 
 	@Autowired

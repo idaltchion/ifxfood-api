@@ -23,7 +23,7 @@ import com.idaltchion.ifxfood.domain.service.CadastroPermissaoService;
  * TODO: Implementar interface OpenApi de Grupos x Permissoes  para documentacao
  */
 @RestController
-@RequestMapping("/grupos/{grupo_id}/permissoes")
+@RequestMapping("/v1/grupos/{grupo_id}/permissoes")
 public class GrupoPermissaoController {
 	
 	@Autowired

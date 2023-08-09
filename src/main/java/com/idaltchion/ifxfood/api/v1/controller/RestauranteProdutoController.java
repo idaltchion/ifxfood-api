@@ -47,7 +47,7 @@ import com.idaltchion.ifxfood.domain.service.FotoProdutoStorageService;
 import com.idaltchion.ifxfood.domain.service.FotoProdutoStorageService.FotoRecuperada;
 
 @RestController
-@RequestMapping("/restaurantes/{restauranteId}/produtos")
+@RequestMapping("/v1/restaurantes/{restauranteId}/produtos")
 public class RestauranteProdutoController implements RestauranteProdutoControllerOpenAPI {
 	
 	@Autowired

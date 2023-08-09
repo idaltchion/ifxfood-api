@@ -14,7 +14,7 @@ import com.idaltchion.ifxfood.api.v1.openapi.controller.FluxoPedidoControllerOpe
 import com.idaltchion.ifxfood.domain.service.FluxoPedidoService;
 
 @RestController
-@RequestMapping(path = "/pedidos/{codigo_pedido}", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v1/pedidos/{codigo_pedido}", produces = MediaType.APPLICATION_JSON_VALUE)
 public class FluxoPedidoController implements FluxoPedidoControllerOpenAPI {
 
 	@Autowired

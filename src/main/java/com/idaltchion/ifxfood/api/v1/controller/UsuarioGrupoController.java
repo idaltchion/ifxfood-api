@@ -20,7 +20,7 @@ import com.idaltchion.ifxfood.domain.service.CadastroGrupoService;
 import com.idaltchion.ifxfood.domain.service.CadastroUsuarioService;
 
 @RestController
-@RequestMapping("/usuarios/{usuario_id}/grupos")
+@RequestMapping("/v1/usuarios/{usuario_id}/grupos")
 public class UsuarioGrupoController {
 
 	@Autowired

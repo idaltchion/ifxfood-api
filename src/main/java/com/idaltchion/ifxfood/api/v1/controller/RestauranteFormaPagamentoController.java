@@ -24,7 +24,7 @@ import com.idaltchion.ifxfood.domain.service.CadastroFormaPagamentoService;
 import com.idaltchion.ifxfood.domain.service.CadastroRestauranteService;
 
 @RestController
-@RequestMapping(path = "/restaurantes/{restauranteId}/formas-pagamento", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v1/restaurantes/{restauranteId}/formas-pagamento", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestauranteFormaPagamentoController implements RestauranteFormaPagamentoControllerOpenAPI {
 
 	@Autowired
