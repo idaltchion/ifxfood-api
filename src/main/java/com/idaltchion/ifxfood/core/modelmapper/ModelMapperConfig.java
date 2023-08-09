@@ -4,8 +4,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.idaltchion.ifxfood.api.model.EnderecoDTO;
-import com.idaltchion.ifxfood.api.model.input.ItemPedidoDTOInput;
+import com.idaltchion.ifxfood.api.v1.model.EnderecoDTO;
+import com.idaltchion.ifxfood.api.v1.model.input.ItemPedidoDTOInput;
+import com.idaltchion.ifxfood.api.v2.model.input.CidadeDTOInputV2;
+import com.idaltchion.ifxfood.domain.model.Cidade;
 import com.idaltchion.ifxfood.domain.model.Endereco;
 import com.idaltchion.ifxfood.domain.model.ItemPedido;
 
@@ -18,6 +20,9 @@ public class ModelMapperConfig {
 		
 		modelMapper.createTypeMap(ItemPedidoDTOInput.class, ItemPedido.class)
 			.addMappings(mapper -> mapper.skip(ItemPedido::setId));
+		
+		modelMapper.createTypeMap(CidadeDTOInputV2.class, Cidade.class)
+			.addMappings(mapper -> mapper.skip(Cidade::setId));
 		
 		var enderecoToEnderecoDTOMap = modelMapper.createTypeMap(Endereco.class, EnderecoDTO.class);
 		enderecoToEnderecoDTOMap.<String>addMapping(

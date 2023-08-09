@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.idaltchion.ifxfood.api.model.SenhaDTOInput;
+import com.idaltchion.ifxfood.api.v1.model.SenhaDTOInput;
 import com.idaltchion.ifxfood.domain.exception.NegocioException;
 import com.idaltchion.ifxfood.domain.exception.UsuarioNaoEncontradoException;
 import com.idaltchion.ifxfood.domain.model.Grupo;

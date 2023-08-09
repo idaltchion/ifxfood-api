@@ -34,7 +34,7 @@ alter table item_pedido auto_increment = 1;
 insert into estado (id, nome) values (1, 'Parana');
 insert into estado (id, nome) values (2, 'Sao Paulo');
 insert into estado (id, nome) values (3, 'Rio de Janeiro');
-insert into estado (id, nome) values (4, 'Belo Horizonte');
+insert into estado (id, nome) values (4, 'Minas Gerais');
 
 
 insert into cidade (id, nome, estado_id) values (1, 'Curitiba', 1);
