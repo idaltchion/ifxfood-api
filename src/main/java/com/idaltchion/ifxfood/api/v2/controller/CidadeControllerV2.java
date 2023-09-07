@@ -20,6 +20,7 @@ import com.idaltchion.ifxfood.api.v2.assembler.CidadeDTOAssemberV2;
 import com.idaltchion.ifxfood.api.v2.assembler.CidadeDTODisassemblerV2;
 import com.idaltchion.ifxfood.api.v2.model.CidadeDTOV2;
 import com.idaltchion.ifxfood.api.v2.model.input.CidadeDTOInputV2;
+import com.idaltchion.ifxfood.api.v2.openapi.controller.CidadeControllerOpenAPIV2;
 import com.idaltchion.ifxfood.core.web.IfxMediaTypes;
 import com.idaltchion.ifxfood.domain.exception.EstadoNaoEncontradoException;
 import com.idaltchion.ifxfood.domain.exception.NegocioException;
@@ -29,7 +30,7 @@ import com.idaltchion.ifxfood.domain.service.CadastroCidadeService;
 
 @RestController
 @RequestMapping(path = "/cidades", produces = IfxMediaTypes.V2_APPLICATION_JSON_VALUE)
-public class CidadeControllerV2 {
+public class CidadeControllerV2 implements CidadeControllerOpenAPIV2 {
 
 	@Autowired
 	private CidadeRepository cidadeRepository;

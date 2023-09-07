@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,6 +40,8 @@ import com.idaltchion.ifxfood.domain.service.CadastroCozinhaService;
 @RequestMapping(value = "/v1/cozinhas", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 public class CozinhaController implements CozinhaControllerOpenAPI {
 
+	private static final Logger logger = LoggerFactory.getLogger(CozinhaController.class);
+	
 	@Autowired
 	private CozinhaRepository cozinhaRepository;
 
@@ -58,9 +62,16 @@ public class CozinhaController implements CozinhaControllerOpenAPI {
 		Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
 //		List<CozinhaDTO> cozinhasDTO = cozinhaDTOAssembler.toCollectionModel(cozinhasPage.getContent());
 //		Page<CozinhaDTO> cozinhasDTOPage = new PageImpl<CozinhaDTO>(cozinhasDTO, pageable, cozinhasPage.getTotalElements());
+
+		/*
+		 * adicionado e mantido essa exception somente para fins didáticos para geração de logs de erro
+		if (true) {
+			throw new RuntimeException("Teste de logger de exception... ");
+		}
+		*/
 		
 		PagedModel<CozinhaDTO> cozinhasPagedModel = pagedResourceAssembler.toModel(cozinhasPage, cozinhaDTOAssembler);
-		
+		logger.info("Listando cozinhas... Total encontrado: {}", cozinhasPagedModel.getContent().size());
 		return cozinhasPagedModel;
 	}
 

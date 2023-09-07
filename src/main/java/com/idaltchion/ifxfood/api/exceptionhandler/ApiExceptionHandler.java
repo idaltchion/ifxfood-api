@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -35,6 +37,8 @@ import com.idaltchion.ifxfood.domain.exception.NegocioException;
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
+	private static final Logger logger = LoggerFactory.getLogger(ApiExceptionHandler.class);
+	
 	@Autowired
 	private MessageSource messageSource;
 	
@@ -86,7 +90,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		Problem problem = createProblemBuilder(status, problemType, detail)
 				.userMessage(MSG_ERRO_GENERICO_USUARIO_FINAL)
 				.build();
-		ex.printStackTrace();
+		//ex.printStackTrace();
+		logger.error(ex.getMessage(), ex);
 		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 	}
 	

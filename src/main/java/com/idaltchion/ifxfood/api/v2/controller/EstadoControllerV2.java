@@ -20,13 +20,14 @@ import com.idaltchion.ifxfood.api.v2.assembler.EstadoDTOAssemblerV2;
 import com.idaltchion.ifxfood.api.v2.assembler.EstadoDTODisassemblerV2;
 import com.idaltchion.ifxfood.api.v2.model.EstadoDTOV2;
 import com.idaltchion.ifxfood.api.v2.model.input.EstadoDTOInputV2;
+import com.idaltchion.ifxfood.api.v2.openapi.controller.EstadoControllerOpenAPIV2;
 import com.idaltchion.ifxfood.domain.model.Estado;
 import com.idaltchion.ifxfood.domain.repository.EstadoRepository;
 import com.idaltchion.ifxfood.domain.service.CadastroEstadoService;
 
 @RestController
 @RequestMapping(path = "/v2/estados", produces = MediaType.APPLICATION_JSON_VALUE)
-public class EstadoControllerV2 {
+public class EstadoControllerV2 implements EstadoControllerOpenAPIV2 {
 
 	@Autowired
 	private EstadoRepository estadoRepository;

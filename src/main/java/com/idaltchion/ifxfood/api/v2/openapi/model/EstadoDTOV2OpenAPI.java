@@ -1,10 +1,10 @@
-package com.idaltchion.ifxfood.api.v1.openapi.model;
+package com.idaltchion.ifxfood.api.v2.openapi.model;
 
 import java.util.List;
 
 import org.springframework.hateoas.Links;
 
-import com.idaltchion.ifxfood.api.v1.model.EstadoDTO;
+import com.idaltchion.ifxfood.api.v2.model.EstadoDTOV2;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -14,14 +14,14 @@ import lombok.Setter;
 @ApiModel(value = "EstadoDTO")
 @Getter
 @Setter
-public class EstadoDTOOpenAPI {
+public class EstadoDTOV2OpenAPI {
+
 	private EstadosDTOEmbeddedOpenAPI _embedded;
 	private Links _links;
 	
-	@Data
 	@ApiModel(value = "EstadosEmbeddedDTO")
+	@Data
 	private class EstadosDTOEmbeddedOpenAPI {
-		private List<EstadoDTO> estados;
+		private List<EstadoDTOV2> estados;
 	}
-	
 }
