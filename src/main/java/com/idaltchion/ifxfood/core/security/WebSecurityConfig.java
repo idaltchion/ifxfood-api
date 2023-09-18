@@ -10,8 +10,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Configuration
-@EnableWebSecurity
+/*
+ * Classe utilizada para seguranca do tipo Basic. 
+ * Com a utilizacao de seguranca do tipo oauth2, essa classe nao precisa mais ser utilizada. 
+ * Por isso os comentarios abaixo 
+ * Ver classe ResourceServerConfig 
+ */
+//@Configuration
+//@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override

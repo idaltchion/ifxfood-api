@@ -24,6 +24,8 @@
 		<springfox.version>3.0.0</springfox.version>
 		<spring-plugin.version>2.0.0.RELEASE</spring-plugin.version>
 		<logback-ext-loggly.version>0.1.5</logback-ext-loggly.version>
+		<spring-boot-oauth2-resource-server.version>2.7.5</spring-boot-oauth2-resource-server.version>
+		<nimbus-oauth2-oidc-sdk.version>6.3</nimbus-oauth2-oidc-sdk.version>
 	</properties>
 
 	<dependencies>
@@ -168,6 +170,20 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		
+		<dependency>
+    		<groupId>org.springframework.boot</groupId>
+    		<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+    		<version>${spring-boot-oauth2-resource-server.version}</version>
+		</dependency>
+		
+		<!-- Para corrigir erro 'opaqueTokenIntrospector' quando utiliza oauth2 no Resource Server -->
+		<dependency>
+    		<groupId>com.nimbusds</groupId>
+    		<artifactId>oauth2-oidc-sdk</artifactId>
+    		<version>${nimbus-oauth2-oidc-sdk.version}</version>
+    		<scope>runtime</scope>
 		</dependency>
 		
 	</dependencies>
