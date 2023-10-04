@@ -1,11 +1,16 @@
 package com.idaltchion.ifxfood.core.security;
 
+import javax.crypto.spec.SecretKeySpec;
+
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 
-// Classe utilizada para seguranca do tipo Oauh2. 
+// Classe utilizada para seguranca do tipo OAuth2. 
 @Configuration
 @EnableWebSecurity
 public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
@@ -18,7 +23,16 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 			.and()
 				.cors()
 			.and()
-				.oauth2ResourceServer().opaqueToken();
+				.oauth2ResourceServer().jwt();
+	}
+	
+	@Bean
+	public JwtDecoder jwtDecoder() {
+		/* The secret length must be at least 256 bits */
+		var key = "12345678901234567890123456789012";
+		var secretKey = new SecretKeySpec(key.getBytes(), "HmacSHA256");
+		
+		return NimbusJwtDecoder.withSecretKey(secretKey).build();
 	}
 	
 }
